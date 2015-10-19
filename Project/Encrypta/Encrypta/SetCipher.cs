@@ -7,26 +7,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MetroFramework.Components;
-using MetroFramework.Forms;
 
 namespace WindowsFormsApplication1
 {
-    public partial class frmMain : MetroForm
+    public partial class SetCipher : Form
     {
-        public frmMain()
+        public SetCipher()
         {
             InitializeComponent();
         }
 
-        private void frmMain_Load(object sender, EventArgs e)
+        private void btnApply_Click(object sender, EventArgs e)
         {
-         
+            Program.cipher = txtCipher.Text;
+            //dialog box for 
         }
 
-        private void mnuSettingsInput_Click(object sender, EventArgs e)
+        private void btnHelp_Click(object sender, EventArgs e)
         {
-            new Input().Visible = true;
+            //dialog box for help
         }
     }
 }
