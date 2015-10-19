@@ -86,7 +86,7 @@
             // 
             // btnEncrypt
             // 
-            this.btnEncrypt.Location = new System.Drawing.Point(332, 144);
+            this.btnEncrypt.Location = new System.Drawing.Point(324, 144);
             this.btnEncrypt.Name = "btnEncrypt";
             this.btnEncrypt.Size = new System.Drawing.Size(134, 51);
             this.btnEncrypt.TabIndex = 6;
@@ -116,10 +116,11 @@
             // 
             this.btnSetCipher.Location = new System.Drawing.Point(169, 144);
             this.btnSetCipher.Name = "btnSetCipher";
-            this.btnSetCipher.Size = new System.Drawing.Size(134, 51);
+            this.btnSetCipher.Size = new System.Drawing.Size(133, 51);
             this.btnSetCipher.TabIndex = 9;
             this.btnSetCipher.Text = "Set Cipher";
             this.btnSetCipher.UseVisualStyleBackColor = true;
+            this.btnSetCipher.Click += new System.EventHandler(this.btnSetCipher_Click);
             // 
             // frmMain
             // 

@@ -28,5 +28,10 @@ namespace WindowsFormsApplication1
         {
             new Input().Visible = true;
         }
+
+        private void btnSetCipher_Click(object sender, EventArgs e)
+        {
+            new SetCipher().Visible = true;
+        }
     }
 }
