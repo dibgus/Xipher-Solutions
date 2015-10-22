@@ -26,12 +26,22 @@ namespace WindowsFormsApplication1
 
         private void mnuSettingsInput_Click(object sender, EventArgs e)
         {
-            new Input().Visible = true;
+            new Input().ShowDialog();
         }
 
         private void btnSetCipher_Click(object sender, EventArgs e)
         {
-            new SetCipher().Visible = true;
+            new SetCipher().ShowDialog();
+        }
+
+        private void btnEncrypt_Click(object sender, EventArgs e)
+        {
+            txtEncrypted.Text = BackendHandler.encryptExpression(Program.cipher, txtInput.Text);
+        }
+
+        private void btnInput_Click(object sender, EventArgs e)
+        {
+            new Input().ShowDialog();
         }
     }
 }

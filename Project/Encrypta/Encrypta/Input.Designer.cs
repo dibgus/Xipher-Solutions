@@ -29,35 +29,26 @@
         private void InitializeComponent()
         {
             this.rbtnFile = new System.Windows.Forms.RadioButton();
-            this.label1 = new System.Windows.Forms.Label();
             this.rbtnString = new System.Windows.Forms.RadioButton();
             this.btnSubmit = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // rbtnFile
             // 
             this.rbtnFile.AutoSize = true;
-            this.rbtnFile.Location = new System.Drawing.Point(35, 62);
+            this.rbtnFile.Location = new System.Drawing.Point(39, 94);
             this.rbtnFile.Name = "rbtnFile";
             this.rbtnFile.Size = new System.Drawing.Size(59, 24);
             this.rbtnFile.TabIndex = 5;
             this.rbtnFile.Text = "File";
             this.rbtnFile.UseVisualStyleBackColor = true;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(35, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(103, 20);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Data Format:";
-            // 
             // rbtnString
             // 
             this.rbtnString.AutoSize = true;
             this.rbtnString.Checked = true;
-            this.rbtnString.Location = new System.Drawing.Point(35, 32);
+            this.rbtnString.Location = new System.Drawing.Point(39, 64);
             this.rbtnString.Name = "rbtnString";
             this.rbtnString.Size = new System.Drawing.Size(103, 24);
             this.rbtnString.TabIndex = 3;
@@ -67,7 +58,7 @@
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(63, 92);
+            this.btnSubmit.Location = new System.Drawing.Point(67, 124);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(75, 34);
             this.btnSubmit.TabIndex = 6;
@@ -75,19 +66,31 @@
             this.btnSubmit.UseVisualStyleBackColor = true;
             this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(13, 17);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(160, 30);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Data Format";
+            // 
             // Input
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(188, 138);
+            this.ClientSize = new System.Drawing.Size(188, 167);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.rbtnFile);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.rbtnString);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Input";
-            this.Text = "Input";
+            this.Resizable = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.Theme = MetroFramework.MetroThemeStyle.Light;
             this.TopMost = true;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Input_FormClosed);
             this.Load += new System.EventHandler(this.Input_Load);
@@ -99,8 +102,8 @@
         #endregion
 
         private System.Windows.Forms.RadioButton rbtnFile;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RadioButton rbtnString;
         private System.Windows.Forms.Button btnSubmit;
+        private System.Windows.Forms.Label label1;
     }
 }

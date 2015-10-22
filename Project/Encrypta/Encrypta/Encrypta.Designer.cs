@@ -28,57 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.menSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuSettingsInput = new System.Windows.Forms.ToolStripMenuItem();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtInput = new System.Windows.Forms.TextBox();
             this.lblInput = new System.Windows.Forms.Label();
             this.btnEncrypt = new System.Windows.Forms.Button();
             this.Label1 = new System.Windows.Forms.Label();
             this.txtEncrypted = new System.Windows.Forms.TextBox();
             this.btnSetCipher = new System.Windows.Forms.Button();
-            this.menuStrip1.SuspendLayout();
+            this.btnInput = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // txtInput
             // 
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menSettings});
-            this.menuStrip1.Location = new System.Drawing.Point(20, 60);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(438, 33);
-            this.menuStrip1.TabIndex = 3;
-            this.menuStrip1.Text = "menSettings";
-            // 
-            // menSettings
-            // 
-            this.menSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuSettingsInput});
-            this.menSettings.Name = "menSettings";
-            this.menSettings.Size = new System.Drawing.Size(88, 29);
-            this.menSettings.Text = "Settings";
-            // 
-            // mnuSettingsInput
-            // 
-            this.mnuSettingsInput.Name = "mnuSettingsInput";
-            this.mnuSettingsInput.Size = new System.Drawing.Size(211, 30);
-            this.mnuSettingsInput.Text = "Input Type";
-            this.mnuSettingsInput.Click += new System.EventHandler(this.mnuSettingsInput_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(169, 63);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(297, 75);
-            this.textBox1.TabIndex = 4;
+            this.txtInput.Location = new System.Drawing.Point(169, 78);
+            this.txtInput.Multiline = true;
+            this.txtInput.Name = "txtInput";
+            this.txtInput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtInput.Size = new System.Drawing.Size(327, 75);
+            this.txtInput.TabIndex = 4;
             // 
             // lblInput
             // 
             this.lblInput.AutoSize = true;
-            this.lblInput.Location = new System.Drawing.Point(25, 109);
+            this.lblInput.Location = new System.Drawing.Point(23, 81);
             this.lblInput.Name = "lblInput";
             this.lblInput.Size = new System.Drawing.Size(138, 20);
             this.lblInput.TabIndex = 5;
@@ -86,17 +58,18 @@
             // 
             // btnEncrypt
             // 
-            this.btnEncrypt.Location = new System.Drawing.Point(324, 144);
+            this.btnEncrypt.Location = new System.Drawing.Point(378, 216);
             this.btnEncrypt.Name = "btnEncrypt";
             this.btnEncrypt.Size = new System.Drawing.Size(134, 51);
             this.btnEncrypt.TabIndex = 6;
             this.btnEncrypt.Text = "Encrypt";
             this.btnEncrypt.UseVisualStyleBackColor = true;
+            this.btnEncrypt.Click += new System.EventHandler(this.btnEncrypt_Click);
             // 
             // Label1
             // 
             this.Label1.AutoSize = true;
-            this.Label1.Location = new System.Drawing.Point(74, 204);
+            this.Label1.Location = new System.Drawing.Point(72, 276);
             this.Label1.Name = "Label1";
             this.Label1.Size = new System.Drawing.Size(89, 20);
             this.Label1.TabIndex = 7;
@@ -104,17 +77,17 @@
             // 
             // txtEncrypted
             // 
-            this.txtEncrypted.Location = new System.Drawing.Point(169, 201);
+            this.txtEncrypted.Location = new System.Drawing.Point(169, 273);
             this.txtEncrypted.Multiline = true;
             this.txtEncrypted.Name = "txtEncrypted";
             this.txtEncrypted.ReadOnly = true;
             this.txtEncrypted.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtEncrypted.Size = new System.Drawing.Size(297, 75);
+            this.txtEncrypted.Size = new System.Drawing.Size(343, 75);
             this.txtEncrypted.TabIndex = 8;
             // 
             // btnSetCipher
             // 
-            this.btnSetCipher.Location = new System.Drawing.Point(169, 144);
+            this.btnSetCipher.Location = new System.Drawing.Point(169, 216);
             this.btnSetCipher.Name = "btnSetCipher";
             this.btnSetCipher.Size = new System.Drawing.Size(133, 51);
             this.btnSetCipher.TabIndex = 9;
@@ -122,39 +95,55 @@
             this.btnSetCipher.UseVisualStyleBackColor = true;
             this.btnSetCipher.Click += new System.EventHandler(this.btnSetCipher_Click);
             // 
+            // btnInput
+            // 
+            this.btnInput.Location = new System.Drawing.Point(269, 159);
+            this.btnInput.Name = "btnInput";
+            this.btnInput.Size = new System.Drawing.Size(133, 51);
+            this.btnInput.TabIndex = 10;
+            this.btnInput.Text = "Input Settings";
+            this.btnInput.UseVisualStyleBackColor = true;
+            this.btnInput.Click += new System.EventHandler(this.btnInput_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(4, 13);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(143, 37);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Encrypta";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(478, 335);
+            this.ClientSize = new System.Drawing.Size(545, 364);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.btnInput);
             this.Controls.Add(this.btnSetCipher);
             this.Controls.Add(this.txtEncrypted);
             this.Controls.Add(this.Label1);
             this.Controls.Add(this.btnEncrypt);
             this.Controls.Add(this.lblInput);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
+            this.Controls.Add(this.txtInput);
             this.Name = "frmMain";
-            this.Text = "Encrypta";
             this.Load += new System.EventHandler(this.frmMain_Load);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem menSettings;
-        private System.Windows.Forms.ToolStripMenuItem mnuSettingsInput;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtInput;
         private System.Windows.Forms.Label lblInput;
         private System.Windows.Forms.Button btnEncrypt;
         private System.Windows.Forms.Label Label1;
         private System.Windows.Forms.TextBox txtEncrypted;
         private System.Windows.Forms.Button btnSetCipher;
+        private System.Windows.Forms.Button btnInput;
+        private System.Windows.Forms.Label label2;
     }
 }
 

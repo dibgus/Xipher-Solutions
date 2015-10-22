@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackendHandler.cs" />
     <Compile Include="Encrypta.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -59,7 +59,7 @@
             // btnHelp
             // 
             this.btnHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHelp.Location = new System.Drawing.Point(348, 3);
+            this.btnHelp.Location = new System.Drawing.Point(348, 90);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(41, 37);
             this.btnHelp.TabIndex = 3;
@@ -80,11 +80,11 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(22, 25);
+            this.label2.Location = new System.Drawing.Point(22, 9);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(134, 30);
+            this.label2.Size = new System.Drawing.Size(233, 30);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Encryption";
+            this.label2.Text = "Encryption Settings";
             // 
             // label3
             // 
@@ -113,6 +113,7 @@
             this.btnOk.TabIndex = 8;
             this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // SetCipher
             // 
@@ -127,9 +128,7 @@
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.txtCipher);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "SetCipher";
-            this.Text = "SetCipher";
             this.ResumeLayout(false);
             this.PerformLayout();
 

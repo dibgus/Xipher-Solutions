@@ -7,11 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MetroFramework.Components;
+using MetroFramework.Forms;
 using WindowsFormsApplication1;
 
 namespace WindowsFormsApplication1
 {
-    public partial class Input : Form
+    public partial class Input : MetroForm
     {
         public Input()
         {
@@ -26,7 +28,7 @@ namespace WindowsFormsApplication1
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             Program.usingFile = rbtnFile.Checked;
-            this.Close();
+            Close();
         }
 
         private void Input_FormClosed(object sender, FormClosedEventArgs e)
