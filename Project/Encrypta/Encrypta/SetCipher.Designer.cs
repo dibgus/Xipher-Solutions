@@ -59,9 +59,9 @@
             // btnHelp
             // 
             this.btnHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHelp.Location = new System.Drawing.Point(348, 90);
+            this.btnHelp.Location = new System.Drawing.Point(188, 214);
             this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(41, 37);
+            this.btnHelp.Size = new System.Drawing.Size(41, 39);
             this.btnHelp.TabIndex = 3;
             this.btnHelp.Text = "?";
             this.btnHelp.UseVisualStyleBackColor = true;

@@ -27,7 +27,7 @@ namespace WindowsFormsApplication1
 
         private void btnHelp_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Help", "A cipher is also known as the key that you will encrypt your data.\nCurrently, you can separate operations with an \"|\"\nCurrent Operations include: <LIST>");
+            MessageBox.Show("A cipher is also known as the key that you will encrypt your data.\nCurrently, you can separate operations with an \"|\"\nCurrent Operations include: <LIST>","Help");
             //dialog box for help
         }
 

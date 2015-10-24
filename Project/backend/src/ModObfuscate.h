@@ -7,7 +7,9 @@
 
 #ifndef MODOBFUSCATE_H_
 #define MODOBFUSCATE_H_
-
+#include <string>
+#include <iostream>
+#include <cstring>
 namespace EncryptaBackend {
 
 class ModObfuscate {
