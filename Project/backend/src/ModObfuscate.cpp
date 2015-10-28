@@ -8,19 +8,10 @@
 #include <string>
 #include <iostream>
 #include <cstring>
+#include <cstdlib>
 #include <stdlib.h>
 using namespace std;
-class ModObfuscate
-{
-public:
-	static string interpretInput (string, std::string);
-//private:
-	//TODO C++ more
-	static string skipHop (string);
-	static string reverse (string);//best with expressions in binary
-	static string caesar (string, int);
-	static string transposition (string, int, int);
-};
+
 	//fus:sh|rev|crc=10|trans=3x3
 	//flags in a cipher will be passed to doFlag for interpretation (they will split it
 	//into methods to run and any additional arguments (see prototype for example))
@@ -34,27 +25,26 @@ public:
 			option = flag;
 		}
 		else
-		{//substrings in C++ are weird: (START_INDEX, LENGTH) are the parameters for substring.
-			option = flag.substr(0, flag.find("=") - 1);
+		{
+			option = flag.substr(0, flag.find("="));
 			parameters = flag.substr(flag.find("=") + 1);
 		}
-		switch(option)
-		{ //these are all of the poorly acronymed flags: very much subject to change (especially when I begin combining ciphers more)
-		case "skh": encrypted = skipHop(expression); break;
-		case "rev": encrypted = reverse(expression); break;
-		case "crc":
-			std::stringstream convert(parameters);
-			int shift; convert >> shift; //convert string to int
+		//these are all of the poorly acronymed flags: very much subject to change (especially when I begin combining ciphers more)
+		if(option == "skh")
+			encrypted = skipHop(expression);
+		else if(option == "rev")
+			encrypted = reverse(expression);
+		else if(option == "crc")
+		{
+			int shift = atoi(parameters.c_str());
 			encrypted = caesar(expression, shift);
-			break;
-		case "trn":
-			std::stringstream convert(parameters.substr(0, parameters.find("*")));
+		}
+		else if(option == "trn")
+		{
 			//filters to * delimeter (signifies an x by y array or x*y)
-			int x; convert >> x;
-			convert(parameters.substr(parameters.find("*") + 1));
-			int y; convert >> y;
+			int x = atoi(parameters.substr(0, parameters.find("*")).c_str());
+			int y = atoi(parameters.substr(parameters.find("*") + 1).c_str());
 			encrypted = transposition(expression, x, y);
-			break;
 		}
 		return encrypted;
 	}
@@ -153,5 +143,9 @@ public:
 			std::cout << ModObfuscate::skipHop(in) << "\n";
 			std::cout << ModObfuscate::reverse(in) << "\n";
 			std::cout << ModObfuscate::caesar(in, 1) << "\n";
-			std::cout << ModObfuscate::transposition(in, 4, 4);
+			std::cout << ModObfuscate::transposition(in, 4, 4) << "\n";
+			std::cout << "Enter a key: ";
+			string key = "";
+			std::getline(std::cin, key);
+			std::cout << ModObfuscate::interpretInput(in, key);
 		}
