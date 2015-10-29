@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework.Components;
 using MetroFramework.Forms;
+using MetroFramework.Drawing;
+using MetroFramework.Controls;
 using WindowsFormsApplication1;
 
 namespace WindowsFormsApplication1

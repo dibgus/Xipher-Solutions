@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework.Components;
 using MetroFramework.Forms;
+using MetroFramework.Drawing;
+using MetroFramework.Controls;
 
 namespace WindowsFormsApplication1
 {
@@ -36,12 +38,18 @@ namespace WindowsFormsApplication1
 
         private void btnEncrypt_Click(object sender, EventArgs e)
         {
-            txtEncrypted.Text = BackendHandler.encryptExpression(Program.cipher, txtInput.Text);
+            txtEncrypted.Text = BackendHandler.encryptExpression(txtInput.Text, Program.cipher);
+            if (ckbxCopyClipboard.Checked) Clipboard.SetText(txtEncrypted.Text);
         }
 
         private void btnInput_Click(object sender, EventArgs e)
         {
             new Input().ShowDialog();
+        } //PInvokeStackImbalance
+
+        private void button1_Click(object sender, EventArgs e)
+        {//test button for DLL's
+         txtEncrypted.Text = BackendHandler.test("hdg").ToString();
         }
     }
 }

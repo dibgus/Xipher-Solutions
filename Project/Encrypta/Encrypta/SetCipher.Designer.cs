@@ -59,9 +59,9 @@
             // btnHelp
             // 
             this.btnHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHelp.Location = new System.Drawing.Point(188, 214);
+            this.btnHelp.Location = new System.Drawing.Point(188, 204);
             this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(41, 39);
+            this.btnHelp.Size = new System.Drawing.Size(41, 49);
             this.btnHelp.TabIndex = 3;
             this.btnHelp.Text = "?";
             this.btnHelp.UseVisualStyleBackColor = true;
@@ -129,6 +129,7 @@
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.txtCipher);
             this.Name = "SetCipher";
+            this.Load += new System.EventHandler(this.SetCipher_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
