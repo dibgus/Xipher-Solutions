@@ -10,7 +10,7 @@ using namespace std;
 	//obfus:sh|obfus:rev|crc=10|trn=3*3
 	//flags in a cipher will be passed to doFlag for interpretation (they will split it
 	//into methods to run and any additional arguments (see prototype for example))
-	string ModObfuscate::interpretInput(string expression, string flag)
+	string ModObfuscate::interpretInput(string expression, string flag, bool encrypting)
 	{
 		string encrypted = "";
 		string option = "";
@@ -29,18 +29,28 @@ using namespace std;
 			encrypted = skipHop(expression);
 		else if (option == "rev")
 			encrypted = reverse(expression);
+		else if (option == "evo")
+			encrypted = everyOther(expression, encrypting);
 		else if (option == "crc")
 		{
-			int shift = atoi(parameters.c_str());
-			encrypted = caesar(expression, shift);
+			int shift = 1;
+			if (parameters != "")
+				atoi(parameters.c_str());
+			encrypted = caesar(expression, encrypting ? shift : -shift);
 		}
-		else if (option == "trn")
+		else if (option == "tnc")
 		{
 			//filters to * delimeter (signifies an x by y array or x*y)
-			int x = atoi(parameters.substr(0, parameters.find("*")).c_str());
-			int y = atoi(parameters.substr(parameters.find("*") + 1).c_str());
-			encrypted = transposition(expression, x, y);
+			int x = 1; int y = 1;
+			if (parameters != "")
+			{
+				x = atoi(parameters.substr(0, parameters.find("*")).c_str());
+				y = atoi(parameters.substr(parameters.find("*") + 1).c_str());
+			}
+			encrypted = transposition(expression, x, y, encrypting);
 		}
+		else
+			std::cout << "Option not found: " << option << "\n";
 		return encrypted;
 	}
 	/*
@@ -92,7 +102,7 @@ using namespace std;
 		return ans;
 	}
 
-	string ModObfuscate::transposition(string expression, int xSize, int ySize)
+	string ModObfuscate::transposition(string expression, int xSize, int ySize, bool encrypting)
 	{ //loads string into a matrix and returns an obfuscated string
 		while (xSize * ySize < expression.length()) //While I need to adjust the size of the array to fit in data...
 		{
@@ -109,9 +119,10 @@ using namespace std;
 			charAverage += (int)expression[i];
 		charAverage /= expression.length();
 		i = 0;
-		for (string::size_type j = 0; j < sizeof(transposed) / sizeof(transposed[0]); j++) //y dim
+		//sizeof pointers never works D:
+		for (string::size_type j = 0; j < xSize; j++) //y dim
 		{ //have to do size / size because sizeof of a 2d array returns all possible indices (4 by 4 matrix returns 16)
-			for (string::size_type k = 0; k < sizeof(transposed[j]); k++, i++) //x dim
+			for (string::size_type k = 0; k < ySize; k++, i++) //x dim
 			{
 				if (i < expression.length()) //length check
 					transposed[j][k] = (char)expression[i];
@@ -123,11 +134,11 @@ using namespace std;
 			}
 		}
 		//cout << "\n"; - debugline
-		//loaded. now to read it back into an answer
+		//loaded. now to read it back into an 
 		string ans = "";
-		for (string::size_type j = 0; j < sizeof(transposed[0]); j++) //y dim
+		for (string::size_type j = 0; j < ySize; j++) //y dim
 		{
-			for (string::size_type k = 0; k < sizeof(transposed) / sizeof(transposed[0]); k++) //x dim
+			for (string::size_type k = 0; k < xSize; k++) //x dim
 			{ //read is flipped
 				ans.push_back(transposed[k][j]);
 			}
@@ -136,6 +147,27 @@ using namespace std;
 		for (int i = 0; i < xSize; i++)
 			delete[] transposed[i];
 		delete[] transposed;
+		return ans;
+	}
+
+	string ModObfuscate::everyOther(string expression, bool encrypting)
+	{
+		string ans = "";
+		if (encrypting)
+		{
+			for (string::size_type i = 0; i < expression.length(); i += 2)
+				ans.push_back(expression[i]);
+			for (string::size_type i = 1; i < expression.length(); i += 2)
+				ans.push_back(expression[i]);
+		}
+		else
+		{
+			for (string::size_type i = 0; i < expression.length() / 2; i++)
+			{
+				ans.push_back(expression[i]);
+				ans.push_back(expression[i + expression.length() / 2]);
+			}
+		}
 		return ans;
 	}
 	/*

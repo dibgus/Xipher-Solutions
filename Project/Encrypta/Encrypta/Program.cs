@@ -10,6 +10,7 @@ namespace WindowsFormsApplication1
     {
         public static bool usingFile = false;
         public static String cipher = "";
+        public static bool isEncrypting = true;
         //public static string[] = {"Helo", "hi"};
         /// <summary>
         /// The main entry point for the application.

@@ -14,13 +14,13 @@ using namespace std;
 	class ModObfuscate
 	{
 	public:
-		static string interpretInput(string, string);
+		static string interpretInput(string, string, bool);
 		private:
-			//TODO C++ more
 		static string skipHop(string);
 		static string reverse(string);//best with expressions in binary
 		static string caesar(string, int);
-		static string transposition(string, int, int);
+		static string transposition(string, int, int, bool);
+		static string everyOther(string, bool);
 	};
 
 	//exporting of function interpretInput without decorative name

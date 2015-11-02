@@ -38,8 +38,14 @@ namespace WindowsFormsApplication1
 
         private void btnEncrypt_Click(object sender, EventArgs e)
         {
-            txtEncrypted.Text = BackendHandler.encryptExpression(txtInput.Text, Program.cipher);
+            if (Program.isEncrypting)
+                txtEncrypted.Text = BackendHandler.encryptExpression(txtInput.Text, Program.cipher);
+            else
+                txtEncrypted.Text = BackendHandler.decryptExpression(txtInput.Text, Program.cipher);
             if (ckbxCopyClipboard.Checked) Clipboard.SetText(txtEncrypted.Text);
+            //fix for random blank character at end of buffer
+            if (txtEncrypted.Text.Substring(txtEncrypted.Text.Length - 1) == "")
+                txtEncrypted.Text = txtEncrypted.Text.Substring(0, txtEncrypted.Text.Length - 1);
         }
 
         private void btnInput_Click(object sender, EventArgs e)
@@ -51,5 +57,13 @@ namespace WindowsFormsApplication1
         {//test button for DLL's
          txtEncrypted.Text = BackendHandler.test("hdg").ToString();
         }
+
+        private void btnToggleEncryption_Click(object sender, EventArgs e)
+        {
+            Program.isEncrypting = !Program.isEncrypting;
+            lblInput.Text = Program.isEncrypting ? "Item to encrypt: " : "Item to decrypt: ";
+            btnEncrypt.Text = Program.isEncrypting ? "Encrypt" : "Decrypt";
+        }
+
     }
 }
