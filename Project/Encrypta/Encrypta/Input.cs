@@ -30,6 +30,7 @@ namespace WindowsFormsApplication1
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             Program.usingFile = rbtnFile.Checked;
+            Program.mainForm.updateVisuals();
             Close();
         }
 

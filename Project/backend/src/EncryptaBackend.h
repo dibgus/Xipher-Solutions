@@ -8,8 +8,8 @@ using namespace std;
 			//this method manages encryption: cannot be invoked directly because std::string cannot be managed by C#
 			static string handleExpression(string expression, string key, bool encrypting);
 			//this is the outward-facing method that writes to a buffer that C# can read from.
-			static void getEncrypted(const char *expression, const char *key, char *returnBuffer, long bufferlen);
-			static void getDecrypted(const char *encrypted, const char *key, char *returnBuffer, long bufferlen);
+			static void getEncrypted(const char *expression, const char *key, bool isFile);
+			static void getDecrypted(const char *encrypted, const char *key, bool isFile);
 		private:
 			static string sanitizeInput(string expression); //just sets to lowercase and removes whitespaces
 			static string* splitKey(string key);
@@ -18,13 +18,13 @@ using namespace std;
 
 	//exporting of function encryptExpression without decorative name
 	//ISSUE: CANNOT USE METHODS WITH STRINGS RETURNING: CRASHES APP << fixed with StringBuilder and pointers
-	extern "C" __declspec(dllexport) void getEncrypted(const char *expression, const char *key, char *returnBuffer, long bufferlen)
+	extern "C" __declspec(dllexport) void getEncrypted(const char *expression, const char *key, bool isFile)
 	{
-		InputHandler::getEncrypted(expression, key, returnBuffer, bufferlen);
+		InputHandler::getEncrypted(expression, key, isFile);
 	}
-	extern "C" __declspec(dllexport) void getDecrypted(const char *encrypted, const char *key, char *returnBuffer, long bufferlen)
+	extern "C" __declspec(dllexport) void getDecrypted(const char *encrypted, const char *key, bool isFile)
 	{
-		InputHandler::getDecrypted(encrypted, key, returnBuffer, bufferlen);
+		InputHandler::getDecrypted(encrypted, key, isFile);
 	}
 
 	//BELOW ARE TESTING METHODS

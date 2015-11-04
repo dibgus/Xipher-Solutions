@@ -80,14 +80,17 @@ using namespace std;
 			}
 		return encrypted;
 	}
-	void InputHandler::getEncrypted(const char *expression, const char *key, char *returnBuffer, long bufferlen) //int length may be a problem later
+	void InputHandler::getEncrypted(const char *expression, const char *key, bool isFile) //int length may be a problem later
 	{ 
 		string encrypted = InputHandler::handleExpression(string(expression), string(key), true);
-		ofstream output;
-		output.open("debug.txt");
-		output << encrypted;
-		output.close();
+		if(!isFile)
+		{
+			ofstream output("return");
+			output << encrypted;
+			output.close();
+		}
 		//instantiate new strings from constants for manipulation
+		/* DEPRECIATED CODE: Strings are now passed via reading/writing.
 		for (int i = 0; i < encrypted.length(); i++)
 		{ //TODO: Fix buffer length checking (Prior implementation would produce false terminations when the buffer still had room)
 			/*
@@ -95,27 +98,39 @@ using namespace std;
 			{
 				returnBuffer[0] = '!';
 				break;
-			}*/
+			}
 			returnBuffer[i] = encrypted[i];
 		}
+		*/
 	}
-	void InputHandler::getDecrypted(const char *expression, const char *key, char *returnBuffer, long bufferlen) //int length may be a problem later
+	void InputHandler::getDecrypted(const char *expression, const char *key, bool isFile) //int length may be a problem later
 	{
-		string encrypted = InputHandler::handleExpression(string(expression), string(key), false);
-		ofstream output;
-		output.open("debug.txt");
-		output << encrypted;
-		output.close();
+		if (!isFile)
+		{
+			string encrypted = InputHandler::handleExpression(string(expression), string(key), false);
+			ofstream output("return");
+			output << encrypted;
+			output.close();
+		}
+		else
+		{
+			fstream input(expression, ios::binary | ios::out);
+			char fileData[100];
+			input.read(fileData, 100);	
+			string fileSave = expression;  fileSave += ".crypt"; //creates a file where encrypted data will be stored (.crypt)
+			fstream output(fileSave, ios::binary | ios::in);
+		}
 		//instantiate new strings from constants for manipulation
+		/* DEPRECIATED: REPLACED WITH FILE READING AND WRITING
 		for (int i = 0; i < encrypted.length(); i++)
 		{ //TODO: Fix buffer length checking (Prior implementation would produce false terminations when the buffer still had room)
 			/*if (bufferlen >= i)
 			{
-				returnBuffer[0] = '!';
+				returnBuffer[0] = '!'; //notifies outofboundserror in writing to buffer
 				break;
-			}*/
+			}
 			returnBuffer[i] = encrypted[i];
-		}
+		}*/
 	}
 
 	string* InputHandler::splitKey(string key)
@@ -149,6 +164,18 @@ using namespace std;
 	}
 	string InputHandler::sanitizeInput(string expression)
 	{
+		for (int i = 0; i < expression.length(); i++)
+		{
+			if (expression[i] == '"')
+			{ //avoids the issue of if strings need to preserve spaces in quotes.
+				i = expression.find('"', i + 1);
+			}
+			//upper to lower case
+			if (expression[i] <= 'Z' && expression[i] >= 'A')//since ASCII is nicely organized, there is a common difference between lowercase and uppercase chars.
+				expression[i] = expression[i] - ('Z' - 'z');
+			if (expression[i] == ' ') //trims spaces to reduce issue of "hello " not being equal to "hello"
+				expression = expression.substr(0, i) + expression.substr(i + 1, expression.length());
+		}
 		return expression;
 		//TODO: Implement dis
 	}
@@ -165,4 +192,5 @@ using namespace std;
 		string encrypted = InputHandler::handleExpression(expression, key, true);
 		std::cout << encrypted << "\n";
 		std::cout << InputHandler::handleExpression(encrypted, key, false) << "\n";
+		InputHandler::getDecrypted(expression.c_str(), key.c_str(), false); //test file write
 	}

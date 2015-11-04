@@ -20,6 +20,17 @@ namespace WindowsFormsApplication1
         {
             InitializeComponent();
         }
+        public void updateVisuals()
+        {
+            if(Program.isEncrypting)
+            {
+                txtInput.Visible = false;
+            }
+            else
+            {
+                txtInput.Visible = true;
+            }
+        }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
@@ -43,9 +54,6 @@ namespace WindowsFormsApplication1
             else
                 txtEncrypted.Text = BackendHandler.decryptExpression(txtInput.Text, Program.cipher);
             if (ckbxCopyClipboard.Checked) Clipboard.SetText(txtEncrypted.Text);
-            //fix for random blank character at end of buffer
-            if (txtEncrypted.Text.Substring(txtEncrypted.Text.Length - 1) == "")
-                txtEncrypted.Text = txtEncrypted.Text.Substring(0, txtEncrypted.Text.Length - 1);
         }
 
         private void btnInput_Click(object sender, EventArgs e)
@@ -65,5 +73,11 @@ namespace WindowsFormsApplication1
             btnEncrypt.Text = Program.isEncrypting ? "Encrypt" : "Decrypt";
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileInput = new OpenFileDialog();
+            if(fileInput.ShowDialog() == DialogResult.OK)
+                Program.filePath = fileInput.FileName;
+        }
     }
 }

@@ -39,6 +39,8 @@
             this.ckbxCopyClipboard = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.btnToggleEncryption = new System.Windows.Forms.Button();
+            this.btnSelectFile = new System.Windows.Forms.Button();
+            this.lblPath = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtInput
@@ -148,11 +150,32 @@
             this.btnToggleEncryption.UseVisualStyleBackColor = true;
             this.btnToggleEncryption.Click += new System.EventHandler(this.btnToggleEncryption_Click);
             // 
+            // btnSelectFile
+            // 
+            this.btnSelectFile.Location = new System.Drawing.Point(391, 74);
+            this.btnSelectFile.Name = "btnSelectFile";
+            this.btnSelectFile.Size = new System.Drawing.Size(105, 35);
+            this.btnSelectFile.TabIndex = 15;
+            this.btnSelectFile.Text = "Select File...";
+            this.btnSelectFile.UseVisualStyleBackColor = true;
+            this.btnSelectFile.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // lblPath
+            // 
+            this.lblPath.AutoSize = true;
+            this.lblPath.Location = new System.Drawing.Point(173, 81);
+            this.lblPath.Name = "lblPath";
+            this.lblPath.Size = new System.Drawing.Size(46, 20);
+            this.lblPath.TabIndex = 16;
+            this.lblPath.Text = "Path:";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(545, 364);
+            this.Controls.Add(this.lblPath);
+            this.Controls.Add(this.btnSelectFile);
             this.Controls.Add(this.btnToggleEncryption);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.ckbxCopyClipboard);
@@ -183,6 +206,8 @@
         private System.Windows.Forms.CheckBox ckbxCopyClipboard;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnToggleEncryption;
+        private System.Windows.Forms.Button btnSelectFile;
+        private System.Windows.Forms.Label lblPath;
     }
 }
 
