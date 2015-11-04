@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework.Components;
 using MetroFramework.Forms;
+using MetroFramework.Drawing;
+using MetroFramework.Controls;
 
 namespace WindowsFormsApplication1
 {
@@ -17,6 +19,17 @@ namespace WindowsFormsApplication1
         public frmMain()
         {
             InitializeComponent();
+        }
+        public void updateVisuals()
+        {
+            if(Program.isEncrypting)
+            {
+                txtInput.Visible = false;
+            }
+            else
+            {
+                txtInput.Visible = true;
+            }
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -36,12 +49,35 @@ namespace WindowsFormsApplication1
 
         private void btnEncrypt_Click(object sender, EventArgs e)
         {
-            txtEncrypted.Text = BackendHandler.encryptExpression(Program.cipher, txtInput.Text);
+            if (Program.isEncrypting)
+                txtEncrypted.Text = BackendHandler.encryptExpression(txtInput.Text, Program.cipher);
+            else
+                txtEncrypted.Text = BackendHandler.decryptExpression(txtInput.Text, Program.cipher);
+            if (ckbxCopyClipboard.Checked) Clipboard.SetText(txtEncrypted.Text);
         }
 
         private void btnInput_Click(object sender, EventArgs e)
         {
             new Input().ShowDialog();
+        } //PInvokeStackImbalance
+
+        private void button1_Click(object sender, EventArgs e)
+        {//test button for DLL's
+         txtEncrypted.Text = BackendHandler.test("hdg").ToString();
+        }
+
+        private void btnToggleEncryption_Click(object sender, EventArgs e)
+        {
+            Program.isEncrypting = !Program.isEncrypting;
+            lblInput.Text = Program.isEncrypting ? "Item to encrypt: " : "Item to decrypt: ";
+            btnEncrypt.Text = Program.isEncrypting ? "Encrypt" : "Decrypt";
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileInput = new OpenFileDialog();
+            if(fileInput.ShowDialog() == DialogResult.OK)
+                Program.filePath = fileInput.FileName;
         }
     }
 }

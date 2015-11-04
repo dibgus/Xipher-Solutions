@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework.Components;
 using MetroFramework.Forms;
+using MetroFramework.Drawing;
+using MetroFramework.Controls;
 namespace WindowsFormsApplication1
 {
     public partial class SetCipher : MetroForm
@@ -35,6 +37,11 @@ namespace WindowsFormsApplication1
         {
             Program.cipher = txtCipher.Text;
             Close();
+        }
+
+        private void SetCipher_Load(object sender, EventArgs e)
+        {
+            txtCipher.Text = Program.cipher;
         }
     }
 }

@@ -36,6 +36,11 @@
             this.btnSetCipher = new System.Windows.Forms.Button();
             this.btnInput = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.ckbxCopyClipboard = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnToggleEncryption = new System.Windows.Forms.Button();
+            this.btnSelectFile = new System.Windows.Forms.Button();
+            this.lblPath = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtInput
@@ -52,13 +57,13 @@
             this.lblInput.AutoSize = true;
             this.lblInput.Location = new System.Drawing.Point(23, 81);
             this.lblInput.Name = "lblInput";
-            this.lblInput.Size = new System.Drawing.Size(138, 20);
+            this.lblInput.Size = new System.Drawing.Size(123, 20);
             this.lblInput.TabIndex = 5;
-            this.lblInput.Text = "Enter a Sentence:";
+            this.lblInput.Text = "Item to encrypt: ";
             // 
             // btnEncrypt
             // 
-            this.btnEncrypt.Location = new System.Drawing.Point(378, 216);
+            this.btnEncrypt.Location = new System.Drawing.Point(349, 216);
             this.btnEncrypt.Name = "btnEncrypt";
             this.btnEncrypt.Size = new System.Drawing.Size(134, 51);
             this.btnEncrypt.TabIndex = 6;
@@ -87,7 +92,7 @@
             // 
             // btnSetCipher
             // 
-            this.btnSetCipher.Location = new System.Drawing.Point(169, 216);
+            this.btnSetCipher.Location = new System.Drawing.Point(177, 216);
             this.btnSetCipher.Name = "btnSetCipher";
             this.btnSetCipher.Size = new System.Drawing.Size(133, 51);
             this.btnSetCipher.TabIndex = 9;
@@ -97,7 +102,7 @@
             // 
             // btnInput
             // 
-            this.btnInput.Location = new System.Drawing.Point(269, 159);
+            this.btnInput.Location = new System.Drawing.Point(177, 159);
             this.btnInput.Name = "btnInput";
             this.btnInput.Size = new System.Drawing.Size(133, 51);
             this.btnInput.TabIndex = 10;
@@ -115,11 +120,65 @@
             this.label2.TabIndex = 11;
             this.label2.Text = "Encrypta";
             // 
+            // ckbxCopyClipboard
+            // 
+            this.ckbxCopyClipboard.AutoSize = true;
+            this.ckbxCopyClipboard.Location = new System.Drawing.Point(11, 186);
+            this.ckbxCopyClipboard.Name = "ckbxCopyClipboard";
+            this.ckbxCopyClipboard.Size = new System.Drawing.Size(160, 24);
+            this.ckbxCopyClipboard.TabIndex = 12;
+            this.ckbxCopyClipboard.Text = "Copy to Clipboard";
+            this.ckbxCopyClipboard.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(27, 130);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 50);
+            this.button1.TabIndex = 13;
+            this.button1.Text = "Test Func";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnToggleEncryption
+            // 
+            this.btnToggleEncryption.Location = new System.Drawing.Point(349, 159);
+            this.btnToggleEncryption.Name = "btnToggleEncryption";
+            this.btnToggleEncryption.Size = new System.Drawing.Size(134, 51);
+            this.btnToggleEncryption.TabIndex = 14;
+            this.btnToggleEncryption.Text = "Toggle";
+            this.btnToggleEncryption.UseVisualStyleBackColor = true;
+            this.btnToggleEncryption.Click += new System.EventHandler(this.btnToggleEncryption_Click);
+            // 
+            // btnSelectFile
+            // 
+            this.btnSelectFile.Location = new System.Drawing.Point(391, 74);
+            this.btnSelectFile.Name = "btnSelectFile";
+            this.btnSelectFile.Size = new System.Drawing.Size(105, 35);
+            this.btnSelectFile.TabIndex = 15;
+            this.btnSelectFile.Text = "Select File...";
+            this.btnSelectFile.UseVisualStyleBackColor = true;
+            this.btnSelectFile.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // lblPath
+            // 
+            this.lblPath.AutoSize = true;
+            this.lblPath.Location = new System.Drawing.Point(173, 81);
+            this.lblPath.Name = "lblPath";
+            this.lblPath.Size = new System.Drawing.Size(46, 20);
+            this.lblPath.TabIndex = 16;
+            this.lblPath.Text = "Path:";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(545, 364);
+            this.Controls.Add(this.lblPath);
+            this.Controls.Add(this.btnSelectFile);
+            this.Controls.Add(this.btnToggleEncryption);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.ckbxCopyClipboard);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnInput);
             this.Controls.Add(this.btnSetCipher);
@@ -144,6 +203,11 @@
         private System.Windows.Forms.Button btnSetCipher;
         private System.Windows.Forms.Button btnInput;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox ckbxCopyClipboard;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnToggleEncryption;
+        private System.Windows.Forms.Button btnSelectFile;
+        private System.Windows.Forms.Label lblPath;
     }
 }
 
