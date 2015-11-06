@@ -11,8 +11,8 @@ using namespace std;
 	//flags in a cipher will be passed to doFlag for interpretation (they will split it
 	//into methods to run and any additional arguments (see prototype for example))
 	string ModObfuscate::interpretInput(string expression, string flag, bool encrypting)
-	{
-		string encrypted = "";
+	{	
+		string encrypted = expression;
 		string option = "";
 		string parameters = "";
 		if (flag.find("=") == std::string::npos) //if there is no equal sign

@@ -14,6 +14,7 @@ using namespace std;
 			static string sanitizeInput(string expression); //just sets to lowercase and removes whitespaces
 			static string* splitKey(string key);
 			static int getKeyLength(string key);
+			static long getFileSize(string path);
 	};
 
 	//exporting of function encryptExpression without decorative name

@@ -22,13 +22,17 @@ namespace WindowsFormsApplication1
         }
         public void updateVisuals()
         {
-            if(Program.isEncrypting)
+            if(Program.usingFile)
             {
                 txtInput.Visible = false;
+                txtPath.Visible = true;
+                btnSelectFile.Visible = true;
             }
             else
             {
                 txtInput.Visible = true;
+                txtPath.Visible = false;
+                btnSelectFile.Visible = false;
             }
         }
 
@@ -73,11 +77,14 @@ namespace WindowsFormsApplication1
             btnEncrypt.Text = Program.isEncrypting ? "Encrypt" : "Decrypt";
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnSelectFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog fileInput = new OpenFileDialog();
-            if(fileInput.ShowDialog() == DialogResult.OK)
+            if (fileInput.ShowDialog() == DialogResult.OK)
+            {
                 Program.filePath = fileInput.FileName;
+                txtPath.Text = Program.filePath;
+            }
         }
     }
 }

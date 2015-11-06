@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <vector>
 #include "ModObfuscate.h"
 #include "EncryptaBackend.h"
 //below imports are currently debug
@@ -89,6 +90,26 @@ using namespace std;
 			output << encrypted;
 			output.close();
 		}
+		else
+		{
+			fstream input(expression, ios::binary | ios::out);
+			vector<char> fileData;
+			long fileSize = InputHandler::getFileSize(expression);
+			input.read((char*)&fileData, fileSize);
+			string expression = "";
+			for (int i = 0; i < fileData.size(); i++)
+			{
+				expression.push_back(fileData[i]);
+			}
+			string answer = InputHandler::handleExpression(expression, key, true);
+			string fileSave = expression;  fileSave += ".crypt"; //creates a file where encrypted data will be stored (.crypt)
+			fstream output(fileSave, ios::binary | ios::in);
+			output.write((char*)&expression, expression.length());
+			output.close();
+			ofstream status("return");
+			output << "Encrypted to " << fileSave;
+			status.close();
+		}
 		//instantiate new strings from constants for manipulation
 		/* DEPRECIATED CODE: Strings are now passed via reading/writing.
 		for (int i = 0; i < encrypted.length(); i++)
@@ -115,10 +136,22 @@ using namespace std;
 		else
 		{
 			fstream input(expression, ios::binary | ios::out);
-			char fileData[100];
-			input.read(fileData, 100);	
+			vector<char> fileData;
+			long fileSize = InputHandler::getFileSize(expression);
+			input.read((char*)&fileData, fileSize);
+			string expression = "";
+			for (int i = 0; i < fileData.size(); i++)
+			{
+				expression.push_back(fileData[i]);
+			}
+			string answer = InputHandler::handleExpression(expression, key, false);
 			string fileSave = expression;  fileSave += ".crypt"; //creates a file where encrypted data will be stored (.crypt)
 			fstream output(fileSave, ios::binary | ios::in);
+			output.write((char*) &expression, expression.length());
+			output.close();
+			ofstream status("return");
+			output << "Encrypted to " << fileSave;
+			status.close();
 		}
 		//instantiate new strings from constants for manipulation
 		/* DEPRECIATED: REPLACED WITH FILE READING AND WRITING
@@ -179,6 +212,12 @@ using namespace std;
 		return expression;
 		//TODO: Implement dis
 	}
+	long InputHandler::getFileSize(string path)
+	{
+		struct stat filestat; //stat allows me to get file information
+		int rc = stat(path.c_str(), &filestat);
+		return rc == 0 ? filestat.st_size : -1; //error check line
+	}
 	int main() //test function
 	{
 		//in order to use this function:
@@ -189,8 +228,10 @@ using namespace std;
 		std::getline(std::cin, expression);
 		std::cout << "\nEnter a key: ";
 		std::getline(std::cin, key);
-		string encrypted = InputHandler::handleExpression(expression, key, true);
+		string encrypted = InputHandler::handleExpression(expression, key, false);
 		std::cout << encrypted << "\n";
-		std::cout << InputHandler::handleExpression(encrypted, key, false) << "\n";
-		InputHandler::getDecrypted(expression.c_str(), key.c_str(), false); //test file write
+		std::cout << "Enter File: ";
+		std::getline(std::cin, expression);
+		InputHandler::getEncrypted(expression, key, true);
+		std::cout << "\n" << "Saved to .crypt file in source folder";
 	}

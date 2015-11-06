@@ -40,7 +40,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.btnToggleEncryption = new System.Windows.Forms.Button();
             this.btnSelectFile = new System.Windows.Forms.Button();
-            this.lblPath = new System.Windows.Forms.Label();
+            this.txtPath = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // txtInput
@@ -158,23 +158,24 @@
             this.btnSelectFile.TabIndex = 15;
             this.btnSelectFile.Text = "Select File...";
             this.btnSelectFile.UseVisualStyleBackColor = true;
-            this.btnSelectFile.Click += new System.EventHandler(this.button2_Click);
+            this.btnSelectFile.Visible = false;
+            this.btnSelectFile.Click += new System.EventHandler(this.btnSelectFile_Click);
             // 
-            // lblPath
+            // txtPath
             // 
-            this.lblPath.AutoSize = true;
-            this.lblPath.Location = new System.Drawing.Point(173, 81);
-            this.lblPath.Name = "lblPath";
-            this.lblPath.Size = new System.Drawing.Size(46, 20);
-            this.lblPath.TabIndex = 16;
-            this.lblPath.Text = "Path:";
+            this.txtPath.Location = new System.Drawing.Point(169, 78);
+            this.txtPath.Name = "txtPath";
+            this.txtPath.ReadOnly = true;
+            this.txtPath.Size = new System.Drawing.Size(216, 26);
+            this.txtPath.TabIndex = 16;
+            this.txtPath.Visible = false;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(545, 364);
-            this.Controls.Add(this.lblPath);
+            this.Controls.Add(this.txtPath);
             this.Controls.Add(this.btnSelectFile);
             this.Controls.Add(this.btnToggleEncryption);
             this.Controls.Add(this.button1);
@@ -188,6 +189,7 @@
             this.Controls.Add(this.lblInput);
             this.Controls.Add(this.txtInput);
             this.Name = "frmMain";
+            this.Text = "`";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -207,7 +209,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnToggleEncryption;
         private System.Windows.Forms.Button btnSelectFile;
-        private System.Windows.Forms.Label lblPath;
+        private System.Windows.Forms.TextBox txtPath;
     }
 }
 

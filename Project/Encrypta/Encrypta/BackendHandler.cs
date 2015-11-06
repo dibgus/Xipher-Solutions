@@ -40,15 +40,15 @@ namespace WindowsFormsApplication1
                 using (StreamReader read = new StreamReader(File.OpenRead("return")))
                     encrypted = read.ReadToEnd();
                 File.Delete("return");
-                return encrypted == "" ? "FAKE" : encrypted;
+                return encrypted;
         }
         public static String decryptExpression(String ciphertext, String key)
         {
-            File.Create("return");
-            StreamReader read = new StreamReader(File.OpenRead("return"));
+            using (FileStream stream = File.Create("return")) { } //create file and close stream automatically
             getDecrypted(ciphertext, key, Program.usingFile);
-            string decrypted = read.ReadToEnd();
-            read.Close();
+            string decrypted;
+            using (StreamReader read = new StreamReader(File.OpenRead("return")))
+                decrypted = read.ReadToEnd();
             File.Delete("return");
             return decrypted;
         }
