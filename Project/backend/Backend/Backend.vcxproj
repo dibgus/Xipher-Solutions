@@ -71,6 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <ReferencePath>$(VC_ReferencesPath_x86);$(ProjectDir)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -148,10 +149,13 @@
   <ItemGroup>
     <ClCompile Include="..\src\EncryptaBackend.cpp" />
     <ClCompile Include="..\src\ModObfuscate.cpp" />
+    <ClCompile Include="..\src\ModSteganography.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\CImg.h" />
     <ClInclude Include="..\src\EncryptaBackend.h" />
     <ClInclude Include="..\src\ModObfuscate.h" />
+    <ClInclude Include="..\src\ModSteganography.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

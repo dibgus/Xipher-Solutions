@@ -36,11 +36,6 @@ namespace WindowsFormsApplication1
             }
         }
 
-        private void frmMain_Load(object sender, EventArgs e)
-        {
-         
-        }
-
         private void mnuSettingsInput_Click(object sender, EventArgs e)
         {
             new Input().ShowDialog();
@@ -54,10 +49,12 @@ namespace WindowsFormsApplication1
         private void btnEncrypt_Click(object sender, EventArgs e)
         {
             if (Program.isEncrypting)
-                txtEncrypted.Text = BackendHandler.encryptExpression(txtInput.Text, Program.cipher);
+                txtEncrypted.Text = BackendHandler.encryptExpression(Program.usingFile ? txtPath.Text : txtInput.Text, Program.cipher);
             else
-                txtEncrypted.Text = BackendHandler.decryptExpression(txtInput.Text, Program.cipher);
-            if (ckbxCopyClipboard.Checked) Clipboard.SetText(txtEncrypted.Text);
+                txtEncrypted.Text = BackendHandler.decryptExpression(Program.usingFile ? txtPath.Text : txtInput.Text, Program.cipher);
+
+            if (ckbxCopyClipboard.Checked)
+                Clipboard.SetText(txtEncrypted.Text);
         }
 
         private void btnInput_Click(object sender, EventArgs e)

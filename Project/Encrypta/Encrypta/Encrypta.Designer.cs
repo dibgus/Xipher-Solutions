@@ -190,7 +190,6 @@
             this.Controls.Add(this.txtInput);
             this.Name = "frmMain";
             this.Text = "`";
-            this.Load += new System.EventHandler(this.frmMain_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

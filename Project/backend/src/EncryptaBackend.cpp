@@ -1,16 +1,17 @@
-
 #include <iostream>
 #include <string>
 #include <cstring>
 #include <vector>
+#include <iterator>		
 #include "ModObfuscate.h"
 #include "EncryptaBackend.h"
+//#include "ModSteganography.h"
 //below imports are currently debug
 #include <iostream>
 #include <fstream>
 using namespace std;
-
 //TODO: display cout messages in the frontend (popupbox)
+//>>IDEA: Create log file area for frontend for debugging
 	string InputHandler::handleExpression(string expression, string key, bool encrypting)
 	{
 		key = sanitizeInput(key);
@@ -35,7 +36,8 @@ using namespace std;
 				if (module == "obfu")
 					encrypted = ModObfuscate::interpretInput(encrypted, functions[i].substr(functions[i].find(":") + 1), encrypting);
 				else if (module == "steg")
-					std::cout << "Steganograpy not implemented" << "\n";
+					std::cout << "block" << "\n";
+					//std::cout << ModSteganography::interpretInput(encrypted, functions[i].substr(functions[i].find(":") + 1), encrypting) << "\n";
 				else if (module == "cenc")
 					std::cout << "Encryption not implemented" << "\n";
 				else if (module == "pass")
@@ -57,7 +59,7 @@ using namespace std;
 						if (functions[j].find(":") != string::npos)
 						{
 							module = functions[j].substr(0, functions[j].find(":"));
-							break;
+							if(encrypting) break;
 						}
 					}
 					if (module == "")
@@ -68,8 +70,11 @@ using namespace std;
 				}
 				if (module == "obfu")
 					encrypted = ModObfuscate::interpretInput(encrypted, functions[i].substr(functions[i].find(":") + 1), encrypting);
-				else if (module == "steg")
-					std::cout << "Steganograpy not implemented";
+				else if (module == "steg") //steg module calls for end of interpretation of the rest of the key (may change this later)
+				{
+					//encrypted = ModSteganography::interpretInput(expression, functions[i].substr(functions[i].find(":") + 1), encrypting);
+					break;
+				}
 				else if (module == "cenc")
 					std::cout << "Encryption not implemented";
 				else if (module == "pass")
@@ -83,31 +88,36 @@ using namespace std;
 	}
 	void InputHandler::getEncrypted(const char *expression, const char *key, bool isFile) //int length may be a problem later
 	{ 
-		string encrypted = InputHandler::handleExpression(string(expression), string(key), true);
 		if(!isFile)
 		{
+			string encrypted = InputHandler::handleExpression(string(expression), string(key), true);
 			ofstream output("return");
 			output << encrypted;
 			output.close();
 		}
 		else
 		{
-			fstream input(expression, ios::binary | ios::out);
-			vector<char> fileData;
-			long fileSize = InputHandler::getFileSize(expression);
-			input.read((char*)&fileData, fileSize);
-			string expression = "";
-			for (int i = 0; i < fileData.size(); i++)
-			{
-				expression.push_back(fileData[i]);
-			}
-			string answer = InputHandler::handleExpression(expression, key, true);
-			string fileSave = expression;  fileSave += ".crypt"; //creates a file where encrypted data will be stored (.crypt)
-			fstream output(fileSave, ios::binary | ios::in);
-			output.write((char*)&expression, expression.length());
-			output.close();
 			ofstream status("return");
-			output << "Encrypted to " << fileSave;
+
+			vector<char> fileData;
+			fileData.reserve(getFileSize(expression));
+			ifstream fileInStream(expression, std::ios::binary);
+			int i = 0;
+			fileData.assign(istreambuf_iterator<char>(fileInStream),
+				istreambuf_iterator<char>());
+			//fileInStream.read(fileData.data, fileInStream.end); //read file into buffer
+			fileInStream.close();
+			string toEncrypt = "";
+			for (int i = 0; i < fileData.size(); i++)
+				toEncrypt.push_back(fileData[i]);
+			string encryptedData = InputHandler::handleExpression(toEncrypt, key, true);
+			string outFile = expression;
+			outFile += ".crypt";
+			ofstream encryptedFile(outFile);
+			encryptedFile << encryptedData;
+			encryptedFile.close();
+			
+			status << "Encrypted to " << outFile;
 			status.close();
 		}
 		//instantiate new strings from constants for manipulation
@@ -121,8 +131,7 @@ using namespace std;
 				break;
 			}
 			returnBuffer[i] = encrypted[i];
-		}
-		*/
+		}*/
 	}
 	void InputHandler::getDecrypted(const char *expression, const char *key, bool isFile) //int length may be a problem later
 	{
@@ -135,22 +144,26 @@ using namespace std;
 		}
 		else
 		{
-			fstream input(expression, ios::binary | ios::out);
-			vector<char> fileData;
-			long fileSize = InputHandler::getFileSize(expression);
-			input.read((char*)&fileData, fileSize);
-			string expression = "";
-			for (int i = 0; i < fileData.size(); i++)
-			{
-				expression.push_back(fileData[i]);
-			}
-			string answer = InputHandler::handleExpression(expression, key, false);
-			string fileSave = expression;  fileSave += ".crypt"; //creates a file where encrypted data will be stored (.crypt)
-			fstream output(fileSave, ios::binary | ios::in);
-			output.write((char*) &expression, expression.length());
-			output.close();
 			ofstream status("return");
-			output << "Encrypted to " << fileSave;
+
+			vector<char> fileData;
+			fileData.reserve(getFileSize(expression));
+			ifstream fileInStream(expression, std::ios::binary);
+			int i = 0;
+			fileData.assign(istreambuf_iterator<char>(fileInStream),
+				istreambuf_iterator<char>());
+			fileInStream.close();
+			string toDecrypt = "";
+			for (int i = 0; i < fileData.size(); i++)
+				toDecrypt.push_back(fileData[i]);
+			string decryptedData = InputHandler::handleExpression(toDecrypt, key, true);
+			string outFile = expression;
+			outFile += ".crypt";
+			ofstream decryptedFile(outFile);
+			decryptedFile.write(decryptedData.c_str(), decryptedData.length());
+			//decryptedFile << encryptedData;
+			decryptedFile.close();
+		
 			status.close();
 		}
 		//instantiate new strings from constants for manipulation
@@ -164,6 +177,16 @@ using namespace std;
 			}
 			returnBuffer[i] = encrypted[i];
 		}*/
+	}
+	long InputHandler::getFileSize(string path)
+	{
+		ifstream file(path, std::ios::binary);
+		streampos start, end;
+		start = file.tellg(); //file read already start on starting index
+		file.seekg(0, ios::end);
+		end = file.tellg();
+		file.seekg(end - start, ios::beg); //seek back to start for file read.
+		return end - start;
 	}
 
 	string* InputHandler::splitKey(string key)
@@ -210,13 +233,6 @@ using namespace std;
 				expression = expression.substr(0, i) + expression.substr(i + 1, expression.length());
 		}
 		return expression;
-		//TODO: Implement dis
-	}
-	long InputHandler::getFileSize(string path)
-	{
-		struct stat filestat; //stat allows me to get file information
-		int rc = stat(path.c_str(), &filestat);
-		return rc == 0 ? filestat.st_size : -1; //error check line
 	}
 	int main() //test function
 	{
@@ -232,6 +248,6 @@ using namespace std;
 		std::cout << encrypted << "\n";
 		std::cout << "Enter File: ";
 		std::getline(std::cin, expression);
-		InputHandler::getEncrypted(expression, key, true);
+		InputHandler::getEncrypted(expression.c_str(), key.c_str(), true);
 		std::cout << "\n" << "Saved to .crypt file in source folder";
 	}
