@@ -43,7 +43,6 @@
             this.rbtnFile.TabIndex = 5;
             this.rbtnFile.Text = "File";
             this.rbtnFile.UseVisualStyleBackColor = true;
-            //this.rbtnFile.CheckedChanged += new System.EventHandler(this.rbtnFile_CheckedChanged);
             // 
             // rbtnString
             // 

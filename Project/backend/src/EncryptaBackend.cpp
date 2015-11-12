@@ -2,32 +2,34 @@
 #include <string>
 #include <cstring>
 #include <vector>
-#include <iterator>		
+#include <iterator>
 #include "ModObfuscate.h"
 #include "EncryptaBackend.h"
+#include "ModSteganography.h"
 //#include "ModSteganography.h"
 //below imports are currently debug
 #include <iostream>
 #include <fstream>
+#include <wchar.h>
 using namespace std;
-//TODO: display cout messages in the frontend (popupbox)
+//TODO: display wcout messages in the frontend (popupbox)
 //>>IDEA: Create log file area for frontend for debugging
-	string InputHandler::handleExpression(string expression, string key, bool encrypting)
+	wstring InputHandler::handleExpression(wstring expression, string key, bool encrypting)
 	{
 		key = sanitizeInput(key);
 		if (key.length() == 0)
 			return expression;
 		string* functions = splitKey(key);
-		string encrypted = expression;
-		//std::cout << sizeof(functions); sizeof a string pointer that points to an array produces invalid results.
+		wstring encrypted = expression;
+		//std::wcout << sizeof(functions); sizeof a wstring pointer that points to an array produces invalid results.
 		string module = "";
 		if (encrypting)
 			for (int i = 0; i < InputHandler::getKeyLength(key); i++)
 			{
 				if (functions[i].find(":") != string::npos) //if there is no module specified, assumes previous.
 					module = functions[i].substr(0, functions[i].find(":"));
-				//std::cout << "DEBUG: " << module;
-				//std::cout << "DEBUG: " << functions[i].substr(functions[i].find(":") + 1);
+				//std::wcout << "DEBUG: " << module;
+				//std::wcout << "DEBUG: " << functions[i].substr(functions[i].find(":") + 1);
 				if (module == "")
 				{
 					std::cout << "NO MODULE SPECIFIED: " << functions[i] << "\n";
@@ -36,27 +38,27 @@ using namespace std;
 				if (module == "obfu")
 					encrypted = ModObfuscate::interpretInput(encrypted, functions[i].substr(functions[i].find(":") + 1), encrypting);
 				else if (module == "steg")
-					std::cout << "block" << "\n";
-					//std::cout << ModSteganography::interpretInput(encrypted, functions[i].substr(functions[i].find(":") + 1), encrypting) << "\n";
+					encrypted = ModSteganography::interpretInput(encrypted, functions[i].substr(functions[i].find(":") + 1), encrypting);
+					//std::wcout << ModSteganography::interpretInput(encrypted, functions[i].substr(functions[i].find(":") + 1), encrypting) << "\n";
 				else if (module == "cenc")
-					std::cout << "Encryption not implemented" << "\n";
+					std::wcout << "Encryption not implemented" << "\n";
 				else if (module == "pass")
-					std::cout << "Password protection not implemented" << "\n";
+					std::wcout << "Password protection not implemented" << "\n";
 				else if (module == "comp")
-					std::cout << "Compression not implemented" << "\n";
+					std::wcout << "Compression not implemented" << "\n";
 				else
-					std::cout << "Module not found: " << module << "\n";
+					std::wcout << "Module not found: " << module.c_str() << "\n";
 			}
 		else //not encrypting
 			for (int i = InputHandler::getKeyLength(key) - 1; i >= 0; i--)
 			{
-				if (functions[i].find(":") != string::npos) //if there is no module specified, assumes previous.
+				if (functions[i].find(":") != wstring::npos) //if there is no module specified, assumes previous.
 					module = functions[i].substr(0, functions[i].find(":"));
 				if (module == "")
 				{ //find a previously referenced module
 					for (int j = i - 1; j >= 0; j--)
 					{
-						if (functions[j].find(":") != string::npos)
+						if (functions[j].find(":") != wstring::npos)
 						{
 							module = functions[j].substr(0, functions[j].find(":"));
 							if(encrypting) break;
@@ -86,42 +88,42 @@ using namespace std;
 			}
 		return encrypted;
 	}
-	void InputHandler::getEncrypted(const char *expression, const char *key, bool isFile) //int length may be a problem later
+	void InputHandler::getEncrypted(const wchar_t *expression, const char *key, bool isFile) //int length may be a problem later
 	{ 
 		if(!isFile)
 		{
-			string encrypted = InputHandler::handleExpression(string(expression), string(key), true);
-			ofstream output("return");
+			wstring encrypted = InputHandler::handleExpression(wstring(expression), string(key), true);
+			wofstream output("return");
 			output << encrypted;
 			output.close();
 		}
 		else
 		{
-			ofstream status("return");
+			wofstream status("return");
 
-			vector<char> fileData;
+			vector<wchar_t> fileData;
 			fileData.reserve(getFileSize(expression));
-			ifstream fileInStream(expression, std::ios::binary);
+			wifstream fileInStream(expression, ios::binary);
 			int i = 0;
-			fileData.assign(istreambuf_iterator<char>(fileInStream),
-				istreambuf_iterator<char>());
+			fileData.assign(istreambuf_iterator<wchar_t>(fileInStream),
+				istreambuf_iterator<wchar_t>());
 			//fileInStream.read(fileData.data, fileInStream.end); //read file into buffer
 			fileInStream.close();
-			string toEncrypt = "";
+			wstring toEncrypt = L"";
 			for (int i = 0; i < fileData.size(); i++)
 				toEncrypt.push_back(fileData[i]);
-			string encryptedData = InputHandler::handleExpression(toEncrypt, key, true);
-			string outFile = expression;
-			outFile += ".crypt";
-			ofstream encryptedFile(outFile);
+			wstring encryptedData = InputHandler::handleExpression(toEncrypt, key, true);
+			wstring outFile = expression;
+			outFile += L".crypt";
+			wofstream encryptedFile(outFile, ios::binary);
 			encryptedFile << encryptedData;
 			encryptedFile.close();
 			
 			status << "Encrypted to " << outFile;
 			status.close();
 		}
-		//instantiate new strings from constants for manipulation
-		/* DEPRECIATED CODE: Strings are now passed via reading/writing.
+		//instantiate new wstrings from constants for manipulation
+		/* DEPRECIATED CODE: wstrings are now passed via reading/writing.
 		for (int i = 0; i < encrypted.length(); i++)
 		{ //TODO: Fix buffer length checking (Prior implementation would produce false terminations when the buffer still had room)
 			/*
@@ -133,40 +135,41 @@ using namespace std;
 			returnBuffer[i] = encrypted[i];
 		}*/
 	}
-	void InputHandler::getDecrypted(const char *expression, const char *key, bool isFile) //int length may be a problem later
+	void InputHandler::getDecrypted(const wchar_t *expression, const char *key, bool isFile) //int length may be a problem later
 	{
 		if (!isFile)
 		{
-			string encrypted = InputHandler::handleExpression(string(expression), string(key), false);
-			ofstream output("return");
+			wstring encrypted = InputHandler::handleExpression(wstring(expression), string(key), false);
+			wofstream output("return");
 			output << encrypted;
 			output.close();
 		}
 		else
 		{
-			ofstream status("return");
+			wofstream status("return");
 
-			vector<char> fileData;
+			vector<wchar_t> fileData;
 			fileData.reserve(getFileSize(expression));
-			ifstream fileInStream(expression, std::ios::binary);
+			wifstream fileInStream(expression, ios::binary);
 			int i = 0;
-			fileData.assign(istreambuf_iterator<char>(fileInStream),
-				istreambuf_iterator<char>());
+			fileData.assign(istreambuf_iterator<wchar_t>(fileInStream),
+				istreambuf_iterator<wchar_t>());
 			fileInStream.close();
-			string toDecrypt = "";
+			wstring toDecrypt = L"";
 			for (int i = 0; i < fileData.size(); i++)
 				toDecrypt.push_back(fileData[i]);
-			string decryptedData = InputHandler::handleExpression(toDecrypt, key, true);
-			string outFile = expression;
-			outFile += ".crypt";
-			ofstream decryptedFile(outFile);
+			wstring decryptedData = InputHandler::handleExpression(toDecrypt, key, true);
+			wstring outFile = expression;
+			if (outFile.find(L".crypt") != wstring::npos)
+				outFile = outFile.substr(0, outFile.find(L".crypt")); //truncate the .crypt extension
+			wofstream decryptedFile(outFile, ios::binary);
 			decryptedFile.write(decryptedData.c_str(), decryptedData.length());
 			//decryptedFile << encryptedData;
-			decryptedFile.close();
-		
+			decryptedFile.close();	
+			status << "Decrypted to " << outFile;
 			status.close();
 		}
-		//instantiate new strings from constants for manipulation
+		//instantiate new wstrings from constants for manipulation
 		/* DEPRECIATED: REPLACED WITH FILE READING AND WRITING
 		for (int i = 0; i < encrypted.length(); i++)
 		{ //TODO: Fix buffer length checking (Prior implementation would produce false terminations when the buffer still had room)
@@ -178,9 +181,9 @@ using namespace std;
 			returnBuffer[i] = encrypted[i];
 		}*/
 	}
-	long InputHandler::getFileSize(string path)
+	long InputHandler::getFileSize(wstring path)
 	{
-		ifstream file(path, std::ios::binary);
+		ifstream file(path, ios::binary);
 		streampos start, end;
 		start = file.tellg(); //file read already start on starting index
 		file.seekg(0, ios::end);
@@ -223,11 +226,11 @@ using namespace std;
 		for (int i = 0; i < expression.length(); i++)
 		{
 			if (expression[i] == '"')
-			{ //avoids the issue of if strings need to preserve spaces in quotes.
+			{ //avoids the issue of if wstrings need to preserve spaces in quotes.
 				i = expression.find('"', i + 1);
 			}
 			//upper to lower case
-			if (expression[i] <= 'Z' && expression[i] >= 'A')//since ASCII is nicely organized, there is a common difference between lowercase and uppercase chars.
+			if (expression[i] <= 'Z' && expression[i] >= 'A')//since ASCII is nicely organized, there is a common difference between lowercase and uppercase wchar_ts.
 				expression[i] = expression[i] - ('Z' - 'z');
 			if (expression[i] == ' ') //trims spaces to reduce issue of "hello " not being equal to "hello"
 				expression = expression.substr(0, i) + expression.substr(i + 1, expression.length());
@@ -239,15 +242,15 @@ using namespace std;
 		//in order to use this function:
 		//"g++ -o Backendtest -Wall <.cpp files associated with the project>"
 		//This generates an executable for the application and the main method runs.
-		string expression; string key;
+		wstring expression; string key;
 		std::cout << "Enter an expression: ";
-		std::getline(std::cin, expression);
+		std::getline(std::wcin, expression);
 		std::cout << "\nEnter a key: ";
 		std::getline(std::cin, key);
-		string encrypted = InputHandler::handleExpression(expression, key, false);
-		std::cout << encrypted << "\n";
+		wstring encrypted = InputHandler::handleExpression(expression, key, false);
+		std::wcout << encrypted << "\n";
 		std::cout << "Enter File: ";
-		std::getline(std::cin, expression);
+		std::getline(std::wcin, expression);
 		InputHandler::getEncrypted(expression.c_str(), key.c_str(), true);
 		std::cout << "\n" << "Saved to .crypt file in source folder";
 	}

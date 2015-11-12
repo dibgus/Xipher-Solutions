@@ -1,17 +1,16 @@
 
-#include "CImg.h"
 #include <string>
 #include "ModSteganography.h"
 #include <cstdlib>
 #include <stdlib.h>
+ //image manipulation library
 using namespace std;
-using namespace cimg_library;
-string ModSteganography::interpretInput(string expression, string flag, bool encrypting)
+wstring ModSteganography::interpretInput(wstring expression, string flag, bool encrypting)
 {
-	string ans = expression;
+	wstring ans = expression;
 	if (flag == "pix")
 	{
-		string outFile = expression.substr(0, expression.find(".")) + "steg" + expression.substr(expression.find(".")); //outputs to image file with "steg" attached on
+		wstring outFile = expression.substr(0, expression.find(L".")) + L"steg" + expression.substr(expression.find(L".")); //outputs to image file with "steg" attached on
 		//TODO: make user pass the output file
 		string bits = flag.substr(flag.find("=") + 1, flag.length());
 		ans = encrypting ? hideInPixels(expression, outFile, atoi(bits.c_str())) : extractPixels(expression, atoi(bits.c_str()));
@@ -23,27 +22,23 @@ string ModSteganography::interpretInput(string expression, string flag, bool enc
 	return ans;
 }
 
-string ModSteganography::hideInCosCurve(string expression, string souceImage)
+wstring ModSteganography::hideInCosCurve(wstring expression, wstring souceImage)
 {
-	return "";
+	return L"";
 }
 
-string ModSteganography::hideInPixels(string expression, string sourceImage, short inBits)
-{	
-	CImg<unsigned char> storage(sourceImage.c_str());
-	cimg_forXY(storage, x, y)
-	{
-		storage(x, y);
-	}
-	return "";
+wstring ModSteganography::hideInPixels(wstring expression, wstring sourceImage, short inBits)
+{	//TODO: implement more complex versions of this method that deal with different start index. increments, special keys...
+	
+	return L"";
 }
 
-string ModSteganography::extractPixels(string path, short inBits)
+wstring ModSteganography::extractPixels(wstring path, short inBits)
 {
-	return "";
+	return L"";
 }
 
-string ModSteganography::extractCosCurve(string path)
+wstring ModSteganography::extractCosCurve(wstring path)
 {
-	return "";
+	return L"";
 }
