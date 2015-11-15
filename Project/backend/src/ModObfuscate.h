@@ -14,7 +14,7 @@ using namespace std;
 	class ModObfuscate
 	{
 	public:
-		static wstring interpretInput(wstring, string, bool);
+		static wstring interpretInput(wstring, wstring, bool);
 		private:
 		static wstring skipHop(wstring);
 		static wstring reverse(wstring);//best with expressions in binary

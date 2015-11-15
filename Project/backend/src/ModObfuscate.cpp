@@ -11,53 +11,53 @@ using namespace std;
 	//obfus:sh|obfus:rev|crc=10|trn=3*3
 	//flags in a cipher will be passed to doFlag for interpretation (they will split it
 	//into methods to run and any additional arguments (see prototype for example))
-	wstring ModObfuscate::interpretInput(wstring expression, string flag, bool encrypting)
+	wstring ModObfuscate::interpretInput(wstring expression, wstring flag, bool encrypting)
 	{	
 		wstring encrypted = expression;
-		string option = "";
-		string parameters = "";
-		if (flag.find("=") == std::wstring::npos) //if there is no equal sign
+		wstring option = L"";
+		wstring parameters = L"";
+		if (flag.find(L"=") == std::wstring::npos) //if there is no equal sign
 		{
 			option = flag;
 		}
 		else
 		{
-			option = flag.substr(0, flag.find("="));
-			parameters = flag.substr(flag.find("=") + 1);
+			option = flag.substr(0, flag.find(L"="));
+			parameters = flag.substr(flag.find(L"=") + 1);
 		}
 		//these are all of the poorly acronymed flags: very much subject to change (especially when I begin combining ciphers more)
-		if (option == "skh")
+		if (option == L"skh")
 			encrypted = skipHop(expression);
-		else if (option == "rev")
+		else if (option == L"rev")
 			encrypted = reverse(expression);
-		else if (option == "evo")
+		else if (option == L"evo")
 			encrypted = everyOther(expression, encrypting);
-		else if (option == "crc")
+		else if (option == L"crc")
 		{
 			int shift = 1;
-			if (parameters != "")
-				shift = atoi(parameters.c_str());
+			if (parameters != L"")
+				shift = atoi((char*)parameters.c_str());
 			encrypted = caesar(expression, encrypting ? shift : -shift);
 		}
-		else if (option == "tnc")
+		else if (option == L"tnc")
 		{
 			//filters to * delimeter (signifies an x by y array or x*y)
 			int x = 1; int y = 1;
-			if (parameters != "")
+			if (parameters != L"")
 			{
-				x = atoi(parameters.substr(0, parameters.find("*")).c_str());
-				y = atoi(parameters.substr(parameters.find("*") + 1).c_str());
+				x = atoi((char*)parameters.substr(0, parameters.find(L"*")).c_str());
+				y = atoi((char*)parameters.substr(parameters.find(L"*") + 1).c_str());
 			}
 			encrypted = transposition(expression, x, y, encrypting);
 		}
 		else
-			std::cout << "Option not found: " << option << "\n";
+			std::wcout << "Option not found: " << option << "\n";
 		return encrypted;
 	}
 	/*
 	wstring ModObfuscate::skipHop(wstring expression)
 	{
-		wstring ans = L"";
+		wstring ans = "";
 		for(wstring::size_type i = 1; i < expression.length(); i += 2)
 		{
 			ans = ans + expression[i] + expression[i-1];
@@ -134,7 +134,7 @@ using namespace std;
 				//wcout << transposed[j][k]; - debug line
 			}
 		}
-		//wcout << L"\n"; - debugline
+		//wcout << "\n"; - debugline
 		//loaded. now to read it back into an 
 		wstring ans = L"";
 		for (wstring::size_type j = 0; j < ySize; j++) //y dim
@@ -174,15 +174,15 @@ using namespace std;
 	/*
 	int main()
 	{
-		wstring in = L"";
-		std::wcout << L"Enter an expression: ";
+		wstring in = "";
+		std::wcout << "Enter an expression: ";
 		std::getline(std::cin, in);
-		std::wcout << ModObfuscate::interpretInput(in, L"skh") << L"\n";
-		std::wcout << ModObfuscate::interpretInput(in, L"rev") << L"\n";
-		std::wcout << ModObfuscate::interpretInput(in, L"crc=1") << L"\n";
-		std::wcout << ModObfuscate::interpretInput(in, L"trn=4*4") << L"\n";
-		std::wcout << L"Enter a key: L";
-		wstring key = L"L";
+		std::wcout << ModObfuscate::interpretInput(in, "skh") << "\n";
+		std::wcout << ModObfuscate::interpretInput(in, "rev") << "\n";
+		std::wcout << ModObfuscate::interpretInput(in, "crc=1") << "\n";
+		std::wcout << ModObfuscate::interpretInput(in, "trn=4*4") << "\n";
+		std::wcout << "Enter a key: ";
+		wstring key = "";
 		std::getline(std::cin, key);
 		std::wcout << ModObfuscate::interpretInput(in, key);
 	}

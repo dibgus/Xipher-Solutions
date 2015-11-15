@@ -5,17 +5,17 @@
 #include <stdlib.h>
  //image manipulation library
 using namespace std;
-wstring ModSteganography::interpretInput(wstring expression, string flag, bool encrypting)
+wstring ModSteganography::interpretInput(wstring expression, wstring flag, bool encrypting)
 {
 	wstring ans = expression;
-	if (flag == "pix")
+	if (flag == L"pix")
 	{
 		wstring outFile = expression.substr(0, expression.find(L".")) + L"steg" + expression.substr(expression.find(L".")); //outputs to image file with "steg" attached on
 		//TODO: make user pass the output file
-		string bits = flag.substr(flag.find("=") + 1, flag.length());
-		ans = encrypting ? hideInPixels(expression, outFile, atoi(bits.c_str())) : extractPixels(expression, atoi(bits.c_str()));
+		wstring bits = flag.substr(flag.find(L"=") + 1, flag.length());
+		ans = encrypting ? hideInPixels(expression, outFile, atoi((char*)bits.c_str())) : extractPixels(expression, atoi((char*)bits.c_str()));
 	}
-	else if (flag == "cos")
+	else if (flag == L"cos")
 	{
 
 	}

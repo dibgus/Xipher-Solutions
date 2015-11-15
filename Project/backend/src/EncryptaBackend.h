@@ -2,31 +2,39 @@
 #include <string>
 #include <cstring>
 #include <wchar.h>
+#include <locale>
+#include <codecvt>
 using namespace std;
 	class InputHandler
 	{ 
 		public:
 			//this method manages encryption: cannot be invoked directly because std::wstring cannot be managed by C#
-			static wstring handleExpression(wstring expression, string key, bool encrypting);
+			static wstring handleExpression(wstring expression, wstring key, bool encrypting);
 			//this is the outward-facing method that writes to a buffer that C# can read from.
-			static void getEncrypted(const wchar_t *expression, const char *key, bool isFile);
-			static void getDecrypted(const wchar_t *encrypted, const char *key, bool isFile);
+			static void getEncrypted(wstring expression, wstring key, bool isFile);
+			static void getDecrypted(wstring encrypted, wstring key, bool isFile);
 		private:
-			static string sanitizeInput(string expression); //just sets to lowercase and removes whitespaces
-			static string* splitKey(string key);
-			static int getKeyLength(string key);
+			static wstring sanitizeInput(wstring expression); //just sets to lowercase and removes whitespaces
+			static wstring* splitKey(wstring key);
+			static int getKeyLength(wstring key);
 			static long getFileSize(wstring path);
 	};
 
 	//exporting of function encryptExpression without decorative name
 	//ISSUE: CANNOT USE METHODS WITH wstringS RETURNING: CRASHES APP << fixed with wstringBuilder and pointers
-	extern "C" __declspec(dllexport) void getEncrypted(const wchar_t *expression, const char *key, bool isFile)
+	extern "C" __declspec(dllexport) void getEncrypted(char *expression, char *key, bool isFile)
 	{
-		InputHandler::getEncrypted(expression, key, isFile);
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+		wstring utf16expression = converter.from_bytes(expression);
+		wstring utf16key = converter.from_bytes(key);
+		InputHandler::getEncrypted(utf16expression, utf16key, isFile);
 	}
-	extern "C" __declspec(dllexport) void getDecrypted(const wchar_t *encrypted, const char *key, bool isFile)
+	extern "C" __declspec(dllexport) void getDecrypted(char *encrypted, char *key, bool isFile)
 	{
-		InputHandler::getDecrypted(encrypted, key, isFile);
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+		wstring utf16encrypted = converter.from_bytes(encrypted);
+		wstring utf16key = converter.from_bytes(key);
+		InputHandler::getDecrypted(utf16encrypted, utf16key, isFile);
 	}
 
 	//BELOW ARE TESTING METHODS
