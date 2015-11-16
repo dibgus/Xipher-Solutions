@@ -5,14 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 namespace WindowsFormsApplication1
 {
     class BackendHandler
     { 
-        [DllImport("Backend.dll")]
-        public static extern void getEncrypted(string expression, string key, bool isFile);
-        [DllImport("Backend.dll")]
-        public static extern void getDecrypted(string expression, string key, bool isFile);
+        [DllImport("Backend.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern void getEncrypted(StringBuilder expression, StringBuilder key, bool isFile);
+        [DllImport("Backend.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern void getDecrypted(StringBuilder expression, StringBuilder key, bool isFile);
         [DllImport("Backend.dll")]
         public static extern int test(string s);
         /*
@@ -35,21 +36,25 @@ namespace WindowsFormsApplication1
         public static String encryptExpression(String expression, String key)
         {
             using (FileStream stream = File.Create("return")) { } //create file and close stream automatically
-            getEncrypted(expression, key, Program.usingFile);
+            StringBuilder expressionData = new StringBuilder(expression);
+            StringBuilder keyData = new StringBuilder(key);
+            getEncrypted(expressionData, keyData, Program.usingFile);
             string encrypted;
             using (StreamReader read = new StreamReader(File.OpenRead("return")))
                 encrypted = read.ReadToEnd();
-            //File.Delete("return");
+            File.Delete("return");
             return encrypted;
         }
         public static String decryptExpression(String ciphertext, String key)
         {
             using (FileStream stream = File.Create("return")) { } //create file and close stream 
-            getDecrypted(ciphertext, key, Program.usingFile);
+            StringBuilder ciphertextData = new StringBuilder(ciphertext);
+            StringBuilder keyData = new StringBuilder(key);
+            getDecrypted(ciphertextData, keyData, Program.usingFile);
             string decrypted;
             using (StreamReader read = new StreamReader(File.OpenRead("return")))
                 decrypted = read.ReadToEnd();
-            //File.Delete("return");
+            File.Delete("return");
             return decrypted;
         }
     }

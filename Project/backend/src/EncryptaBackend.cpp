@@ -93,9 +93,8 @@ using namespace std;
 	{
 		if(!isFile)
 		{
-			wstring encrypted = InputHandler::handleExpression(wstring(expression), wstring(key), true);
-			//hypothesis 1: encrypted is janked up
-			wofstream output("return", ios::binary); //Hypothesis 2: wofstream does not write wwstrings properly
+			wstring encrypted = InputHandler::handleExpression(expression, key, true);
+			wofstream output("return"); //Hypothesis 2: wofstream does not write wwstrings properly
 			output << encrypted.c_str();
 			//output << "resultant: " << expression;
 			output.close();
@@ -118,7 +117,6 @@ using namespace std;
 			wstring encryptedData = InputHandler::handleExpression(toEncrypt, key, true);
 			wstring outFile = expression;
 			outFile += L".crypt";
-			assert(outFile != L"" || outFile != L".crypt");
 			wofstream encryptedFile(outFile, ios::binary);
 			encryptedFile << encryptedData;
 			encryptedFile.close();
@@ -255,7 +253,6 @@ using namespace std;
 		std::wcout << encrypted << "\n";
 		std::wcout << "Enter File: ";
 		std::getline(std::wcin, expression);
-		std::cout << "Currently Unavaliable";
-		//InputHandler::getEncrypted(expression, key, true);
-		//std::wcout << "\n" << "Saved to .crypt file in source folder";
+		InputHandler::getEncrypted(expression, key, true);
+		std::wcout << "\n" << "Saved to .crypt file in source folder";
 	}

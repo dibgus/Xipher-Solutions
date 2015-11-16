@@ -4,6 +4,7 @@
 #include <wchar.h>
 #include <locale>
 #include <codecvt>
+#include <assert.h>
 using namespace std;
 	class InputHandler
 	{ 
@@ -13,6 +14,7 @@ using namespace std;
 			//this is the outward-facing method that writes to a buffer that C# can read from.
 			static void getEncrypted(wstring expression, wstring key, bool isFile);
 			static void getDecrypted(wstring encrypted, wstring key, bool isFile);
+			static string wstringToString(wstring utf16);
 		private:
 			static wstring sanitizeInput(wstring expression); //just sets to lowercase and removes whitespaces
 			static wstring* splitKey(wstring key);
@@ -24,17 +26,26 @@ using namespace std;
 	//ISSUE: CANNOT USE METHODS WITH wstringS RETURNING: CRASHES APP << fixed with wstringBuilder and pointers
 	extern "C" __declspec(dllexport) void getEncrypted(char *expression, char *key, bool isFile)
 	{
+		/*
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		wstring utf16expression = converter.from_bytes(expression);
 		wstring utf16key = converter.from_bytes(key);
+		*/
+		const string utf8expression = expression;
+		const string utf8key = key;
+		wstring utf16expression(utf8expression.begin(), utf8expression.end());
+		wstring utf16key(utf8key.begin(), utf8key.end());
 		InputHandler::getEncrypted(utf16expression, utf16key, isFile);
+		//InputHandler::getEncrypted(wstring(expression), wstring(key), isFile);
 	}
-	extern "C" __declspec(dllexport) void getDecrypted(char *encrypted, char *key, bool isFile)
+	extern "C" __declspec(dllexport) void getDecrypted(const char *encrypted, const char *key, bool isFile)
 	{
-		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-		wstring utf16encrypted = converter.from_bytes(encrypted);
-		wstring utf16key = converter.from_bytes(key);
+		const string utf8encrypted = encrypted;
+		const string utf8key = key;
+		wstring utf16encrypted(utf8encrypted.begin(), utf8encrypted.end());
+		wstring utf16key(utf8key.begin(), utf8key.end());
 		InputHandler::getDecrypted(utf16encrypted, utf16key, isFile);
+		//InputHandler::getDecrypted(utf16encrypted, utf16key, isFile);
 	}
 
 	//BELOW ARE TESTING METHODS

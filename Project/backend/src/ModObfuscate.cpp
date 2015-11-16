@@ -94,7 +94,7 @@ using namespace std;
 	}
 
 	wstring ModObfuscate::caesar(wstring expression, int modifier)
-	{ //shifts the values of each wchar_tacter by modifier
+	{ //shifts the values of each char by modifier
 		wstring ans = L"";
 		for (wstring::size_type i = 0; i < expression.length(); i++)
 		{
