@@ -89,6 +89,13 @@ using namespace std;
 			}
 		return encrypted;
 	}
+	string InputHandler::wstringToString(wstring utf16)
+	{
+		typedef std::codecvt_utf8<wchar_t> convert_type;
+		std::wstring_convert<convert_type, wchar_t> converter;
+		std::string converted = converter.to_bytes(utf16);
+		return converted;
+	}
 	void InputHandler::getEncrypted(wstring expression, wstring key, bool isFile) //int length may be a problem later
 	{
 		if(!isFile)
