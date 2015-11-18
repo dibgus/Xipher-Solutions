@@ -43,5 +43,15 @@ namespace WindowsFormsApplication1
         {
             txtCipher.Text = Program.cipher;
         }
+
+        private void btnSelectFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileInput = new OpenFileDialog();
+            if (fileInput.ShowDialog() == DialogResult.OK)
+            {
+                Program.mediaFilePath = fileInput.FileName;
+                txtFilePath.Text = Program.mediaFilePath;
+            }
+        }
     }
 }

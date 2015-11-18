@@ -1,10 +1,12 @@
 
 #include <string>
 #include "ModSteganography.h"
+#include "EncryptaBackend.cpp"
 #include <cstdlib>
 #include <stdlib.h>
- //image manipulation library
+#include <opencv2/highgui/highgui.hpp>	 //image manipulation library: in order to compile, you have to install this
 using namespace std;
+using namespace cv;
 wstring ModSteganography::interpretInput(wstring expression, wstring flag, bool encrypting)
 {
 	wstring ans = expression;
@@ -29,8 +31,15 @@ wstring ModSteganography::hideInCosCurve(wstring expression, wstring souceImage)
 
 wstring ModSteganography::hideInPixels(wstring expression, wstring sourceImage, short inBits)
 {	//TODO: implement more complex versions of this method that deal with different start index. increments, special keys...
-	
-	return L"";
+	Mat storage = cv::imread(InputHandler::wstringToString(sourceImage)); //read in the source image
+	int imagePos = 0;
+	for (int i = 0; i < expression.length(); i++)
+	{
+
+		char toStore = expression[i];
+	}
+	cv::imwrite(InputHandler::wstringToString(sourceImage) + ".e", storage);
+	return L"Expression has been stored in " + sourceImage;
 }
 
 wstring ModSteganography::extractPixels(wstring path, short inBits)
