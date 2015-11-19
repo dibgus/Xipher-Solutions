@@ -13,6 +13,7 @@ namespace WindowsFormsApplication1
         public static bool isEncrypting = true;
         public static frmMain mainForm;
         public static string filePath = "";
+        public static string mediaFilePath = "";
         //public static string[] = {"Helo", "hi"};
         /// <summary>
         /// The main entry point for the application.   

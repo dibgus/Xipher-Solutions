@@ -36,6 +36,8 @@ namespace WindowsFormsApplication1
         public static String encryptExpression(String expression, String key)
         {
             using (FileStream stream = File.Create("return")) { } //create file and close stream automatically
+            if (key.Contains("steg") && !key.Contains("=" + Program.mediaFilePath)) //check if file is specified in key
+                key += "=" + Program.mediaFilePath;
             StringBuilder expressionData = new StringBuilder(expression);
             StringBuilder keyData = new StringBuilder(key);
             getEncrypted(expressionData, keyData, Program.usingFile);

@@ -15,6 +15,7 @@ using namespace std;
 			static void getEncrypted(wstring expression, wstring key, bool isFile);
 			static void getDecrypted(wstring encrypted, wstring key, bool isFile);
 			static string wstringToString(wstring utf16);
+			static string charToBinary(wchar_t toConvert);
 		private:
 			static wstring sanitizeInput(wstring expression); //just sets to lowercase and removes whitespaces
 			static wstring* splitKey(wstring key);

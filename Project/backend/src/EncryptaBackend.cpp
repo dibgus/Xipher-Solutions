@@ -1,12 +1,12 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <cmath>
 #include <vector>
 #include <iterator>
 #include "ModObfuscate.h"
 #include "EncryptaBackend.h"
 #include "ModSteganography.h"
-//#include "ModSteganography.h"
 //below imports are currently debug
 #include <iostream>
 #include <fstream>
@@ -95,6 +95,31 @@ using namespace std;
 		std::wstring_convert<convert_type, wchar_t> converter;
 		std::string converted = converter.to_bytes(utf16);
 		return converted;
+	}
+	string InputHandler::charToBinary(wchar_t toConvert)
+	{
+		int charVal = (int)toConvert;
+		string ans = "";
+		int bit = 15;
+		while (bit >= 0)
+		{
+			if (pow(2, bit) < charVal)
+			{
+				charVal -= pow(2, bit);
+				ans.push_back('1');
+			}
+			else if (pow(2, bit) == charVal)
+			{
+				ans.push_back('1');
+				for (int i = 0; i < bit - 1; i++)
+					ans.push_back('0');
+				break;
+			}
+			else ans.push_back('0');
+			bit--;
+		}
+
+		return ans;
 	}
 	void InputHandler::getEncrypted(wstring expression, wstring key, bool isFile) //int length may be a problem later
 	{
