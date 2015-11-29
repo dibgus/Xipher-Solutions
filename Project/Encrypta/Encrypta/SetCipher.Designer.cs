@@ -34,8 +34,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtFilePath = new System.Windows.Forms.TextBox();
+            this.btnSelectFile = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtCipher
@@ -96,15 +98,6 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "Decryption";
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(120, 160);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(183, 20);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "<Select Additional Files>";
-            // 
             // btnOk
             // 
             this.btnOk.Location = new System.Drawing.Point(267, 214);
@@ -115,13 +108,42 @@
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(28, 143);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(89, 20);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Media File: ";
+            // 
+            // txtFilePath
+            // 
+            this.txtFilePath.Location = new System.Drawing.Point(123, 140);
+            this.txtFilePath.Name = "txtFilePath";
+            this.txtFilePath.ReadOnly = true;
+            this.txtFilePath.Size = new System.Drawing.Size(185, 26);
+            this.txtFilePath.TabIndex = 10;
+            // 
+            // btnSelectFile
+            // 
+            this.btnSelectFile.Location = new System.Drawing.Point(314, 140);
+            this.btnSelectFile.Name = "btnSelectFile";
+            this.btnSelectFile.Size = new System.Drawing.Size(75, 26);
+            this.btnSelectFile.TabIndex = 11;
+            this.btnSelectFile.Text = "Select";
+            this.btnSelectFile.UseVisualStyleBackColor = true;
+            this.btnSelectFile.Click += new System.EventHandler(this.btnSelectFile_Click);
+            // 
             // SetCipher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(401, 265);
-            this.Controls.Add(this.btnOk);
+            this.Controls.Add(this.btnSelectFile);
+            this.Controls.Add(this.txtFilePath);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.btnOk);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -143,7 +165,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnOk;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtFilePath;
+        private System.Windows.Forms.Button btnSelectFile;
     }
 }

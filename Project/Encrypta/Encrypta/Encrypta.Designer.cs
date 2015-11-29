@@ -79,6 +79,7 @@
             this.Label1.Size = new System.Drawing.Size(89, 20);
             this.Label1.TabIndex = 7;
             this.Label1.Text = "Encrypted: ";
+            //this.Label1.Click += new System.EventHandler(this.Label1_Click);
             // 
             // txtEncrypted
             // 

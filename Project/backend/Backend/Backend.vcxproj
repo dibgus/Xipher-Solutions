@@ -72,6 +72,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <ReferencePath>$(VC_ReferencesPath_x86);$(ProjectDir)</ReferencePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\opencv\build\include</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\opencv\build\x86\vc12\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -94,7 +96,11 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>uuid.lib;opencv_ts300d.lib;opencv_world300d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);</AdditionalDependencies>
     </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -147,12 +153,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Converter.cpp" />
     <ClCompile Include="..\src\EncryptaBackend.cpp" />
     <ClCompile Include="..\src\ModObfuscate.cpp" />
     <ClCompile Include="..\src\ModSteganography.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\CImg.h" />
+    <ClInclude Include="..\src\Converter.h" />
     <ClInclude Include="..\src\EncryptaBackend.h" />
     <ClInclude Include="..\src\ModObfuscate.h" />
     <ClInclude Include="..\src\ModSteganography.h" />

@@ -1,32 +1,56 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <wchar.h>
+#include <locale>
+#include <codecvt>
+#include <assert.h>
 using namespace std;
 	class InputHandler
 	{ 
 		public:
-			//this method manages encryption: cannot be invoked directly because std::string cannot be managed by C#
-			static string handleExpression(string expression, string key, bool encrypting);
+			//this method manages encryption: cannot be invoked directly because std::wstring cannot be managed by C#
+			static wstring handleExpression(wstring expression, wstring key, bool encrypting);
 			//this is the outward-facing method that writes to a buffer that C# can read from.
-			static void getEncrypted(const char *expression, const char *key, bool isFile);
-			static void getDecrypted(const char *encrypted, const char *key, bool isFile);
+			static void getEncrypted(wstring expression, wstring key, bool isFile);
+			static void getDecrypted(wstring encrypted, wstring key, bool isFile);
 		private:
-			static string sanitizeInput(string expression); //just sets to lowercase and removes whitespaces
-			static string* splitKey(string key);
-			static int getKeyLength(string key);
-			static long getFileSize(string path);
+			static wstring sanitizeInput(wstring expression); //just sets to lowercase and removes whitespaces
+			static wstring* splitKey(wstring key);
+			static int getKeyLength(wstring key);
+			static long getFileSize(wstring path);
 	};
 
+	extern "C" __declspec(dllexport) void setupLocale()
+	{
+		std::locale::global(std::locale(""));
+	}
+
 	//exporting of function encryptExpression without decorative name
-	//ISSUE: CANNOT USE METHODS WITH STRINGS RETURNING: CRASHES APP << fixed with StringBuilder and pointers
-	extern "C" __declspec(dllexport) void getEncrypted(const char *expression, const char *key, bool isFile)
+	//ISSUE: CANNOT USE METHODS WITH wstringS RETURNING: CRASHES APP << fixed with wstringBuilder and pointers
+	extern "C" __declspec(dllexport) void getEncrypted(const wchar_t *expression, const wchar_t *key, bool isFile)
 	{
-		InputHandler::getEncrypted(expression, key, isFile);
+		/*
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+		wstring utf16expression = converter.from_bytes(expression);
+		wstring utf16key = converter.from_bytes(key);
+		*/
+		assert(((wstring)expression).find(L"Ž") != wstring::npos); //checks for test char
+		InputHandler::getEncrypted((wstring)expression, (wstring)key, isFile);
+		//InputHandler::getEncrypted(wstring(expression), wstring(key), isFile);
 	}
-	extern "C" __declspec(dllexport) void getDecrypted(const char *encrypted, const char *key, bool isFile)
+	extern "C" __declspec(dllexport) void getDecrypted(const wchar_t *encrypted, const wchar_t *key, bool isFile)
 	{
-		InputHandler::getDecrypted(encrypted, key, isFile);
-	}
+		/*
+		const string utf8encrypted = encrypted;
+		const string utf8key = key;
+		wstring utf16encrypted(utf8encrypted.begin(), utf8encrypted.end());
+		wstring utf16key(utf8key.begin(), utf8key.end());
+		InputHandler::getDecrypted(utf16encrypted, utf16key, isFile);
+		*/
+		InputHandler::getDecrypted((wstring)encrypted, (wstring)key, isFile);
+		//InputHandler::getDecrypted(utf16encrypted, utf16key, isFile);
+	} //
 
 	//BELOW ARE TESTING METHODS
 	string bar()
@@ -34,12 +58,12 @@ using namespace std;
 		return "b";
 	}
 
-	extern "C" __declspec(dllexport) int test(const char* s)
-	{ //test method for DLL export: Realized issues with strings here
+	extern "C" __declspec(dllexport) int test(const wchar_t* s)
+	{ //test method for DLL export: Realized issues with wstrings here
 		return bar()[0] * s[0];
 	}
 	/*
-	extern "C" __declspec(dllexport) void stringtest(const char* s, char* buffer, int bufferLength)
+	extern "C" __declspec(dllexport) void wstringtest(const wchar_t* s, wchar_t* buffer, int bufferLength)
 	{
 		for (int i = 0; i < sizeof(s); i++)
 		{

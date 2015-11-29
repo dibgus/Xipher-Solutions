@@ -14,18 +14,18 @@ using namespace std;
 	class ModObfuscate
 	{
 	public:
-		static string interpretInput(string, string, bool);
+		static wstring interpretInput(wstring, wstring, bool);
 		private:
-		static string skipHop(string);
-		static string reverse(string);//best with expressions in binary
-		static string caesar(string, int);
-		static string transposition(string, int, int, bool);
-		static string everyOther(string, bool);
+		static wstring skipHop(wstring);
+		static wstring reverse(wstring);//best with expressions in binary
+		static wstring caesar(wstring, int);
+		static wstring transposition(wstring, int, int, bool);
+		static wstring everyOther(wstring, bool);
 	};
 
 	//exporting of function interpretInput without decorative name
 	/*
-	extern "C" __declspec(dllexport) string interpretInput(string expression, string flag)
+	extern "C" __declspec(dllexport) wstring interpretInput(wstring expression, wstring flag)
 	{
 		return ModObfuscate::interpretInput(expression, flag);
 	

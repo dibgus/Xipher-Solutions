@@ -29,7 +29,7 @@ namespace WindowsFormsApplication1
 
         private void btnHelp_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("A cipher is also known as the key that you will encrypt your data.\nCurrently, you can separate operations with an \"|\"\nCurrent Operations include: <LIST>","Help");
+            MessageBox.Show("A cipher is also known as the key that you will encrypt your data.\nCurrently, you can separate operations with an \"|\"\n\nHere is an example: \"obfu:rev|crc=10|evo|steg:pix\"\nCurrent Modules(put these first, options follow each module): \n\nsteg:\n\tpix\n\tcos\nobfu:\n\trev\n\tcrc=#\n\ttnc=#*#\n\tevo\n\tskh", "Help");
             //dialog box for help
         }
 
@@ -42,6 +42,16 @@ namespace WindowsFormsApplication1
         private void SetCipher_Load(object sender, EventArgs e)
         {
             txtCipher.Text = Program.cipher;
+        }
+
+        private void btnSelectFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileInput = new OpenFileDialog();
+            if (fileInput.ShowDialog() == DialogResult.OK)
+            {
+                Program.mediaFilePath = fileInput.FileName;
+                txtFilePath.Text = Program.mediaFilePath;
+            }
         }
     }
 }
