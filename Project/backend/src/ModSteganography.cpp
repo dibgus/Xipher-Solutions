@@ -1,21 +1,27 @@
-
 #include <string>
+#include "Converter.h"
 #include "ModSteganography.h"
-#include "EncryptaBackend.h"
 #include <cstdlib>
 #include <stdlib.h>
 #include <opencv2/highgui/highgui.hpp>	 //image manipulation library: in order to compile, you have to install this
+#include <opencv2/core/core.hpp>
 using namespace std;
 using namespace cv;
 wstring ModSteganography::interpretInput(wstring expression, wstring flag, bool encrypting)
 {
 	wstring ans = expression;
-	if (flag == L"pix")
+	wstring option = L"";
+	if (flag.find(L"=") == std::wstring::npos) //if there is no equal sign to specify parameters
+		option = flag;
+	else
+		option = flag.substr(0, flag.find(L"="));
+
+	if (option == L"pix")
 	{
 		wstring outFile = flag.substr(flag.find(L"=") + 1, flag.length());
-		ans = encrypting ? hideInPixels(expression, outFile) : extractPixels(expression); //extractPixels assumes that the user has specified a file path in passing expression
+		ans = encrypting ? hideInPixels(expression, outFile) : extractPixels(outFile); //extractPixels assumes that the user has specified a file path in passing expression
 	}
-	else if (flag == L"cos")
+	else if (option == L"cos")
 	{
 
 	}
@@ -29,12 +35,12 @@ wstring ModSteganography::hideInCosCurve(wstring expression, wstring sourceImage
 
 wstring ModSteganography::hideInPixels(wstring expression, wstring sourceImage)
 {	//TODO: implement more complex versions of this method that deal with different start index. increments, special keys...
-	Mat storage = cv::imread(InputHandler::wstringToString(sourceImage)); //read in the source image
+	Mat storage = cv::imread(Converter::wstringToString(sourceImage)); //read in the source image
 	int imageX = 0, imageY = 0, component = 0; //imagex and y are coords, component: start by looking at blue;
 													   //gets iterated every time a bit is written to the image
 	for (int i = 0; i < expression.length(); i++)
 	{
-		string inBinary = InputHandler::charToBinary(expression[i]);
+		string inBinary = Converter::charToBinary(expression[i]);
 		for (int i = 0; i < inBinary.length(); i++, component++) // 0 b 1 g 2 r
 		{
 			if (component == 3)
@@ -71,19 +77,21 @@ wstring ModSteganography::hideInPixels(wstring expression, wstring sourceImage)
 		else imageX++;
 		if (imageY > storage.cols)
 			return L"ERROR: IMAGE IS NOT LARGE ENOUGH TO BE NULL-TERMINATED";
-		Vec3b bgr = storage.at <Vec3b>(imageY, imageX); 
-		int lsb = bgr[component] % 2; 
-		if (char(lsb + 48) != '0') 
+		Vec3b bgr = storage.at <Vec3b>(imageY, imageX);
+		int lsb = bgr[component] % 2;
+		if (char(lsb + 48) != '0')
 			bgr[component] -= 1; //change to zero if not already
 	}
-	cv::imwrite(InputHandler::wstringToString(sourceImage) + ".e", storage); //write final image, temporary .e extension to prevent original image overwriting
+	sourceImage = sourceImage.substr(0, sourceImage.find_last_of(L"\\") + 1) + L"encrypted_" + sourceImage.substr(sourceImage.find_last_of(L"\\") + 1, sourceImage.length());
+	cv::imwrite((Converter::wstringToString(sourceImage)), storage); //write final image, temporary .e extension to prevent original image overwriting
 	return L"Expression has been stored in " + sourceImage;
 }
 
 wstring ModSteganography::extractPixels(wstring path)
 {
+	bool test = false; if (test) return path;
 	wstring result = L"";
-	Mat stegImage = cv::imread(InputHandler::wstringToString(path));
+	Mat stegImage = cv::imread(Converter::wstringToString(path));
 	short component = 0;
 	int imageX = 0, imageY = 0;
 	while (true)

@@ -9,4 +9,4 @@ private:
 	static wstring hideInCosCurve(wstring expression, wstring souceImage); //TODO: research storage of data in JPEG cosine curves (and see if manipulation is possible in CImg.
 	static wstring extractPixels(wstring path);
 	static wstring extractCosCurve(wstring path);
-};
+};		

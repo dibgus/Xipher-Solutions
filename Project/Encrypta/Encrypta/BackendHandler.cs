@@ -10,11 +10,11 @@ namespace WindowsFormsApplication1
 {
     class BackendHandler
     { 
-        [DllImport("Backend.dll", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("Backend.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern void getEncrypted(StringBuilder expression, StringBuilder key, bool isFile);
-        [DllImport("Backend.dll", CallingConvention = CallingConvention.StdCall)]
+        [DllImport("Backend.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern void getDecrypted(StringBuilder expression, StringBuilder key, bool isFile);
-        [DllImport("Backend.dll")]
+        [DllImport("Backend.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int test(string s);
         /*
         public static String encryptExpression(String expression, String key)
@@ -34,29 +34,31 @@ namespace WindowsFormsApplication1
         }
         */
         public static String encryptExpression(String expression, String key)
-        {
+        {   
             using (FileStream stream = File.Create("return")) { } //create file and close stream automatically
-            if (key.Contains("steg") && !key.Contains("=" + Program.mediaFilePath)) //check if file is specified in key
+            if (key.Contains("steg") && !key.Contains(Program.mediaFilePath)) //check if file is specified in key
                 key += "=" + Program.mediaFilePath;
             StringBuilder expressionData = new StringBuilder(expression);
             StringBuilder keyData = new StringBuilder(key);
             getEncrypted(expressionData, keyData, Program.usingFile);
             string encrypted;
-            using (StreamReader read = new StreamReader(File.OpenRead("return")))
+            using (StreamReader read = new StreamReader(File.OpenRead("return"), Encoding.Default, true))
                 encrypted = read.ReadToEnd();
-            File.Delete("return");
+               // File.Delete("return");
             return encrypted;
         }
         public static String decryptExpression(String ciphertext, String key)
         {
             using (FileStream stream = File.Create("return")) { } //create file and close stream 
+            if (key.Contains("steg") && !key.Contains(Program.mediaFilePath)) //check if file is specified in key
+                key += "=" + Program.mediaFilePath;
             StringBuilder ciphertextData = new StringBuilder(ciphertext);
             StringBuilder keyData = new StringBuilder(key);
             getDecrypted(ciphertextData, keyData, Program.usingFile);
             string decrypted;
-            using (StreamReader read = new StreamReader(File.OpenRead("return")))
+            using (StreamReader read = new StreamReader(File.OpenRead("return"), Encoding.Default, true))
                 decrypted = read.ReadToEnd();
-            File.Delete("return");
+            //File.Delete("return");
             return decrypted;
         }
     }

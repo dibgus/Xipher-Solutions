@@ -115,19 +115,19 @@ using namespace std;
 		for (int i = 0; i < xSize; i++)
 			transposed[i] = new wchar_t[ySize];
 		wstring::size_type i = 0; //index of wstring
-		unsigned int charAverage = 0; //basis for salt wchar_tacter generation (if wstring isn't long enough for array)
+		unsigned int charAverage = 0; //basis for salt wchar_t generation (if wstring isn't long enough for array)
 		for (i = 0; i < expression.length(); i++)
 			charAverage += (int)expression[i];
 		charAverage /= expression.length();
 		i = 0;
-		//sizeof pointers never works D:
+		//sizeof pointers never works
 		for (wstring::size_type j = 0; j < xSize; j++) //y dim
 		{ //have to do size / size because sizeof of a 2d array returns all possible indices (4 by 4 matrix returns 16)
 			for (wstring::size_type k = 0; k < ySize; k++, i++) //x dim
 			{
 				if (i < expression.length()) //length check
 					transposed[j][k] = (wchar_t)expression[i];
-				else if (i == expression.length()) //otherwise if JUST switched, add a delimiter
+				else if (i == expression.length() && encrypting) //otherwise if JUST switched, add a delimiter
 					transposed[j][k] = (wchar_t)3000; //TODO change this delimiter to make it harder to frequency analyze
 				else //otherwise add salt wchar_tacters
 					transposed[j][k] = (wchar_t)rand() % 12 + charAverage - 6; //random number from wchar_tAverage - 6 to wchar_tAverage + 6
@@ -144,6 +144,8 @@ using namespace std;
 				ans.push_back(transposed[k][j]);
 			}
 		}
+		if (!encrypting)
+			ans = ans.substr(0, ans.find((wchar_t)3000));
 		//now I have to manually deconstruct the array
 		for (int i = 0; i < xSize; i++)
 			delete[] transposed[i];

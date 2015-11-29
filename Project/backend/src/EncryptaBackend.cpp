@@ -12,9 +12,9 @@
 #include <fstream>
 #include <wchar.h>
 #include <assert.h>
+#include <locale>
 using namespace std;
-//TODO: display wcout messages in the frontend (popupbox)
-//>>IDEA: Create log file area for frontend for debugging
+//	: display wcout messages in the frontend (popupbox)
 	wstring InputHandler::handleExpression(wstring expression, wstring key, bool encrypting)
 	{
 		key = sanitizeInput(key);
@@ -39,6 +39,7 @@ using namespace std;
 				if (module == L"obfu")
 					encrypted = ModObfuscate::interpretInput(encrypted, functions[i].substr(functions[i].find(L":") + 1), encrypting);
 				else if (module == L"steg")
+					//encrypted = L"wizards";
 					encrypted = ModSteganography::interpretInput(encrypted, functions[i].substr(functions[i].find(L":") + 1), encrypting);
 					//std::wcout << ModSteganography::interpretInput(encrypted, functions[i].substr(functions[i].find(":") + 1), encrypting) << "\n";
 				else if (module == L"cenc")
@@ -89,52 +90,22 @@ using namespace std;
 			}
 		return encrypted;
 	}
-	string InputHandler::wstringToString(wstring utf16)
-	{
-		typedef std::codecvt_utf8<wchar_t> convert_type;
-		std::wstring_convert<convert_type, wchar_t> converter;
-		std::string converted = converter.to_bytes(utf16);
-		return converted;
-	}
-	string InputHandler::charToBinary(wchar_t toConvert)
-	{
-		int charVal = (int)toConvert;
-		string ans = "";
-		int bit = 15;
-		while (bit >= 0)
-		{
-			if (pow(2, bit) < charVal)
-			{
-				charVal -= pow(2, bit);
-				ans.push_back('1');
-			}
-			else if (pow(2, bit) == charVal)
-			{
-				ans.push_back('1');
-				for (int i = 0; i < bit - 1; i++)
-					ans.push_back('0');
-				break;
-			}
-			else ans.push_back('0');
-			bit--;
-		}
 
-		return ans;
-	}
 	void InputHandler::getEncrypted(wstring expression, wstring key, bool isFile) //int length may be a problem later
 	{
 		if(!isFile)
 		{
+			//UTF-16 ISSUE HAS BEEN ISOLATED TO WOFSTREAM!!
+			assert(expression.find(L"Ž") != wstring::npos);
 			wstring encrypted = InputHandler::handleExpression(expression, key, true);
-			wofstream output("return"); //Hypothesis 2: wofstream does not write wwstrings properly
+			wofstream output("return", ios::binary);
 			output << encrypted.c_str();
 			//output << "resultant: " << expression;
 			output.close();
 		}
 		else
 		{
-			wofstream status("return");
-
+			wofstream status("return", ios::binary);
 			vector<wchar_t> fileData;
 			fileData.reserve(getFileSize(expression));
 			wifstream fileInStream(expression, ios::binary);
@@ -172,22 +143,21 @@ using namespace std;
 	{
 		if (!isFile)
 		{
-			wstring encrypted = InputHandler::handleExpression(expression, key, false);
+			wstring decrypted = InputHandler::handleExpression(expression, key, false);
 			wofstream output("return", ios::binary);
-			output << encrypted;
+			std::locale::global(std::locale(""));
+			output << decrypted.c_str();
 			//output << "resultant: " << expression;
 			output.close();
 		}
 		else
 		{
-			wofstream status("return");
-
+			wofstream status("return", ios::binary);
 			vector<wchar_t> fileData;
 			fileData.reserve(getFileSize(expression));
-			wifstream fileInStream(expression, ios::binary);
+			wifstream fileInStream(expression);
 			int i = 0;
-			fileData.assign(istreambuf_iterator<wchar_t>(fileInStream),
-				istreambuf_iterator<wchar_t>());
+			fileData.assign(istreambuf_iterator<wchar_t>(fileInStream), istreambuf_iterator<wchar_t>());
 			fileInStream.close();
 			wstring toDecrypt = L"";
 			for (int i = 0; i < fileData.size(); i++)
@@ -217,7 +187,7 @@ using namespace std;
 	}
 	long InputHandler::getFileSize(wstring path)
 	{
-		ifstream file(path, ios::binary);
+		wifstream file(path, ios::binary);
 		streampos start, end;
 		start = file.tellg(); //file read already start on starting index
 		file.seekg(0, ios::end);

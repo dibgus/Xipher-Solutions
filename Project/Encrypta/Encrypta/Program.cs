@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace WindowsFormsApplication1
 {
@@ -14,6 +15,9 @@ namespace WindowsFormsApplication1
         public static frmMain mainForm;
         public static string filePath = "";
         public static string mediaFilePath = "";
+
+        [DllImport("Backend.dll")]
+        public static extern void setupLocale();
         //public static string[] = {"Helo", "hi"};
         /// <summary>
         /// The main entry point for the application.   
@@ -21,6 +25,7 @@ namespace WindowsFormsApplication1
         [STAThread]
         static void Main()
         {
+            setupLocale();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             mainForm = new frmMain();
