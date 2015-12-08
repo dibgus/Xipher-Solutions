@@ -63,7 +63,7 @@
             this.btnHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHelp.Location = new System.Drawing.Point(188, 204);
             this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(41, 49);
+            this.btnHelp.Size = new System.Drawing.Size(41, 50);
             this.btnHelp.TabIndex = 3;
             this.btnHelp.Text = "?";
             this.btnHelp.UseVisualStyleBackColor = true;
@@ -127,9 +127,9 @@
             // 
             // btnSelectFile
             // 
-            this.btnSelectFile.Location = new System.Drawing.Point(314, 140);
+            this.btnSelectFile.Location = new System.Drawing.Point(314, 137);
             this.btnSelectFile.Name = "btnSelectFile";
-            this.btnSelectFile.Size = new System.Drawing.Size(75, 26);
+            this.btnSelectFile.Size = new System.Drawing.Size(75, 37);
             this.btnSelectFile.TabIndex = 11;
             this.btnSelectFile.Text = "Select";
             this.btnSelectFile.UseVisualStyleBackColor = true;

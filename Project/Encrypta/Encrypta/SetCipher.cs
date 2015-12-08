@@ -42,6 +42,7 @@ namespace WindowsFormsApplication1
         private void SetCipher_Load(object sender, EventArgs e)
         {
             txtCipher.Text = Program.cipher;
+            txtFilePath.Text = Program.mediaFilePath;
         }
 
         private void btnSelectFile_Click(object sender, EventArgs e)
