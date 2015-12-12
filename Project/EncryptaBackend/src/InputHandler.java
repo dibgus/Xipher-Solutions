@@ -17,6 +17,9 @@ public abstract class InputHandler {
     {
         try {
             FileWriter returnFile = new FileWriter("return");
+            if(isFile)
+            returnFile.write(createEvaluatedFile(expression, key, isEncrypting));
+            else
             returnFile.write(getEvaluatedExpression(expression, key, isEncrypting));
         } catch (IOException e) {
             e.printStackTrace();
@@ -30,17 +33,16 @@ public abstract class InputHandler {
      */
     public static String getEvaluatedExpression(String expression, String key, boolean isEncrypting) {
         key = sanitizeKey(key);
-        String encryptedExpression = expression;
         return evaluateData(expression, handleKey(key, "|"), isEncrypting);
     }
 
     public static String evaluateData(String data, String[] functions,  boolean isEncrypting)
     {
-        String encryptedExpression = "";
+        String encryptedExpression = data;
         String module = "";
         for (int i = 0; i < functions.length; i++) {
             //set the module if another one is specified, otherwise use the previously defined module in the key
-            String function = "";
+            String function;
             if(functions[i].contains(":")) {
                 module = functions[i].substring(0, functions[i].indexOf(":"));
                 function = functions[i].substring(functions[i].indexOf(":") + 1);
@@ -70,23 +72,25 @@ public abstract class InputHandler {
     public static String createEvaluatedFile(String filePath, String key , boolean isEncrypting)
     {
         key = sanitizeKey(key);
-        String[] functions = handleKey(key, "|");
-        String module = "";
+        String returnFilePath = filePath + ".crypt";
         String fileData = ""; //the raw file data that will be modified
         try {
             BufferedReader inputFile = new BufferedReader(new FileReader(filePath));
-            //while(inputFile.) //TODO read inputFile into a String
-        } catch (FileNotFoundException e) {
+            while(inputFile.read() > 0)
+            {
+                fileData += inputFile.readLine();
+            }
+        } catch (Exception e) { //IOException or FileNotFound
             e.printStackTrace();
         }
         String newData = evaluateData(fileData, handleKey(key, "|"), isEncrypting); //evaluate the file data
         try {
-            BufferedWriter evaluatedFile = new BufferedWriter(new FileWriter(filePath + ".crypt")); //write to a .crypt file
+            BufferedWriter evaluatedFile = new BufferedWriter(new FileWriter(returnFilePath)); //write to a .crypt file
             evaluatedFile.write(newData);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return ""; //TODO return file path that the expression has been encrypted to
+        return returnFilePath;
     }
 
 
@@ -99,7 +103,6 @@ public abstract class InputHandler {
      * @param key An expression to sanitize(avoiding anything in quotes, change to lower case and trim
      * @return A key that has been sanitized
      */
-
     private static String sanitizeKey(String key)
     {
         String sanitized = key;

@@ -13,5 +13,4 @@ public class BackendTester {
         String key = input.nextLine();
         System.out.println(InputHandler.getEvaluatedExpression(expression, key, true));
     }
-
 }

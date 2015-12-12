@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/Desktop/Xipher-Solutions/EncryptaBackend/EncryptaBackend.iml" filepath="$USER_HOME$/Desktop/Xipher-Solutions/EncryptaBackend/EncryptaBackend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EncryptaBackend.iml" filepath="$PROJECT_DIR$/EncryptaBackend.iml" />
     </modules>
   </component>
 </project>
