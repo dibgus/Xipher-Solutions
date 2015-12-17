@@ -1,5 +1,6 @@
 /**
  * Created by ikrukov on 12/11/2015.
+ * The converter class is used primarily to convert data to a binary format (There are some methods that rely on this)
  */
 public class Converter {
     /**
@@ -28,6 +29,7 @@ public class Converter {
             else inBinary += "0";
             bit--;
         }
+        if(value % 2 == 0) inBinary += "0"; //odd number fix
         return inBinary;
     }
 
@@ -41,7 +43,8 @@ public class Converter {
         int value = 0;
         for(int i = binaryString.length() - 1; i >= 0; i--)
         {
-            if(binaryString.charAt(i) == 1)
+            if(!binaryString.contains("1")) return 0;
+            if(binaryString.charAt(i) == '1')
                 value += Math.pow(2, binaryString.length() - i - 1);
         }
         return value;
@@ -49,9 +52,9 @@ public class Converter {
     public static String binaryStringToString(String binaryString)
     {
         String evaluated = "";
-        for(int i = 0; i * 16 < binaryString.length(); i++)
+        for(int i = 0; (i + 1) * 16 < binaryString.length(); i++)
         {
-            evaluated += (char)binaryStringToInt(binaryString.substring(i * 16, (i + 1) * 16));
+            evaluated += (char)binaryStringToInt(binaryString.substring(i * 16, (i + 1) * 16)); //takes 2 bytes and converts it to a char
         }
         return evaluated;
     }

@@ -11,6 +11,8 @@ public class BackendTester {
         String expression = input.nextLine();
         System.out.println("Enter a key: ");
         String key = input.nextLine();
-        System.out.println(InputHandler.getEvaluatedExpression(expression, key, true));
+        String encrypted = InputHandler.getEvaluatedExpression(expression, key, true);
+        System.out.println(encrypted);
+        System.out.println(InputHandler.getEvaluatedExpression(encrypted, key, false));
     }
 }

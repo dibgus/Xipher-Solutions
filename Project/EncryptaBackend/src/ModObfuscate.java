@@ -39,7 +39,6 @@ public class ModObfuscate  {
 
     public static String xorCipher(String expression, String xorKey)
     {
-        String evaluated = "";
         String binaryKey = "";
         for(int i = 0; i < xorKey.length(); i++)
             binaryKey += Converter.intToBinaryString(xorKey.charAt(i));
@@ -48,26 +47,26 @@ public class ModObfuscate  {
             binaryExpression += Converter.intToBinaryString(expression.charAt(i));
         int keyIndex = 0; //the index the key will be reading, this loops through constantly throughout
         String evaluatedBinary = "";
-        for(int i = 0; i < binaryExpression.length(); i++)
-        {
-            if(binaryExpression.charAt(i) == '1' && binaryKey.charAt(keyIndex) == '1')
+        for(int i = 0; i < binaryExpression.length(); i++) {
+            if (binaryExpression.charAt(i) == '1' && binaryKey.charAt(keyIndex) == '1')
+                evaluatedBinary += '0';
+            else if(binaryExpression.charAt(i) == '1' || binaryKey.charAt(keyIndex) == '1')
                 evaluatedBinary += '1';
             else
                 evaluatedBinary += '0';
-            if(keyIndex > binaryKey.length())
+            keyIndex++;
+            if (keyIndex >= binaryKey.length())
                 keyIndex = 0;
-            else
-                keyIndex++;
         }
-        return evaluated;
+        return Converter.binaryStringToString(evaluatedBinary);
     }
 
     public static String skipHop(String expression)
     {
         String evaluated = "";
-        for(int i = 1; i < expression.length() - 1; i++)
+        for(int i = 1; i < expression.length(); i+=2)
         {
-            evaluated += expression.charAt(i) + expression.charAt(i - 1);
+            evaluated += expression.charAt(i) + "" + expression.charAt(i - 1);
         }
         if(expression.length() % 2 == 1) //if String is odd length
             evaluated += expression.charAt(expression.length() - 1);
@@ -78,7 +77,7 @@ public class ModObfuscate  {
     {
         String evaluated = "";
         for(int i = 0; i < expression.length(); i++)
-            evaluated += expression.charAt(i) + shift;
+            evaluated += (char)(expression.charAt(i) + shift);
         return evaluated;
     }
 
@@ -101,15 +100,24 @@ public class ModObfuscate  {
                 evaluated += expression.charAt(i);
         }
         else
-            for(int i = 0; i < expression.length() - 1; i++)
-                evaluated += expression.charAt(i + 1) + expression.charAt(expression.length() / 2 + i);
+        {
+            for (int i = 0; i < expression.length() / 2; i++)
+            {
+                if (expression.length() % 2 == 0)
+                    evaluated += expression.charAt(i) + "" + expression.charAt(i + expression.length() / 2);
+                else
+                    evaluated += expression.charAt(i) + "" + expression.charAt(i + expression.length() / 2 + 1);
+            }
+            if(expression.length() % 2 == 1)
+                evaluated += expression.charAt(expression.length() / 2); //fix for odd length expressions
+        }
         return evaluated;
     }
 
     public static String transpositionCipher(String expression, String parameters, boolean encrypting)
     {
         String evaluated = "";
-        int x = Integer.parseInt(parameters.split("x")[0]), y = Integer.parseInt(parameters.split("x")[1]);
+        int x = Integer.parseInt(parameters.split("\\*")[0]), y = Integer.parseInt(parameters.split("\\*")[1]);
         while(x * y < expression.length())
         { x++; y++; }
         long charAverage = 0; //the average will be used to salt the end of the string
@@ -128,7 +136,7 @@ public class ModObfuscate  {
                     transposed[j][k] = expression.charAt(i);
                 }
                 else if(i == expression.length() && encrypting)
-                    transposed[j][k] = (char)3000;
+                    transposed[j][k] = (char)3000; //TODO don't hardcode this
                 else if(encrypting)
                     transposed[j][k] = (char)(Math.random() * 12 - 6 + charAverage); // +/- 6 values from charAverage
                 else
@@ -140,6 +148,8 @@ public class ModObfuscate  {
             for(int k = 0; k < x; k++)
                 evaluated += transposed[k][j];
 
+        if(!encrypting && evaluated.indexOf((char)3000) != -1)
+            evaluated = evaluated.substring(0, evaluated.indexOf((char)3000)); //TODO don't hardcode this
         return evaluated;
     }
 

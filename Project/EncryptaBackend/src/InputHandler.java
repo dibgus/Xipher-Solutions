@@ -4,7 +4,8 @@
  */
 import java.io.*;
 
-public abstract class InputHandler {
+public abstract class InputHandler
+{
     /**
      * The main method that is called by my frontend code to get the encrypted expression
      * This method writes to a file called "return" which my frontend code could then read.
@@ -31,16 +32,19 @@ public abstract class InputHandler {
      * @param key A list of operations to perform on the data
      * @param isEncrypting Whether or not the data is being encrypted
      */
-    public static String getEvaluatedExpression(String expression, String key, boolean isEncrypting) {
+    public static String getEvaluatedExpression(String expression, String key, boolean isEncrypting)
+    {
+
         key = sanitizeKey(key);
-        return evaluateData(expression, handleKey(key, "|"), isEncrypting);
+        return evaluateData(expression, handleKey(key, "\\|"), isEncrypting);
     }
 
     public static String evaluateData(String data, String[] functions,  boolean isEncrypting)
     {
         String encryptedExpression = data;
         String module = "";
-        for (int i = 0; i < functions.length; i++) {
+        for (int i = isEncrypting ? 0 : functions.length - 1; i < functions.length && isEncrypting || i >= 0 && !isEncrypting;)
+        {
             //set the module if another one is specified, otherwise use the previously defined module in the key
             String function;
             if(functions[i].contains(":")) {
@@ -49,13 +53,24 @@ public abstract class InputHandler {
             }
             else
                 function = functions[i];
-
+            if(module == "" && !isEncrypting)
+            { //find a previously referenced module if going backwards
+                for (int j = i - 1; j >= 0; j--)
+                {
+                    if (functions[j].contains(":"))
+                        module = functions[j].substring(0, functions[j].indexOf(":"));
+                }
+            }
             switch (module) {
                 case ("obfu"):
                     encryptedExpression = ModObfuscate.performOperation(encryptedExpression, function, isEncrypting);
                     break;
                 case ("steg"):
-                    encryptedExpression = ModSteganography.performOperation(encryptedExpression, function, isEncrypting);
+                    try {
+                        encryptedExpression = ModSteganography.performOperation(encryptedExpression, function, isEncrypting);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case ("encr"):
                     encryptedExpression = ModEncryption.performOperation(encryptedExpression, function, isEncrypting);
@@ -64,6 +79,10 @@ public abstract class InputHandler {
                     System.out.println("ERROR IN MODULE SPECIFICATION: " + module);
                     break;
             }
+            if(isEncrypting)
+                i++;
+            else
+                i--;
         }
         return encryptedExpression;
     }
@@ -112,7 +131,7 @@ public abstract class InputHandler {
                 i = sanitized.indexOf('"', i + 1);
             if(sanitized.charAt(i) == ' ')  //truncate any visible spaces
                 sanitized = sanitized.substring(0, i) + sanitized.substring(i + 1, sanitized.length());
-            sanitized = sanitized.substring(0, i) + (sanitized.charAt(i) + 'Z' - 'z' ) + sanitized.substring(i, sanitized.length());
+            sanitized = sanitized.substring(0, i) + sanitized.substring(i, i + 1).toLowerCase() + sanitized.substring(i + 1, sanitized.length());
             //turn characters not in quotes to lower case.
         }
         return sanitized;
