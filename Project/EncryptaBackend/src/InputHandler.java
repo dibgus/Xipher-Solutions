@@ -3,10 +3,23 @@
  * The main entry point for all input and output operations of Encrypta
  */
 import java.io.*;
+import java.util.Arrays;
 
 public abstract class InputHandler
 {
     /**
+     * This main method is to satisfy IKVM's .net executable generation.
+     * I initially tried to export my code to a .net DLL, but I then realized that I would have had
+     * to go through a complex process of registering the DLL as a COM interface and use strange compiler annotations everywhere
+     * @param args See the passEncryptedData method's parameters for each variable stored in the string array
+     */
+    public static void main(String[] args)
+    {
+        System.out.println("DEBUG: " + Arrays.toString(args));
+        passEncryptedData(args[0], args[1], args[2].equals("1"), args[3].equals("1"));
+    }
+
+/**
      * The main method that is called by my frontend code to get the encrypted expression
      * This method writes to a file called "return" which my frontend code could then read.
      * @param expression The expression to encrypt
@@ -18,10 +31,13 @@ public abstract class InputHandler
     {
         try {
             FileWriter returnFile = new FileWriter("return");
+            String ans = getEvaluatedExpression(expression, key, isEncrypting);
+            System.out.println("DEBUG: " + ans);
             if(isFile)
             returnFile.write(createEvaluatedFile(expression, key, isEncrypting));
             else
-            returnFile.write(getEvaluatedExpression(expression, key, isEncrypting));
+            returnFile.write(ans);
+            returnFile.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,19 +45,13 @@ public abstract class InputHandler
 
     /**
      * @param expression The string to manipulate
-     * @param key A list of operations to perform on the data
-     * @param isEncrypting Whether or not the data is being encrypted
+     * @param key A list of operations to perform on the expression
+     * @param isEncrypting Whether or not the expression is being encrypted
      */
-    public static String getEvaluatedExpression(String expression, String key, boolean isEncrypting)
+    public static String getEvaluatedExpression(String expression, String key,  boolean isEncrypting)
     {
-
-        key = sanitizeKey(key);
-        return evaluateData(expression, handleKey(key, "\\|"), isEncrypting);
-    }
-
-    public static String evaluateData(String data, String[] functions,  boolean isEncrypting)
-    {
-        String encryptedExpression = data;
+        String[] functions = handleKey(sanitizeKey(key), "\\|");
+        String encryptedExpression = expression;
         String module = "";
         for (int i = isEncrypting ? 0 : functions.length - 1; i < functions.length && isEncrypting || i >= 0 && !isEncrypting;)
         {
@@ -53,7 +63,7 @@ public abstract class InputHandler
             }
             else
                 function = functions[i];
-            if(module == "" && !isEncrypting)
+            if(module.equals("") && !isEncrypting)
             { //find a previously referenced module if going backwards
                 for (int j = i - 1; j >= 0; j--)
                 {
@@ -102,7 +112,7 @@ public abstract class InputHandler
         } catch (Exception e) { //IOException or FileNotFound
             e.printStackTrace();
         }
-        String newData = evaluateData(fileData, handleKey(key, "|"), isEncrypting); //evaluate the file data
+        String newData = getEvaluatedExpression(fileData, key, isEncrypting); //evaluate the file data
         try {
             BufferedWriter evaluatedFile = new BufferedWriter(new FileWriter(returnFilePath)); //write to a .crypt file
             evaluatedFile.write(newData);
@@ -136,5 +146,4 @@ public abstract class InputHandler
         }
         return sanitized;
     }
-
 }

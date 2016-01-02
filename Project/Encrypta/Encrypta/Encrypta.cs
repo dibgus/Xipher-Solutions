@@ -62,11 +62,6 @@ namespace WindowsFormsApplication1
             new Input().ShowDialog();
         } //PInvokeStackImbalance
 
-        private void button1_Click(object sender, EventArgs e)
-        {//test button for DLL's
-         txtEncrypted.Text = BackendHandler.test("hdg").ToString();
-        }
-
         private void btnToggleEncryption_Click(object sender, EventArgs e)
         {
             Program.isEncrypting = !Program.isEncrypting;

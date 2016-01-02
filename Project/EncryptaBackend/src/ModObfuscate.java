@@ -3,6 +3,7 @@
  * The module for Obfuscation
  * Obfuscation is the process of scrambling data to make it harder to read
  * It is not as strong as encryption, but adds an extra layer of security.
+ * Functions: rev|crc=#|evo|tnc=#*#|skh|xor=""
  */
 
 public class ModObfuscate  {

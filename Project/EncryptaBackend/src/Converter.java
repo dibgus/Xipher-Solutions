@@ -52,7 +52,7 @@ public class Converter {
     public static String binaryStringToString(String binaryString)
     {
         String evaluated = "";
-        for(int i = 0; (i + 1) * 16 < binaryString.length(); i++)
+        for(int i = 0; (i) * 16 < binaryString.length(); i++)
         {
             evaluated += (char)binaryStringToInt(binaryString.substring(i * 16, (i + 1) * 16)); //takes 2 bytes and converts it to a char
         }
