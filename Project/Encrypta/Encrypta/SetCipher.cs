@@ -54,5 +54,10 @@ namespace WindowsFormsApplication1
                 txtFilePath.Text = Program.mediaFilePath;
             }
         }
+
+        private void btnGenerateHash_Click(object sender, EventArgs e)
+        {
+            new HashGenerator().Show();
+        }
     }
 }

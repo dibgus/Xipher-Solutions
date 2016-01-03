@@ -15,7 +15,7 @@ public abstract class InputHandler
      */
     public static void main(String[] args)
     {
-        System.out.println(Arrays.toString(args));
+        System.out.println("DEBUG: " + Arrays.toString(args));
         passEncryptedData(args[0], args[1], args[2].equals("1"), args[3].equals("1"));
     }
 
@@ -30,13 +30,11 @@ public abstract class InputHandler
     public static void passEncryptedData(String expression, String key, boolean isEncrypting, boolean isFile)
     {
         try {
-            FileWriter returnFile = new FileWriter("return");
-            String ans = getEvaluatedExpression(expression, key, isEncrypting);
-            System.out.println(ans);
+            BufferedOutputStream returnFile = new BufferedOutputStream(new FileOutputStream("return"));
             if(isFile)
-            returnFile.write(createEvaluatedFile(expression, key, isEncrypting));
+            returnFile.write(createEvaluatedFile(expression, key, isEncrypting).getBytes());
             else
-            returnFile.write(ans);
+            returnFile.write(getEvaluatedExpression(expression, key, isEncrypting).getBytes());
             returnFile.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -112,6 +110,7 @@ public abstract class InputHandler
         } catch (Exception e) { //IOException or FileNotFound
             e.printStackTrace();
         }
+        System.out.println(fileData);
         String newData = getEvaluatedExpression(fileData, key, isEncrypting); //evaluate the file data
         try {
             BufferedWriter evaluatedFile = new BufferedWriter(new FileWriter(returnFilePath)); //write to a .crypt file

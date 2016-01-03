@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="mscorlib">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/src/mscorlib.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -4,6 +4,7 @@ This project will be written in Java (backend) and C# (GUI/frontend)
 A basic console prototype of some of the features that I want to implement can be found in a separate project on Dibgus's Github Page
 
 NOTICE:
-JAVA AND C# INTEROP IS ACHIEVED THROUGH A UTILITY CALLED IKVM. IF YOU WANT TO RECOMPILE THE CODE, YOU WILL HAVE TO CREATE A JAR ARTIFACT AND RUN:
+*JAVA AND C# INTEROP IS ACHIEVED THROUGH A UTILITY CALLED IKVM. IF YOU WANT TO RECOMPILE THE CODE, YOU WILL HAVE TO CREATE A JAR ARTIFACT AND RUN:
 ikvmc <jarfile>
 You will then have to ensure that the executable is moved to the appropriate file location and has IKVM.OpenJDK.Core.dll and IKVM.Runtime.dll to be able to run.
+*In order to use the strong encryption setting in jasypt, you may need to install "Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files 6" from oracle's website

@@ -65,6 +65,12 @@
     <Compile Include="Encrypta.Designer.cs">
       <DependentUpon>Encrypta.cs</DependentUpon>
     </Compile>
+    <Compile Include="HashGenerator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HashGenerator.Designer.cs">
+      <DependentUpon>HashGenerator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Input.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +87,9 @@
     </Compile>
     <EmbeddedResource Include="Encrypta.resx">
       <DependentUpon>Encrypta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HashGenerator.resx">
+      <DependentUpon>HashGenerator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Input.resx">
       <DependentUpon>Input.cs</DependentUpon>
