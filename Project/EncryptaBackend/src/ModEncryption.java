@@ -20,7 +20,7 @@ public class ModEncryption {
                 {
                     evaluated = encrypting ? useStrongEncryption(expression, command[1]) : useStrongDecryption(expression, command[1]);
                 } catch (org.jasypt.exceptions.EncryptionOperationNotPossibleException e) {
-                    System.out.println("ERROR: JCE utilities are not installed on this machine, cannot use strong");
+                    System.err.println("ERROR: JCE utilities are not installed on this machine, cannot use strong");
                     e.printStackTrace();
                 }
                 break;

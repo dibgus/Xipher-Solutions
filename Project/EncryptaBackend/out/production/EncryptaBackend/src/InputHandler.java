@@ -18,7 +18,7 @@ public abstract class InputHandler
      */
     public static void main(String[] args)
     {
-        System.out.println("DEBUG: " + Arrays.toString(args));
+        //System.out.println("DEBUG: " + Arrays.toString(args));
         passEncryptedData(args[0], args[1], args[2].equals("1"), args[3].equals("1"));
     }
 
@@ -32,16 +32,22 @@ public abstract class InputHandler
      */
     public static void passEncryptedData(String expression, String key, boolean isEncrypting, boolean isFile)
     {
-        try {
+       // try {
+            /*
             BufferedOutputStream returnFile = new BufferedOutputStream(new FileOutputStream("return"));
             if(isFile)
-            returnFile.write(createEvaluatedFile(expression, key, isEncrypting).getBytes());
+            returnFile.write(createEvaluatedFile(expression, key, isEncrypting));
             else
-            returnFile.write(getEvaluatedExpression(expression, key, isEncrypting).getBytes());
+            returnFile.write(getEvaluatedExpression(expression, key, isEncrypting));
             returnFile.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            */
+            if(isFile)
+                System.out.println(createEvaluatedFile(expression, key, isEncrypting));
+            else
+                System.out.println(getEvaluatedExpression(expression, key, isEncrypting));
+        //} catch (IOException e) {
+           // e.printStackTrace();
+        //}
     }
 
     /**
@@ -87,7 +93,7 @@ public abstract class InputHandler
                     encryptedExpression = ModEncryption.performOperation(encryptedExpression, function, isEncrypting);
                     break;
                 default:
-                    System.out.println("ERROR IN MODULE SPECIFICATION: " + module);
+                    System.err.println("ERROR IN MODULE SPECIFICATION: " + module);
                     break;
             }
             if(isEncrypting)

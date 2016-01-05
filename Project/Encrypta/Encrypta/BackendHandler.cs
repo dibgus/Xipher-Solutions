@@ -37,7 +37,7 @@ namespace WindowsFormsApplication1
         */
         public static String encryptExpression(String expression, String key)
         {   
-            using (FileStream stream = File.Create("return")) { } //create file and close stream automatically
+            //using (FileStream stream = File.Create("return")) { } //create file and close stream automatically
             if (key.Contains("steg") && !key.Contains(Program.mediaFilePath)) //check if file is specified in key
                 key += "=" + Program.mediaFilePath;
             Boolean isDebugging = false;
@@ -46,27 +46,30 @@ namespace WindowsFormsApplication1
             backend.StartInfo.FileName = "backend.exe";
             backend.StartInfo.Arguments = "\"" + expression + "\" \"" + key + "\" 1 " + (Program.usingFile ? "1" : "0");
             backend.StartInfo.UseShellExecute = false;
-            backend.StartInfo.CreateNoWindow = isDebugging;
-            backend.StartInfo.WindowStyle = isDebugging ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Normal;
+            backend.StartInfo.CreateNoWindow = true;
+            backend.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             backend.StartInfo.LoadUserProfile = true;
             backend.StartInfo.RedirectStandardError = true;
-            backend.StartInfo.RedirectStandardInput = isDebugging;
-            backend.StartInfo.RedirectStandardOutput = isDebugging;
+            backend.StartInfo.RedirectStandardInput = true;
+            backend.StartInfo.RedirectStandardOutput = true;
             backend.Start();
             backend.WaitForExit();
-            if (true)
-                return backend.StandardError.ReadLine();
+            if (isDebugging)
+                return backend.StandardError.ReadToEnd();
             #endregion
             //getEncrypted(expressionData, keyData, Program.usingFile);
+            return backend.StandardOutput.ReadToEnd();
+            /*
             string encrypted;
             using (StreamReader read = new StreamReader(File.OpenRead("return"), Encoding.Default, true))
                 encrypted = read.ReadToEnd();
             File.Delete("return");
             return encrypted;
+            */
         }
         public static String decryptExpression(String ciphertext, String key)
         {
-            using (FileStream stream = File.Create("return")) { } //create file and close stream 
+            //using (FileStream stream = File.Create("return")) { } //create file and close stream 
             if (key.Contains("steg") && !key.Contains(Program.mediaFilePath)) //check if file is specified in key
                 key += "=" + Program.mediaFilePath;
             Boolean isDebugging = false;
@@ -76,20 +79,26 @@ namespace WindowsFormsApplication1
             backend.StartInfo.FileName = "backend.exe";
             backend.StartInfo.Arguments = "\"" + ciphertext + "\" \"" + key + "\" 1 " + (Program.usingFile ? "1" : "0");
             backend.StartInfo.UseShellExecute = false;
-            backend.StartInfo.CreateNoWindow = isDebugging;
-            backend.StartInfo.WindowStyle = isDebugging ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Normal;
+            backend.StartInfo.CreateNoWindow = !isDebugging;
+            backend.StartInfo.WindowStyle = !isDebugging ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Normal;
             backend.StartInfo.LoadUserProfile = true;
-            backend.StartInfo.RedirectStandardError = isDebugging;
-            backend.StartInfo.RedirectStandardInput = isDebugging;  
-            backend.StartInfo.RedirectStandardOutput = isDebugging;
+            backend.StartInfo.RedirectStandardError = true;
+            backend.StartInfo.RedirectStandardInput = true;
+            backend.StartInfo.RedirectStandardOutput = true;
             backend.Start();
             backend.WaitForExit();
             #endregion
+            if (isDebugging)
+                return backend.StandardError.ReadToEnd();
+
+            return backend.StandardOutput.ReadToEnd();
+            /*
             string decrypted;
             using (StreamReader read = new StreamReader(File.OpenRead("return"), Encoding.Default, true))
                 decrypted = read.ReadToEnd();
             File.Delete("return");
             return decrypted;
+            */
         }
     }
 }
