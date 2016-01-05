@@ -6,15 +6,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-public class BackendTester {
+class BackendTester {
     public static void main(String[] args)
     {
         Scanner input = new Scanner(System.in);
         String expression = "";
         while(true)
         {
-            System.out.println("Enter mode:\n1: Files\n2: Strings");
-            if(input.nextLine().equals("1"))
+            System.out.println("Enter mode:\n1: Files\n2: Strings\n3: Exit");
+            String opt = input.nextLine();
+            if(opt.charAt(0) == '1')
             {
                 System.out.println("Enter a file path: ");
                 String path = input.nextLine();
@@ -30,7 +31,7 @@ public class BackendTester {
                     e.printStackTrace();
                 }
             }
-            else
+            else if(opt.charAt(0) == '2')
             {
                 System.out.println("Enter an expression: ");
                 String inString = input.nextLine();
@@ -43,6 +44,7 @@ public class BackendTester {
                 System.out.println(encrypted);
                 System.out.println(InputHandler.getEvaluatedExpression(encrypted, key, false));
             }
+            else break;
         }
     }
 }

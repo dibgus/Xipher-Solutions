@@ -2,7 +2,7 @@
  * Created by ikrukov on 12/11/2015.
  * The converter class is used primarily to convert data to a binary format (There are some methods that rely on this)
  */
-public class Converter {
+class Converter {
     /**
      * A method geared towards converting integers to their binary equivalents for some functions such as XOR and LSB steganography
      * @param value the value to convert to binary
@@ -38,7 +38,7 @@ public class Converter {
      * @param binaryString A string which represents a binary sequence
      * @return The integer representation of the binary string
      */
-    public static int binaryStringToInt(String binaryString)
+    private static int binaryStringToInt(String binaryString)
     {
         int value = 0;
         for(int i = binaryString.length() - 1; i >= 0; i--)

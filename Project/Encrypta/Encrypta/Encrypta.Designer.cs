@@ -178,7 +178,6 @@
             this.Controls.Add(this.txtInput);
             this.Name = "frmMain";
             this.Text = "`";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

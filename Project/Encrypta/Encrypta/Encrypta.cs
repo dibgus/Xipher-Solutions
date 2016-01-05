@@ -78,11 +78,5 @@ namespace WindowsFormsApplication1
                 txtPath.Text = Program.filePath;
             }
         }
-
-        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (!BackendHandler.currentBackendProcess.HasExited)
-                BackendHandler.currentBackendProcess.Kill();
-        }
     }
 }
