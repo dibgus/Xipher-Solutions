@@ -30,7 +30,7 @@ public class ModSteganography {
                     evaluated = extractCosCurve(expression);
 
             default:
-                System.err.println("No module found: " + command[0]);
+                System.err.println("Could not find steganography operation: " + command[0]);
                 break;
         }
 

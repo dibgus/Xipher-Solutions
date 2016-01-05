@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Windows.Forms;
+
 namespace WindowsFormsApplication1
 {
     class BackendHandler
     {
+        public static Process currentBackendProcess;
         /*
         //[DllImport("Backend.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         DEPRECATED DLL USAGE
@@ -36,11 +39,10 @@ namespace WindowsFormsApplication1
         }
         */
         public static String encryptExpression(String expression, String key)
-        {   
+        {
             //using (FileStream stream = File.Create("return")) { } //create file and close stream automatically
             if (key.Contains("steg") && !key.Contains(Program.mediaFilePath)) //check if file is specified in key
                 key += "=" + Program.mediaFilePath;
-            Boolean isDebugging = false;
             #region Create headless backend exe process
             Process backend = new Process();
             backend.StartInfo.FileName = "backend.exe";
@@ -52,12 +54,17 @@ namespace WindowsFormsApplication1
             backend.StartInfo.RedirectStandardError = true;
             backend.StartInfo.RedirectStandardInput = true;
             backend.StartInfo.RedirectStandardOutput = true;
+            currentBackendProcess = backend;
             backend.Start();
             backend.WaitForExit();
-            if (isDebugging)
-                return backend.StandardError.ReadToEnd();
             #endregion
             //getEncrypted(expressionData, keyData, Program.usingFile);
+            String errors = backend.StandardError.ReadToEnd();
+            if(!errors.Equals(""))
+            {
+                if (MessageBox.Show("An error occured during your last encryption run. Display the message?", "Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    MessageBox.Show(errors, "Error Details");
+            }
             return backend.StandardOutput.ReadToEnd();
             /*
             string encrypted;
@@ -72,25 +79,29 @@ namespace WindowsFormsApplication1
             //using (FileStream stream = File.Create("return")) { } //create file and close stream 
             if (key.Contains("steg") && !key.Contains(Program.mediaFilePath)) //check if file is specified in key
                 key += "=" + Program.mediaFilePath;
-            Boolean isDebugging = false;
             //getDecrypted(ciphertextData, keyData, Program.usingFile);
             #region Create headless backend exe process
             Process backend = new Process();
             backend.StartInfo.FileName = "backend.exe";
             backend.StartInfo.Arguments = "\"" + ciphertext + "\" \"" + key + "\" 1 " + (Program.usingFile ? "1" : "0");
             backend.StartInfo.UseShellExecute = false;
-            backend.StartInfo.CreateNoWindow = !isDebugging;
-            backend.StartInfo.WindowStyle = !isDebugging ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Normal;
+            backend.StartInfo.CreateNoWindow = true;
+            backend.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             backend.StartInfo.LoadUserProfile = true;
             backend.StartInfo.RedirectStandardError = true;
             backend.StartInfo.RedirectStandardInput = true;
             backend.StartInfo.RedirectStandardOutput = true;
+            currentBackendProcess = backend;
             backend.Start();
             backend.WaitForExit();
             #endregion
-            if (isDebugging)
-                return backend.StandardError.ReadToEnd();
-
+            String errors = backend.StandardError.ReadToEnd();
+            if (!errors.Equals(""))
+            {
+                if (MessageBox.Show("An error occured during your last encryption run. Display the message?", "Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    MessageBox.Show(errors, "Error Details");
+            }
+        
             return backend.StandardOutput.ReadToEnd();
             /*
             string decrypted;

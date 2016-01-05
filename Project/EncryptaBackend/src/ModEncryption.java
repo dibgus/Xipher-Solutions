@@ -24,7 +24,9 @@ public class ModEncryption {
                     e.printStackTrace();
                 }
                 break;
-
+            default:
+                System.err.println("Could not find encryption operation: " + command[0]);
+                break;
         }
         return evaluated;
     }

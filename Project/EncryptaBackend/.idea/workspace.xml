@@ -7,8 +7,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="550c49f2-2892-46a3-af61-df57f80c15e5" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Encrypta/Encrypta/Backend.exe" afterPath="$PROJECT_DIR$/../Encrypta/Encrypta/Backend.exe" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/ModObfuscate.class" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/ModObfuscate.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Encrypta/Encrypta/BackendHandler.cs" afterPath="$PROJECT_DIR$/../Encrypta/Encrypta/BackendHandler.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Encrypta/Encrypta/Encrypta.Designer.cs" afterPath="$PROJECT_DIR$/../Encrypta/Encrypta/Encrypta.Designer.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Encrypta/Encrypta/Encrypta.cs" afterPath="$PROJECT_DIR$/../Encrypta/Encrypta/Encrypta.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/src/ModObfuscate.java" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/src/ModObfuscate.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/InputHandler.java" afterPath="$PROJECT_DIR$/src/InputHandler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ModEncryption.java" afterPath="$PROJECT_DIR$/src/ModEncryption.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ModObfuscate.java" afterPath="$PROJECT_DIR$/src/ModObfuscate.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ModSteganography.java" afterPath="$PROJECT_DIR$/src/ModSteganography.java" />
     </list>
     <ignored path="EncryptaBackend.iws" />
@@ -39,31 +47,31 @@
         <entry file="file://$PROJECT_DIR$/src/ModObfuscate.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="3" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
+              <caret line="32" column="22" selection-start-line="32" selection-start-column="22" selection-end-line="32" selection-end-column="22" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InputHandler.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="InputHandler.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/InputHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.7272725">
-              <caret line="44" column="62" selection-start-line="44" selection-start-column="62" selection-end-line="44" selection-end-column="62" />
+            <state vertical-scroll-proportion="2.632653">
+              <caret line="94" column="24" selection-start-line="94" selection-start-column="24" selection-end-line="94" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5490#5491#0" expanded="true" />
-                <element signature="e#5533#5534#0" expanded="true" />
+                <element signature="e#5475#5476#0" expanded="true" />
+                <element signature="e#5518#5519#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ModEncryption.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ModEncryption.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ModEncryption.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.57865167">
-              <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="27" column="89" selection-start-line="27" selection-start-column="89" selection-end-line="27" selection-end-column="89" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -85,9 +93,9 @@
         <entry file="file://$PROJECT_DIR$/src/ModSteganography.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="31" column="20" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="20" />
+              <caret line="32" column="74" selection-start-line="32" selection-start-column="74" selection-end-line="32" selection-end-column="74" />
               <folding>
-                <element signature="e#0#7025#0" expanded="true" />
+                <element signature="e#0#7048#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -124,14 +132,14 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="C:/Program Files/Java/jdk1.8.0_40/src.zip!/java/lang/String.java" />
-        <option value="$PROJECT_DIR$/src/ModObfuscate.java" />
         <option value="$PROJECT_DIR$/src/Converter.java" />
         <option value="C:/Program Files/Java/jdk1.8.0_40/src.zip!/java/lang/NumberFormatException.java" />
         <option value="$PROJECT_DIR$/src/ModEncrypt.java" />
         <option value="C:/Program Files/Java/jdk1.8.0_40/src.zip!/java/io/BufferedInputStream.java" />
+        <option value="$PROJECT_DIR$/src/ModObfuscate.java" />
         <option value="$PROJECT_DIR$/src/BackendTester.java" />
-        <option value="$PROJECT_DIR$/src/ModSteganography.java" />
         <option value="$PROJECT_DIR$/src/ModEncryption.java" />
+        <option value="$PROJECT_DIR$/src/ModSteganography.java" />
         <option value="$PROJECT_DIR$/src/InputHandler.java" />
       </list>
     </option>
@@ -834,12 +842,12 @@
       <workItem from="1451055488884" duration="3365000" />
       <workItem from="1451688810938" duration="182000" />
       <workItem from="1451690022271" duration="9361000" />
-      <workItem from="1451745222621" duration="29534000" />
+      <workItem from="1451745222621" duration="32508000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="93179000" />
+    <option name="totallyTimeSpent" value="96153000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="1924" height="1042" extended-state="0" />
@@ -944,7 +952,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#7025#0" expanded="true" />
+            <element signature="e#0#7048#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -955,8 +963,8 @@
           <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5490#5491#0" expanded="true" />
-            <element signature="e#5533#5534#0" expanded="true" />
+            <element signature="e#5475#5476#0" expanded="true" />
+            <element signature="e#5518#5519#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -997,7 +1005,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="150" column="9" selection-start-line="150" selection-start-column="9" selection-end-line="150" selection-end-column="9" />
           <folding>
-            <element signature="e#0#7025#0" expanded="true" />
+            <element signature="e#0#7048#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1008,8 +1016,8 @@
           <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5490#5491#0" expanded="true" />
-            <element signature="e#5533#5534#0" expanded="true" />
+            <element signature="e#5475#5476#0" expanded="true" />
+            <element signature="e#5518#5519#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1043,7 +1051,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="150" column="9" selection-start-line="150" selection-start-column="9" selection-end-line="150" selection-end-column="9" />
           <folding>
-            <element signature="e#0#7025#0" expanded="true" />
+            <element signature="e#0#7048#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1054,8 +1062,8 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5490#5491#0" expanded="true" />
-            <element signature="e#5533#5534#0" expanded="true" />
+            <element signature="e#5475#5476#0" expanded="true" />
+            <element signature="e#5518#5519#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1106,8 +1114,8 @@
           <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5490#5491#0" expanded="true" />
-            <element signature="e#5533#5534#0" expanded="true" />
+            <element signature="e#5475#5476#0" expanded="true" />
+            <element signature="e#5518#5519#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1117,7 +1125,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="150" column="9" selection-start-line="150" selection-start-column="9" selection-end-line="150" selection-end-column="9" />
           <folding>
-            <element signature="e#0#7025#0" expanded="true" />
+            <element signature="e#0#7048#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1152,8 +1160,8 @@
           <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5490#5491#0" expanded="true" />
-            <element signature="e#5533#5534#0" expanded="true" />
+            <element signature="e#5475#5476#0" expanded="true" />
+            <element signature="e#5518#5519#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1163,7 +1171,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#7025#0" expanded="true" />
+            <element signature="e#0#7048#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1198,8 +1206,8 @@
           <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5490#5491#0" expanded="true" />
-            <element signature="e#5533#5534#0" expanded="true" />
+            <element signature="e#5475#5476#0" expanded="true" />
+            <element signature="e#5518#5519#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1234,8 +1242,8 @@
           <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5490#5491#0" expanded="true" />
-            <element signature="e#5533#5534#0" expanded="true" />
+            <element signature="e#5475#5476#0" expanded="true" />
+            <element signature="e#5518#5519#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1262,8 +1270,8 @@
           <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5490#5491#0" expanded="true" />
-            <element signature="e#5533#5534#0" expanded="true" />
+            <element signature="e#5475#5476#0" expanded="true" />
+            <element signature="e#5518#5519#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1316,14 +1324,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ModObfuscate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="3" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_40/src.zip!/java/io/BufferedInputStream.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
@@ -1340,6 +1340,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ModObfuscate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="32" column="22" selection-start-line="32" selection-start-column="22" selection-end-line="32" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/BackendTester.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1351,9 +1359,19 @@
     <entry file="file://$PROJECT_DIR$/src/ModSteganography.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="31" column="20" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="20" />
+          <caret line="32" column="74" selection-start-line="32" selection-start-column="74" selection-end-line="32" selection-end-column="74" />
           <folding>
-            <element signature="e#0#7025#0" expanded="true" />
+            <element signature="e#0#7048#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ModEncryption.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="89" selection-start-line="27" selection-start-column="89" selection-end-line="27" selection-end-column="89" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1368,22 +1386,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/InputHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.7272725">
-          <caret line="44" column="62" selection-start-line="44" selection-start-column="62" selection-end-line="44" selection-end-column="62" />
+        <state vertical-scroll-proportion="2.632653">
+          <caret line="94" column="24" selection-start-line="94" selection-start-column="24" selection-end-line="94" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5490#5491#0" expanded="true" />
-            <element signature="e#5533#5534#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ModEncryption.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.57865167">
-          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#5475#5476#0" expanded="true" />
+            <element signature="e#5518#5519#0" expanded="true" />
           </folding>
         </state>
       </provider>

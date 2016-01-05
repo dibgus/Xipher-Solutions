@@ -32,7 +32,7 @@ public class ModObfuscate  {
                 encrypted = xorCipher(expression, command[1]);
                 break;
             default:
-                System.out.println("Could not find obfuscation function: " + command[0]);
+                System.err.println("Could not find obfuscation function: " + command[0]);
                 break;
         }
         return encrypted;

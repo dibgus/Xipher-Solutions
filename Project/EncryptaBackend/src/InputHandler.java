@@ -93,7 +93,7 @@ public abstract class InputHandler
                     encryptedExpression = ModEncryption.performOperation(encryptedExpression, function, isEncrypting);
                     break;
                 default:
-                    System.err.println("ERROR IN MODULE SPECIFICATION: " + module);
+                    System.err.println("Unknown module: " + module);
                     break;
             }
             if(isEncrypting)
