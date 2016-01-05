@@ -40,6 +40,7 @@
             this.btnToggleEncryption = new System.Windows.Forms.Button();
             this.btnSelectFile = new System.Windows.Forms.Button();
             this.txtPath = new System.Windows.Forms.TextBox();
+            this.ckbxDebug = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // txtInput
@@ -159,11 +160,22 @@
             this.txtPath.TabIndex = 16;
             this.txtPath.Visible = false;
             // 
+            // ckbxDebug
+            // 
+            this.ckbxDebug.AutoSize = true;
+            this.ckbxDebug.Location = new System.Drawing.Point(11, 230);
+            this.ckbxDebug.Name = "ckbxDebug";
+            this.ckbxDebug.Size = new System.Drawing.Size(133, 24);
+            this.ckbxDebug.TabIndex = 17;
+            this.ckbxDebug.Text = "(DEBUG) CLI";
+            this.ckbxDebug.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(545, 364);
+            this.Controls.Add(this.ckbxDebug);
             this.Controls.Add(this.txtPath);
             this.Controls.Add(this.btnSelectFile);
             this.Controls.Add(this.btnToggleEncryption);
@@ -196,6 +208,7 @@
         private System.Windows.Forms.Button btnToggleEncryption;
         private System.Windows.Forms.Button btnSelectFile;
         private System.Windows.Forms.TextBox txtPath;
+        private System.Windows.Forms.CheckBox ckbxDebug;
     }
 }
 

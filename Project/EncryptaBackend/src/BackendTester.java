@@ -25,6 +25,7 @@ public class BackendTester {
                 try {
                     FileWriter writer = new FileWriter(outFile);
                     writer.write(encrypted);
+                    writer.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

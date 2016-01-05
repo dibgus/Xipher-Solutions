@@ -2,9 +2,12 @@
  * Created by ikrukov on 12/5/2015.
  * The main entry point for all input and output operations of Encrypta
  */
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
-
+import java.nio.file.Files;
+import java.nio.file.FileSystems;
 public abstract class InputHandler
 {
     /**
@@ -100,21 +103,16 @@ public abstract class InputHandler
     {
         key = sanitizeKey(key);
         String returnFilePath = filePath + ".crypt";
-        String fileData = ""; //the raw file data that will be modified
-        try {
-            BufferedReader inputFile = new BufferedReader(new FileReader(filePath));
-            while(inputFile.read() > 0)
-            {
-                fileData += inputFile.readLine();
-            }
-        } catch (Exception e) { //IOException or FileNotFound
-            e.printStackTrace();
-        }
-        System.out.println(fileData);
-        String newData = getEvaluatedExpression(fileData, key, isEncrypting); //evaluate the file data
-        try {
-            BufferedWriter evaluatedFile = new BufferedWriter(new FileWriter(returnFilePath)); //write to a .crypt file
-            evaluatedFile.write(newData);
+        try
+        {
+            byte[] data = Files.readAllBytes(FileSystems.getDefault().getPath("", filePath));
+            String fileData = new String(data);
+
+            String newData = getEvaluatedExpression(fileData, key, isEncrypting); //evaluate the file data
+
+            BufferedOutputStream evaluatedFile = new BufferedOutputStream(new FileOutputStream(returnFilePath)); //write to a .crypt file
+            evaluatedFile.write(newData.getBytes());
+            evaluatedFile.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

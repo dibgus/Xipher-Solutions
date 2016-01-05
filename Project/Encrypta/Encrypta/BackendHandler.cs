@@ -40,19 +40,22 @@ namespace WindowsFormsApplication1
             using (FileStream stream = File.Create("return")) { } //create file and close stream automatically
             if (key.Contains("steg") && !key.Contains(Program.mediaFilePath)) //check if file is specified in key
                 key += "=" + Program.mediaFilePath;
+            Boolean isDebugging = false;
             #region Create headless backend exe process
             Process backend = new Process();
             backend.StartInfo.FileName = "backend.exe";
             backend.StartInfo.Arguments = "\"" + expression + "\" \"" + key + "\" 1 " + (Program.usingFile ? "1" : "0");
             backend.StartInfo.UseShellExecute = false;
-            backend.StartInfo.CreateNoWindow = true;
-            backend.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            backend.StartInfo.CreateNoWindow = isDebugging;
+            backend.StartInfo.WindowStyle = isDebugging ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Normal;
             backend.StartInfo.LoadUserProfile = true;
             backend.StartInfo.RedirectStandardError = true;
-            backend.StartInfo.RedirectStandardInput = true;
-            backend.StartInfo.RedirectStandardOutput = true;
+            backend.StartInfo.RedirectStandardInput = isDebugging;
+            backend.StartInfo.RedirectStandardOutput = isDebugging;
             backend.Start();
             backend.WaitForExit();
+            if (true)
+                return backend.StandardError.ReadLine();
             #endregion
             //getEncrypted(expressionData, keyData, Program.usingFile);
             string encrypted;
@@ -66,18 +69,19 @@ namespace WindowsFormsApplication1
             using (FileStream stream = File.Create("return")) { } //create file and close stream 
             if (key.Contains("steg") && !key.Contains(Program.mediaFilePath)) //check if file is specified in key
                 key += "=" + Program.mediaFilePath;
+            Boolean isDebugging = false;
             //getDecrypted(ciphertextData, keyData, Program.usingFile);
             #region Create headless backend exe process
             Process backend = new Process();
             backend.StartInfo.FileName = "backend.exe";
             backend.StartInfo.Arguments = "\"" + ciphertext + "\" \"" + key + "\" 1 " + (Program.usingFile ? "1" : "0");
             backend.StartInfo.UseShellExecute = false;
-            backend.StartInfo.CreateNoWindow = true;
-            backend.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            backend.StartInfo.CreateNoWindow = isDebugging;
+            backend.StartInfo.WindowStyle = isDebugging ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Normal;
             backend.StartInfo.LoadUserProfile = true;
-            backend.StartInfo.RedirectStandardError = true;
-            backend.StartInfo.RedirectStandardInput = true;
-            backend.StartInfo.RedirectStandardOutput = true;
+            backend.StartInfo.RedirectStandardError = isDebugging;
+            backend.StartInfo.RedirectStandardInput = isDebugging;  
+            backend.StartInfo.RedirectStandardOutput = isDebugging;
             backend.Start();
             backend.WaitForExit();
             #endregion
