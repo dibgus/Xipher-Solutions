@@ -5,7 +5,7 @@
  */
 import org.jasypt.util.text.*; //preset strong and basic preset operations
 
-public class ModEncryption {
+class ModEncryption {
     public static String performOperation(String expression, String flag, boolean encrypting)
     {
         String evaluated = "";
@@ -24,32 +24,34 @@ public class ModEncryption {
                     e.printStackTrace();
                 }
                 break;
-
+            default:
+                System.err.println("Could not find encryption operation: " + command[0]);
+                break;
         }
         return evaluated;
     }
 
-    public static String useBasicEncryption(String expression, String hash)
+    private static String useBasicEncryption(String expression, String hash)
     {
         BasicTextEncryptor encryptor = new BasicTextEncryptor();
         encryptor.setPassword(hash);
         return encryptor.encrypt(expression);
     }
 
-    public static String useStrongEncryption(String expression, String hash)
+    private static String useStrongEncryption(String expression, String hash)
     {
         StrongTextEncryptor encryptor = new StrongTextEncryptor();
         encryptor.setPassword(hash);
         return encryptor.encrypt(expression);
     }
-    public static String useBasicDecryption(String expression, String hash)
+    private static String useBasicDecryption(String expression, String hash)
     {
         BasicTextEncryptor decryptor = new BasicTextEncryptor();
         decryptor.setPassword(hash);
         return decryptor.decrypt(expression);
     }
 
-    public static String useStrongDecryption(String expression, String hash)
+    private static String useStrongDecryption(String expression, String hash)
     {
         StrongTextEncryptor decryptor = new StrongTextEncryptor();
         decryptor.setPassword(hash);

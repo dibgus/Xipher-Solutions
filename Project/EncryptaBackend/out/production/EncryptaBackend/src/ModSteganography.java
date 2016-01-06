@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class ModSteganography {
+class ModSteganography {
     public static String performOperation(String expression, String flag, boolean encrypting) throws IOException
     {
         String evaluated = "";
@@ -30,7 +30,7 @@ public class ModSteganography {
                     evaluated = extractCosCurve(expression);
 
             default:
-                System.err.println("No module found: " + command[0]);
+                System.err.println("Could not find steganography operation: " + command[0]);
                 break;
         }
 
@@ -46,7 +46,7 @@ public class ModSteganography {
      * @throws IOException: The image specified in filePath does not exist
      * @throws IOException: The application could not successfully find the provided image's extension (or it is unsupported by ImageIO)
      */
-    public static String storeInLSB(String expression, String filePath) throws IOException
+    private static String storeInLSB(String expression, String filePath) throws IOException
     {
         BufferedImage storageImage = ImageIO.read(new File(filePath));
         String expressionBinary = "";
@@ -116,7 +116,7 @@ public class ModSteganography {
         return "Data has been stored in " + sourceImage.getPath();
     }
 
-    public static String extractLSB(String filePath) throws IOException
+    private static String extractLSB(String filePath) throws IOException
     {
         String binaryExtracted = "";
         BufferedImage source = ImageIO.read(new File(filePath));
@@ -145,6 +145,8 @@ public class ModSteganography {
                         lsb = (short)(readPixel.getBlue() % 2);
                         break;
                 }
+                if(lsb == 0)
+                    numNullTerm++;
                 binaryExtracted += lsb;
                 component++;
             }
@@ -153,12 +155,12 @@ public class ModSteganography {
     }
 
     //TODO implement methods involving cosine curves (may be more complex than I think it will be
-    public static String storeInCosCurve(String expresion, String filePath)
+    private static String storeInCosCurve(String expression, String filePath)
     {
 
         return "";
     }
-    public static String extractCosCurve(String expression)
+    private static String extractCosCurve(String expression)
     {
 
         return "";

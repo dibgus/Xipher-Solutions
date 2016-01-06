@@ -6,7 +6,7 @@
  * Functions: rev|crc=#|evo|tnc=#*#|skh|xor=""
  */
 
-public class ModObfuscate  {
+class ModObfuscate  {
     public static String performOperation(String expression, String flag, boolean encrypting)
     {
         String encrypted = expression;
@@ -38,7 +38,7 @@ public class ModObfuscate  {
         return encrypted;
     }
 
-    public static String xorCipher(String expression, String xorKey)
+    private static String xorCipher(String expression, String xorKey)
     {
         String binaryKey = "";
         for(int i = 0; i < xorKey.length(); i++)
@@ -62,7 +62,7 @@ public class ModObfuscate  {
         return Converter.binaryStringToString(evaluatedBinary);
     }
 
-    public static String skipHop(String expression)
+    private static String skipHop(String expression)
     {
         String evaluated = "";
         for(int i = 1; i < expression.length(); i+=2)
@@ -74,7 +74,7 @@ public class ModObfuscate  {
         return evaluated;
     }
 
-    public static String caesarCipher(String expression, int shift)
+    private static String caesarCipher(String expression, int shift)
     {
         String evaluated = "";
         for(int i = 0; i < expression.length(); i++)
@@ -82,7 +82,7 @@ public class ModObfuscate  {
         return evaluated;
     }
 
-    public static String reverseExpression(String expression)
+    private static String reverseExpression(String expression)
     {
         String evaluated = "";
         for(int i = expression.length() - 1; i >= 0; i--)
@@ -90,7 +90,7 @@ public class ModObfuscate  {
         return evaluated;
     }
 
-    public static String everyOther(String expression, boolean encrypting)
+    private static String everyOther(String expression, boolean encrypting)
     {
         String evaluated = "";
         if (encrypting)
@@ -115,7 +115,7 @@ public class ModObfuscate  {
         return evaluated;
     }
 
-    public static String transpositionCipher(String expression, String parameters, boolean encrypting)
+    private static String transpositionCipher(String expression, String parameters, boolean encrypting)
     {
         String evaluated = "";
         int x = Integer.parseInt(parameters.split("\\*")[0]), y = Integer.parseInt(parameters.split("\\*")[1]);

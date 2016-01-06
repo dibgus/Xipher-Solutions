@@ -5,10 +5,9 @@
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.nio.file.Files;
 import java.nio.file.FileSystems;
-public abstract class InputHandler
+abstract class InputHandler
 {
     /**
      * This main method is to satisfy IKVM's .net executable generation.
@@ -30,7 +29,7 @@ public abstract class InputHandler
      * @param isEncrypting Whether or not the data is being encrypted or decrypted
      * @param isFile Whether or not expression is a file path
      */
-    public static void passEncryptedData(String expression, String key, boolean isEncrypting, boolean isFile)
+    private static void passEncryptedData(String expression, String key, boolean isEncrypting, boolean isFile)
     {
        // try {
             /*
@@ -93,7 +92,7 @@ public abstract class InputHandler
                     encryptedExpression = ModEncryption.performOperation(encryptedExpression, function, isEncrypting);
                     break;
                 default:
-                    System.err.println("ERROR IN MODULE SPECIFICATION: " + module);
+                    System.err.println("Unknown module: " + module);
                     break;
             }
             if(isEncrypting)
