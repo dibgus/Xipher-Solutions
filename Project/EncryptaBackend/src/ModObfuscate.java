@@ -38,6 +38,37 @@ class ModObfuscate  {
         return encrypted;
     }
 
+    public static byte[] performOperation(byte[] fileData, String flag, boolean encrypting)
+    {
+        byte[] encrypted = fileData;
+        String[] command = InputHandler.handleKey(flag, "="); //command[0] -> the command to be run; command[1] -> parameters
+        switch(command[0])
+        {
+            case "rev":
+                encrypted = reverseExpression(fileData);
+                break;
+            case "crc":
+                encrypted = caesarCipher(fileData, encrypting ? Integer.parseInt(command[1]) : -1 * Integer.parseInt(command[1]));
+                break;
+            case "evo":
+                encrypted = everyOther(fileData, encrypting);
+                break;
+            case "tnc":
+                encrypted = Converter.convertToPrimative(transpositionCipher(fileData, command[1], encrypting));
+                break;
+            case "skh":
+                encrypted = skipHop(fileData);
+                break;
+            case "xor":
+                encrypted = xorCipher(fileData, command[1]);
+                break;
+            default:
+                System.err.println("Could not find obfuscation function: " + command[0]);
+                break;
+        }
+        return encrypted;
+    }
+
     private static String xorCipher(String expression, String xorKey)
     {
         String binaryKey = "";
@@ -158,26 +189,15 @@ class ModObfuscate  {
 
     private static byte[] xorCipher(byte[] fileData, String xorKey)
     {
-        String binaryKey = "";
-        for(int i = 0; i < xorKey.length(); i++)
-            binaryKey += Converter.intToBinaryString(xorKey.charAt(i));
-        String binaryExpression = "";
-        for(int i = 0; i < expression.length(); i++)
-            binaryExpression += Converter.intToBinaryString(expression.charAt(i));
+        byte[] evaluated = new byte[fileData.length];
         int keyIndex = 0; //the index the key will be reading, this loops through constantly throughout
-        String evaluatedBinary = "";
-        for(int i = 0; i < binaryExpression.length(); i++) {
-            if (binaryExpression.charAt(i) == '1' && binaryKey.charAt(keyIndex) == '1')
-                evaluatedBinary += '0';
-            else if(binaryExpression.charAt(i) == '1' || binaryKey.charAt(keyIndex) == '1')
-                evaluatedBinary += '1';
-            else
-                evaluatedBinary += '0';
+        for(int i = 0; i < fileData.length; i++) {
+            evaluated[i] = (byte)(fileData[i] ^ (byte)xorKey.charAt(keyIndex)); //bitwise xor operator
             keyIndex++;
-            if (keyIndex >= binaryKey.length())
+            if (keyIndex >= xorKey.length())
                 keyIndex = 0;
         }
-        return Converter.binaryStringToString(evaluatedBinary);
+        return evaluated;
     }
 
     private static byte[] skipHop(byte[] fileData)
@@ -195,12 +215,17 @@ class ModObfuscate  {
             evaluated[index] = fileData[fileData.length - 1];
         return evaluated;
     }
-
+    //TODO test caesar cipher with some test bytes
     private static byte[] caesarCipher(byte[] fileData, int shift)
     {
         byte[] evaluated = new byte[fileData.length];
-        for(int i = 0; i < expression.length(); i++)
-            evaluated += (char)(expression.charAt(i) + shift);
+        int index = 0;
+        for(int i = 0; i < fileData.length; i++, index++)
+        {
+            if(shift + fileData[i] > Byte.MAX_VALUE || shift + fileData[i] < Byte.MIN_VALUE)
+                evaluated[index] = (byte)((fileData[i] + shift) % Byte.MAX_VALUE);
+            evaluated[index] = (byte)(fileData[i] + shift);
+        }
         return evaluated;
     }
 
@@ -234,7 +259,7 @@ class ModObfuscate  {
                 }
                 else
                 {
-                    evaluated[index] += fileData[i]
+                    evaluated[index] += fileData[i];
                     evaluated[index + 1] = fileData[i + fileData.length / 2 + 1];
                 }
             }
@@ -244,7 +269,7 @@ class ModObfuscate  {
         return evaluated;
     }
 
-    private static byte[] transpositionCipher(byte[] fileData, String parameters, boolean encrypting)
+    private static Byte[] transpositionCipher(byte[] fileData, String parameters, boolean encrypting)
     {
         ArrayList<Byte> evaluated = new ArrayList<Byte>();
         int x = Integer.parseInt(parameters.split("\\*")[0]), y = Integer.parseInt(parameters.split("\\*")[1]);
@@ -276,7 +301,7 @@ class ModObfuscate  {
 
         if(!encrypting && evaluated.indexOf((byte)3000) != -1)
             evaluated = (ArrayList<Byte>)evaluated.subList(0, evaluated.indexOf((byte)3000)); //TODO don't hardcode this
-        return evaluated.toArray();
+        return (Byte[])evaluated.toArray();
     }
 
 
