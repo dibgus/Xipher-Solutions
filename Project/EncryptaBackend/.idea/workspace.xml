@@ -7,22 +7,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="550c49f2-2892-46a3-af61-df57f80c15e5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ModOther.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/Converter.class" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/Converter.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/InputHandler.class" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/InputHandler.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/ModEncryption.class" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/ModEncryption.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/ModObfuscate.class" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/ModObfuscate.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/ModSteganography.class" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/ModSteganography.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../.gitignore" afterPath="$PROJECT_DIR$/../../.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/.idea/workspace.xml" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/src/Converter.java" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/src/Converter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/src/InputHandler.java" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/src/InputHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/src/ModEncryption.java" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/src/ModEncryption.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/src/ModObfuscate.java" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/src/ModObfuscate.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/src/ModSteganography.java" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/src/ModSteganography.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/InputHandler.java" afterPath="$PROJECT_DIR$/src/InputHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ModEncryption.java" afterPath="$PROJECT_DIR$/src/ModEncryption.java" />
     </list>
     <ignored path="EncryptaBackend.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -60,10 +49,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InputHandler.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="InputHandler.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/InputHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="9.022388">
               <caret line="212" column="5" selection-start-line="212" selection-start-column="5" selection-end-line="212" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -85,10 +74,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ModOther.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ModOther.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ModOther.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.32649255">
+            <state vertical-scroll-proportion="0.0">
               <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
               <folding />
             </state>
@@ -885,12 +874,12 @@
       <workItem from="1452184448785" duration="2262000" />
       <workItem from="1452268927071" duration="5482000" />
       <workItem from="1452613411302" duration="4579000" />
-      <workItem from="1452787165192" duration="2234000" />
+      <workItem from="1452787165192" duration="2953000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="119236000" />
+    <option name="totallyTimeSpent" value="119955000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="1942" height="1042" extended-state="6" />
@@ -1349,6 +1338,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.49156117">
           <caret line="647" column="0" selection-start-line="647" selection-start-column="0" selection-end-line="647" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1387,26 +1377,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ModObfuscate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="202" column="29" selection-start-line="202" selection-start-column="29" selection-end-line="202" selection-end-column="29" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/InputHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="212" column="5" selection-start-line="212" selection-start-column="5" selection-end-line="212" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Converter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1435,6 +1405,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ModOther.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ModObfuscate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="202" column="29" selection-start-line="202" selection-start-column="29" selection-end-line="202" selection-end-column="29" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ModEncryption.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1446,11 +1434,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ModOther.java">
+    <entry file="file://$PROJECT_DIR$/src/InputHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32649255">
-          <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
-          <folding />
+        <state vertical-scroll-proportion="9.022388">
+          <caret line="212" column="5" selection-start-line="212" selection-start-column="5" selection-end-line="212" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

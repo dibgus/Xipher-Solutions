@@ -38,6 +38,8 @@
             this.txtFilePath = new System.Windows.Forms.TextBox();
             this.btnSelectFile = new System.Windows.Forms.Button();
             this.btnGenerateHash = new System.Windows.Forms.Button();
+            this.btnHashCipher = new System.Windows.Forms.Button();
+            this.ckbxIsHash = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // txtCipher
@@ -135,11 +137,34 @@
             this.btnGenerateHash.UseVisualStyleBackColor = true;
             this.btnGenerateHash.Click += new System.EventHandler(this.btnGenerateHash_Click);
             // 
+            // btnHashCipher
+            // 
+            this.btnHashCipher.Location = new System.Drawing.Point(267, 142);
+            this.btnHashCipher.Name = "btnHashCipher";
+            this.btnHashCipher.Size = new System.Drawing.Size(122, 66);
+            this.btnHashCipher.TabIndex = 13;
+            this.btnHashCipher.Text = "Create Hash From Cipher";
+            this.btnHashCipher.UseVisualStyleBackColor = true;
+            this.btnHashCipher.Click += new System.EventHandler(this.btnHashCipher_Click);
+            // 
+            // ckbxIsHash
+            // 
+            this.ckbxIsHash.AutoSize = true;
+            this.ckbxIsHash.Location = new System.Drawing.Point(140, 123);
+            this.ckbxIsHash.Name = "ckbxIsHash";
+            this.ckbxIsHash.Size = new System.Drawing.Size(138, 24);
+            this.ckbxIsHash.TabIndex = 14;
+            this.ckbxIsHash.Text = "Cipher is Hash";
+            this.ckbxIsHash.UseVisualStyleBackColor = true;
+            this.ckbxIsHash.CheckedChanged += new System.EventHandler(this.ckbxIsHash_CheckedChanged);
+            // 
             // SetCipher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(401, 265);
+            this.Controls.Add(this.ckbxIsHash);
+            this.Controls.Add(this.btnHashCipher);
             this.Controls.Add(this.btnGenerateHash);
             this.Controls.Add(this.btnSelectFile);
             this.Controls.Add(this.txtFilePath);
@@ -169,5 +194,7 @@
         private System.Windows.Forms.TextBox txtFilePath;
         private System.Windows.Forms.Button btnSelectFile;
         private System.Windows.Forms.Button btnGenerateHash;
+        private System.Windows.Forms.Button btnHashCipher;
+        private System.Windows.Forms.CheckBox ckbxIsHash;
     }
 }
