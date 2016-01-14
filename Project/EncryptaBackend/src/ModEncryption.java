@@ -5,6 +5,7 @@
  */
 import org.jasypt.digest.StandardByteDigester;
 import org.jasypt.digest.StandardStringDigester;
+import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
 import org.jasypt.util.text.*; //preset strong and basic preset operations
 class ModEncryption {
     public static String performOperation(String expression, String flag, boolean encrypting)
@@ -43,12 +44,11 @@ class ModEncryption {
         switch(command[0])
         {
             case "basic":
-                return encrypting ? useBasicEncryption(expression, command[1]) : useBasicDecryption(expression, command[1]);
-                break;
+                return encrypting ? useBasicEncryption(fileData, command[1]) : useBasicDecryption(fileData, command[1]);
             case "strong":
                 try
                 {
-                    return encrypting ? useStrongEncryption(expression, command[1]) : useStrongDecryption(expression, command[1]);
+                    return encrypting ? useStrongEncryption(fileData, command[1]) : useStrongDecryption(fileData, command[1]);
                 } catch (org.jasypt.exceptions.EncryptionOperationNotPossibleException e) {
                     System.err.println("ERROR: JCE utilities are not installed on this machine, cannot use strong");
                     e.printStackTrace();
@@ -56,17 +56,17 @@ class ModEncryption {
                 break;
             case "digest":
                 if(encrypting)
-                    return digestData(expression, Integer.parseInt(command[1]));
+                    return digestData(fileData, Integer.parseInt(command[1]));
                 else
                 {
                     System.err.println("(Encryption)Error: Cannot decrypt data which has been irreversably encrypted with digest");
                     return fileData;
                 }
                 default:
-                System.err.println("Could not find encryption operation: " + command[0]);
-                return fileData;
-                break;
+                    System.err.println("Could not find encryption operation: " + command[0]);
+                    break;
         }
+        return fileData;
     }
 
     private static String useBasicEncryption(String expression, String hash)
@@ -104,32 +104,36 @@ class ModEncryption {
         return digester.digest(expression);
     }
 
-
+/* Encryption for files */
     private static byte[] useBasicEncryption(byte[] fileData, String hash)
     {
-        BasicTextEncryptor encryptor = new BasicTextEncryptor();
+        StandardPBEByteEncryptor encryptor = new StandardPBEByteEncryptor();
         encryptor.setPassword(hash);
-        return encryptor.encrypt(expression);
+        encryptor.setAlgorithm("AES-128");
+        return encryptor.encrypt(fileData);
     }
 
-    private static byte[] useStrongEncryption(byte[] expression, String hash)
+    private static byte[] useStrongEncryption(byte[] fileData, String hash)
     {
-        StrongTextEncryptor encryptor = new StrongTextEncryptor();
+        StandardPBEByteEncryptor encryptor = new StandardPBEByteEncryptor();
         encryptor.setPassword(hash);
-        return encryptor.encrypt(expression);
+        encryptor.setAlgorithm("AES");
+        return encryptor.encrypt(fileData);
     }
-    private static byte[] useBasicDecryption(byte[] expression, String hash)
+    private static byte[] useBasicDecryption(byte[] fileData, String hash)
     {
-        BasicTextEncryptor decryptor = new BasicTextEncryptor();
+        StandardPBEByteEncryptor decryptor = new StandardPBEByteEncryptor();
         decryptor.setPassword(hash);
-        return decryptor.decrypt(expression);
+        decryptor.setAlgorithm("AES-128");
+        return decryptor.decrypt(fileData);
     }
 
-    private static byte[] useStrongDecryption(byte[] expression, String hash)
+    private static byte[] useStrongDecryption(byte[] fileData, String hash)
     {
-        StrongTextEncryptor decryptor = new StrongTextEncryptor();
+        StandardPBEByteEncryptor decryptor = new StandardPBEByteEncryptor();
         decryptor.setPassword(hash);
-        return decryptor.decrypt(expression);
+        decryptor.setAlgorithm("AES-128");
+        return decryptor.decrypt(fileData);
     }
 
     private static byte[] digestData(byte[] expression, int iterations)

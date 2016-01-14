@@ -148,8 +148,7 @@ abstract class InputHandler
                     }
                     break;
                 case ("encr"):
-                    temp = ModEncryption.performOperation()
-                    encryptedExpression = ModEncryption.performOperation(encryptedExpression, function, isEncrypting);
+                    temp = ModEncryption.performOperation(Converter.convertToPrimative((Byte[])encryptedData.toArray()), function, isEncrypting);
                     encryptedData.clear();
                     for(int j = 0; j < temp.length; i++) //load return array into the arraylist
                         encryptedData.add(temp[i]);
