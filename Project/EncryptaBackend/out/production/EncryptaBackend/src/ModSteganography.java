@@ -49,41 +49,41 @@ class ModSteganography {
     private static String storeInLSB(String expression, String filePath) throws IOException
     {
         BufferedImage storageImage = ImageIO.read(new File(filePath));
+        BufferedImage debugImage = ImageIO.read(new File(filePath));
         String expressionBinary = "";
         for(int i = 0; i < expression.length(); i++)
-            expressionBinary = Converter.intToBinaryString(expression.charAt(i));
+            expressionBinary += Converter.intToBinaryString(expression.charAt(i));
         int component = 0; //0 to R, 1 to G, 2 to B
         if(storageImage.getWidth() * storageImage.getHeight() < expressionBinary.length())
             return "ERROR: Storage image was not large enough to store the expression";
         int x = 0, y = 0; //image coords that are being read
-        for(int i = 0; i < expressionBinary.length(); i++, component++)
-        {
-            if(component == 3)
-            {
-                if(x >= storageImage.getWidth())
-                {
-                    x = 0;
-                    y++;
+            for (int i = 0; i < expressionBinary.length(); i++, component++) {
+                if (component == 3) {
+                    x++;
+                    if (x >= storageImage.getWidth()) {
+                        x = 0;
+                        y++;
+                    }
+                    component = 0;
                 }
-                component = 0;
+                Color modPixel = new Color(storageImage.getRGB(x, y));
+                short lsb = (short) (expressionBinary.charAt(i) - 48); //converts a character of 1 or 0 to the equivalent integer value
+                switch (component) { //each component tests if the last bit is the same as the bit that is being stored, otherwise it changes that bit
+                    case 0: //red
+                        if (lsb != modPixel.getRed() % 2)
+                            storageImage.setRGB(x, y, new Color(modPixel.getRed() + (lsb == 1 ? 1 : -1), modPixel.getGreen(), modPixel.getBlue()).getRGB());
+                    case 1: //green
+                        if (lsb != modPixel.getGreen() % 2)
+                            storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen() + (lsb == 1 ? 1 : -1), modPixel.getBlue()).getRGB());
+                        break;
+                    case 2: //blue
+                        if (lsb != modPixel.getBlue() % 2)
+                            storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen(), modPixel.getBlue() + (lsb == 1 ? 1 : -1)).getRGB());
+                        break;
+                }
+                debugImage.setRGB(x, y, new Color(255, 0, 0).getRGB());
+                //storageImage.setRGB(x, y, new Color(0, 8, 255).getRGB()); //DEBUG LINE
             }
-            Color modPixel = new Color(storageImage.getRGB(x, y));
-            short lsb = (short)(expressionBinary.charAt(i) - 48); //converts a character of 1 or 0 to the equivalent integer value
-            switch(component) { //each component tests if the last bit is the same as the bit that is being stored, otherwise it changes that bit
-                case 0: //red
-                    if(lsb != modPixel.getRed() % 2)
-                        storageImage.setRGB(x, y, new Color(modPixel.getRed() + lsb == 1 ? 1 : -1, modPixel.getGreen(), modPixel.getBlue()).getRGB());
-                    break;
-                case 1: //green
-                    if(lsb != modPixel.getGreen() % 2)
-                        storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen()+ lsb == 1 ? 1 : -1, modPixel.getBlue()).getRGB());
-                    break;
-                case 2: //blue
-                    if(lsb != modPixel.getBlue() % 2)
-                        storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen(), modPixel.getBlue()+ lsb == 1 ? 1 : -1).getRGB());
-                    break;
-            }
-        }
         //now add a null term
         for(int i =0; i < 15; i++)
         {
@@ -110,9 +110,12 @@ class ModSteganography {
             }
 
         }
-        File sourceImage = new File(filePath + ".crypt");
+        File sourceImage = new File(filePath.substring(0, filePath.lastIndexOf(".")) + "encrypted." + filePath.substring(filePath.lastIndexOf(".") + 1));
+        //creates a new file called <IMAGENAME>encrypted.<ORIGINALEXTENSION>
+        File debugFile = new File(filePath.substring(0, filePath.lastIndexOf(".")) + "stub." + filePath.substring(filePath.lastIndexOf(".") + 1));
         String extension = filePath.substring(filePath.lastIndexOf(".") + 1, filePath.length());
         ImageIO.write(storageImage, extension, sourceImage);
+        ImageIO.write(debugImage, extension, debugFile);
         return "Data has been stored in " + sourceImage.getPath();
     }
 
@@ -187,7 +190,7 @@ class ModSteganography {
         BufferedImage storageImage = ImageIO.read(new File(filePath));
         String expressionBinary = "";
         for(int i = 0; i < fileData.length; i++)
-            expressionBinary = Converter.intToBinaryString(fileData[i]);
+            expressionBinary += Converter.intToBinaryString(fileData[i]);
         int component = 0; //0 to R, 1 to G, 2 to B
         if(storageImage.getWidth() * storageImage.getHeight() < expressionBinary.length())
             return "ERROR: Storage image was not large enough to store the expression";
@@ -208,15 +211,15 @@ class ModSteganography {
             switch(component) { //each component tests if the last bit is the same as the bit that is being stored, otherwise it changes that bit
                 case 0: //red
                     if(lsb != modPixel.getRed() % 2)
-                        storageImage.setRGB(x, y, new Color(modPixel.getRed() + lsb == 1 ? 1 : -1, modPixel.getGreen(), modPixel.getBlue()).getRGB());
+                        storageImage.setRGB(x, y, new Color(modPixel.getRed() + (lsb == 1 ? 1 : -1), modPixel.getGreen(), modPixel.getBlue()).getRGB());
                     break;
                 case 1: //green
                     if(lsb != modPixel.getGreen() % 2)
-                        storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen()+ lsb == 1 ? 1 : -1, modPixel.getBlue()).getRGB());
+                        storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen()+ (lsb == 1 ? 1 : -1), modPixel.getBlue()).getRGB());
                     break;
                 case 2: //blue
                     if(lsb != modPixel.getBlue() % 2)
-                        storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen(), modPixel.getBlue()+ lsb == 1 ? 1 : -1).getRGB());
+                        storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen(), modPixel.getBlue()+ (lsb == 1 ? 1 : -1)).getRGB());
                     break;
             }
         }
@@ -246,7 +249,8 @@ class ModSteganography {
             }
 
         }
-        File sourceImage = new File(filePath + ".crypt");
+        File sourceImage = new File(filePath.substring(0, filePath.lastIndexOf(".")) + "encrypted." + filePath.substring(filePath.lastIndexOf(".") + 1));
+        //creates a new file called <IMAGENAME>encrypted.<ORIGINALEXTENSION>
         String extension = filePath.substring(filePath.lastIndexOf(".") + 1, filePath.length());
         ImageIO.write(storageImage, extension, sourceImage);
         return "Data has been stored in " + sourceImage.getPath();

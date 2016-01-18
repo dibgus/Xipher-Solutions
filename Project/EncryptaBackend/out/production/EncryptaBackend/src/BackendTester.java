@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+//VV TEMPORARY IMPORTS FOR TESTING VV
+import java.awt.*;
 class BackendTester {
     public static void main(String[] args)
     {
@@ -13,7 +15,7 @@ class BackendTester {
         String expression = "";
         while(true)
         {
-            System.out.println("Enter mode:\n1: Files\n2: Strings\n3: Exit");
+            System.out.println("Enter mode:\n1: Files\n2: Strings\n3: Help\n4: Custom Function\n5: Quit");
             String opt = input.nextLine();
             if(opt.charAt(0) == '1')
             {
@@ -42,7 +44,18 @@ class BackendTester {
                 String key = input.nextLine();
                 String encrypted = InputHandler.getEvaluatedExpression(expression, key, true);
                 System.out.println(encrypted);
-                System.out.println(InputHandler.getEvaluatedExpression(encrypted, key, false));
+                if(encrypted.contains("Data has been stored in")) //detects if steganography was run
+                    System.out.println(InputHandler.getEvaluatedExpression(encrypted.substring(encrypted.indexOf("c")), key, false));
+                else
+                    System.out.println(InputHandler.getEvaluatedExpression(encrypted, key, false));
+            }
+            else if(opt.charAt(0) == '3')
+            {
+                System.out.println("Key Format:\tMODULE:FUNCTION=PARAMS\nModules: steg, pix, encr, obfu, other");
+            }
+            else if(opt.charAt(0) == '4')
+            {
+                //enter test code
             }
             else break;
         }

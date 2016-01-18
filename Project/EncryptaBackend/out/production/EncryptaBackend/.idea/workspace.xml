@@ -7,22 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="550c49f2-2892-46a3-af61-df57f80c15e5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ModOther.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/Converter.class" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/Converter.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/InputHandler.class" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/InputHandler.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/ModEncryption.class" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/ModEncryption.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/ModObfuscate.class" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/ModObfuscate.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/ModSteganography.class" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/ModSteganography.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../.gitignore" afterPath="$PROJECT_DIR$/../../.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/.idea/workspace.xml" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/src/Converter.java" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/src/Converter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/src/InputHandler.java" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/src/InputHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/src/ModEncryption.java" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/src/ModEncryption.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/src/ModObfuscate.java" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/src/ModObfuscate.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/EncryptaBackend/src/ModSteganography.java" afterPath="$PROJECT_DIR$/out/production/EncryptaBackend/src/ModSteganography.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/InputHandler.java" afterPath="$PROJECT_DIR$/src/InputHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ModEncryption.java" afterPath="$PROJECT_DIR$/src/ModEncryption.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ModOther.java" afterPath="$PROJECT_DIR$/src/ModOther.java" />
     </list>
     <ignored path="EncryptaBackend.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -76,7 +62,7 @@
         <entry file="file://$PROJECT_DIR$/src/ModEncryption.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="119" column="38" selection-start-line="119" selection-start-column="38" selection-end-line="119" selection-end-column="38" />
+              <caret line="38" column="5" selection-start-line="10" selection-start-column="3" selection-end-line="38" selection-end-column="5" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
@@ -85,12 +71,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ModOther.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ModOther.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ModOther.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.21472393">
-              <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
-              <folding />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="20" column="5" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -109,7 +97,7 @@
         <entry file="file://$PROJECT_DIR$/src/ModSteganography.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="159" column="23" selection-start-line="159" selection-start-column="23" selection-end-line="159" selection-end-column="23" />
+              <caret line="75" column="26" selection-start-line="75" selection-start-column="26" selection-end-line="75" selection-end-column="26" />
               <folding>
                 <element signature="e#0#13235#0" expanded="true" />
               </folding>
@@ -117,10 +105,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BackendTester.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="BackendTester.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/BackendTester.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.398773">
               <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -156,11 +144,11 @@
         <option value="$PROJECT_DIR$/src/BackendTester.java" />
         <option value="$PROJECT_DIR$/src/ModObfuscate.java" />
         <option value="$PROJECT_DIR$/src/Converter.java" />
-        <option value="$PROJECT_DIR$/src/ModSteganography.java" />
         <option value="$PROJECT_DIR$/src/InputHandler.java" />
         <option value="$PROJECT_DIR$/src/temp.java" />
         <option value="$PROJECT_DIR$/src/ModEncryption.java" />
         <option value="$PROJECT_DIR$/src/ModOther.java" />
+        <option value="$PROJECT_DIR$/src/ModSteganography.java" />
       </list>
     </option>
   </component>
@@ -298,8 +286,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -353,6 +339,8 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -361,7 +349,7 @@
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Jasypt/jasypt-1.9.2.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../xipher2/tonyschak-xipher2-9e6750f69562" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
@@ -374,7 +362,7 @@
       <recent name="C:\Users\ikrukov\Desktop\Xipher-Solutions\Project\EncryptaBackend\src\Jasypt" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.temp">
+  <component name="RunManager" selected="Application.BackendTester">
     <configuration default="false" name="InputHandler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="InputHandler" />
@@ -845,8 +833,8 @@
     </list>
     <recent_temporary>
       <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Application.temp" />
-        <item index="1" class="java.lang.String" itemvalue="Application.BackendTester" />
+        <item index="0" class="java.lang.String" itemvalue="Application.BackendTester" />
+        <item index="1" class="java.lang.String" itemvalue="Application.temp" />
         <item index="2" class="java.lang.String" itemvalue="Application.InputHandler" />
         <item index="3" class="java.lang.String" itemvalue="JAR Application.mscorlib.jar" />
       </list>
@@ -885,12 +873,14 @@
       <workItem from="1452184448785" duration="2262000" />
       <workItem from="1452268927071" duration="5482000" />
       <workItem from="1452613411302" duration="4579000" />
-      <workItem from="1452787165192" duration="2186000" />
+      <workItem from="1452787165192" duration="3950000" />
+      <workItem from="1453054119905" duration="170000" />
+      <workItem from="1453061765597" duration="800000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="119188000" />
+    <option name="totallyTimeSpent" value="121922000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="1942" height="1042" extended-state="6" />
@@ -902,6 +892,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32902467" sideWeight="0.50217867" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299025" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32902467" sideWeight="0.49783316" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3266745" sideWeight="0.49782136" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32902467" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25134844" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -910,15 +901,14 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24972914" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40305522" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Duplicates" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298122" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40305522" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286385" sideWeight="0.4956427" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39906102" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3266745" sideWeight="0.49782136" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295207" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3274648" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1387,6 +1377,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Converter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="84" column="35" selection-start-line="84" selection-start-column="35" selection-end-line="84" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ModObfuscate.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1407,38 +1405,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Converter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="84" column="35" selection-start-line="84" selection-start-column="35" selection-end-line="84" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ModSteganography.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="159" column="23" selection-start-line="159" selection-start-column="23" selection-end-line="159" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#13235#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/BackendTester.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ModEncryption.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="119" column="38" selection-start-line="119" selection-start-column="38" selection-end-line="119" selection-end-column="38" />
+          <caret line="38" column="5" selection-start-line="10" selection-start-column="3" selection-end-line="38" selection-end-column="5" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -1448,9 +1418,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ModOther.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21472393">
-          <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
-          <folding />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="5" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ModSteganography.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="75" column="26" selection-start-line="75" selection-start-column="26" selection-end-line="75" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#13235#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BackendTester.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.398773">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
