@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Created by ikrukov on 12/11/2015.
  * The converter class is used primarily to convert data to a binary format (There are some methods that rely on this)
@@ -59,6 +61,30 @@ class Converter {
         return evaluated;
     }
 
+    public static byte[] convertToPrimative(Byte[] toConvert)
+    {
+        byte[] primative = new byte[toConvert.length];
+        for(int i = 0; i < toConvert.length; i++)
+        {
+            primative[i] = toConvert[i].byteValue();
+        }
+        return primative;
+    }
 
 
+    public static byte[] binaryStringToByteArray(String binaryString)
+    {
+        ArrayList<Byte> data = new ArrayList<Byte>();
+        String binarySegment = "";
+        for(int i = 0; i < binaryString.length(); i++)
+        {
+            binarySegment += binaryString.charAt(i);
+            if(binarySegment.length() % 8 == 0)
+            {
+                data.add((byte)binaryStringToInt(binarySegment));
+                binarySegment = "";
+            }
+        }
+        return convertToPrimative((Byte[])data.toArray());
+    }
 }

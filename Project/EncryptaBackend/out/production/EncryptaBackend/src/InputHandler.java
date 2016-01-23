@@ -5,10 +5,11 @@
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.nio.file.Files;
 import java.nio.file.FileSystems;
-public abstract class InputHandler
+import java.util.ArrayList;
+
+abstract class InputHandler
 {
     /**
      * This main method is to satisfy IKVM's .net executable generation.
@@ -30,7 +31,7 @@ public abstract class InputHandler
      * @param isEncrypting Whether or not the data is being encrypted or decrypted
      * @param isFile Whether or not expression is a file path
      */
-    public static void passEncryptedData(String expression, String key, boolean isEncrypting, boolean isFile)
+    private static void passEncryptedData(String expression, String key, boolean isEncrypting, boolean isFile)
     {
        // try {
             /*
@@ -93,7 +94,7 @@ public abstract class InputHandler
                     encryptedExpression = ModEncryption.performOperation(encryptedExpression, function, isEncrypting);
                     break;
                 default:
-                    System.err.println("ERROR IN MODULE SPECIFICATION: " + module);
+                    System.err.println("Unknown module: " + module);
                     break;
             }
             if(isEncrypting)
@@ -103,6 +104,67 @@ public abstract class InputHandler
         }
         return encryptedExpression;
     }
+
+    public static byte[] getEvaluatedExpression(byte[] fileData, String filePath, String key,  boolean isEncrypting)
+    {
+        String[] functions = handleKey(sanitizeKey(key), "\\|");
+        ArrayList<Byte> encryptedData = new ArrayList<Byte>();
+        String module = "";
+        for (int i = isEncrypting ? 0 : functions.length - 1; i < functions.length && isEncrypting || i >= 0 && !isEncrypting;)
+        {
+            //set the module if another one is specified, otherwise use the previously defined module in the key
+            String function;
+            if(functions[i].contains(":")) {
+                module = functions[i].substring(0, functions[i].indexOf(":"));
+                function = functions[i].substring(functions[i].indexOf(":") + 1);
+            }
+            else
+                function = functions[i];
+            if(module.equals("") && !isEncrypting)
+            { //find a previously referenced module if going backwards
+                for (int j = i - 1; j >= 0; j--)
+                {
+                    if (functions[j].contains(":"))
+                        module = functions[j].substring(0, functions[j].indexOf(":"));
+                }
+            }
+
+            byte[] temp = null;
+            switch (module) {
+                case ("obfu"):
+                    temp = ModObfuscate.performOperation(Converter.convertToPrimative((Byte[])encryptedData.toArray()), function, isEncrypting);
+                    encryptedData.clear();
+                    for(int j = 0; j < temp.length; i++) //load return array into the arraylist
+                           encryptedData.add(temp[i]);
+                    break;
+                case ("steg"):
+                    try {
+                        temp = ModSteganography.performOperation(Converter.convertToPrimative((Byte[])encryptedData.toArray()), function, isEncrypting);
+                        encryptedData.clear();
+                        for(int j = 0; j < temp.length; i++) //load return array into the arraylist
+                            encryptedData.add(temp[i]);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case ("encr"):
+                    temp = ModEncryption.performOperation(Converter.convertToPrimative((Byte[])encryptedData.toArray()), function, isEncrypting);
+                    encryptedData.clear();
+                    for(int j = 0; j < temp.length; i++) //load return array into the arraylist
+                        encryptedData.add(temp[i]);
+                    break;
+                default:
+                    System.err.println("Unknown module: " + module);
+                    break;
+            }
+            if(isEncrypting)
+                i++;
+            else
+                i--;
+        }
+        return Converter.convertToPrimative((Byte[])encryptedData.toArray());
+    }
+
 
 
     public static String createEvaluatedFile(String filePath, String key , boolean isEncrypting)

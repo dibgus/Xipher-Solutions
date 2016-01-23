@@ -59,5 +59,16 @@ namespace WindowsFormsApplication1
         {
             new HashGenerator().Show();
         }
+
+        private void btnHashCipher_Click(object sender, EventArgs e)
+        {
+            txtCipher.Text = BackendHandler.encryptExpression(txtCipher.Text, "encr:basic");
+            ckbxIsHash.Checked = true;
+        }
+
+        private void ckbxIsHash_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.cipherIsHash = ckbxIsHash.Checked;
+        }
     }
 }

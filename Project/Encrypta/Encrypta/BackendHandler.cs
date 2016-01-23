@@ -44,17 +44,7 @@ namespace WindowsFormsApplication1
             if (key.Contains("steg") && !key.Contains(Program.mediaFilePath)) //check if file is specified in key
                 key += "=" + Program.mediaFilePath;
             #region Create headless backend exe process
-            Process backend = new Process();
-            backend.StartInfo.FileName = "backend.exe";
-            backend.StartInfo.Arguments = "\"" + expression + "\" \"" + key + "\" 1 " + (Program.usingFile ? "1" : "0");
-            backend.StartInfo.UseShellExecute = false;
-            backend.StartInfo.CreateNoWindow = true;
-            backend.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            backend.StartInfo.LoadUserProfile = true;
-            backend.StartInfo.RedirectStandardError = true;
-            backend.StartInfo.RedirectStandardInput = true;
-            backend.StartInfo.RedirectStandardOutput = true;
-            currentBackendProcess = backend;
+            Process backend = createBackendProcess("\"" + expression + "\" \"" + key + "\" 1 " + (Program.usingFile ? "1" : "0"));
             backend.Start();
             backend.WaitForExit();
             #endregion
@@ -74,16 +64,12 @@ namespace WindowsFormsApplication1
             return encrypted;
             */
         }
-        public static String decryptExpression(String ciphertext, String key)
+
+        private static Process createBackendProcess(String args)
         {
-            //using (FileStream stream = File.Create("return")) { } //create file and close stream 
-            if (key.Contains("steg") && !key.Contains(Program.mediaFilePath)) //check if file is specified in key
-                key += "=" + Program.mediaFilePath;
-            //getDecrypted(ciphertextData, keyData, Program.usingFile);
-            #region Create headless backend exe process
             Process backend = new Process();
-            backend.StartInfo.FileName = "backend.exe";
-            backend.StartInfo.Arguments = "\"" + ciphertext + "\" \"" + key + "\" 1 " + (Program.usingFile ? "1" : "0");
+            backend.StartInfo.FileName = "java.exe";
+            backend.StartInfo.Arguments = "-jar EncryptaBackend.jar " + args;
             backend.StartInfo.UseShellExecute = false;
             backend.StartInfo.CreateNoWindow = true;
             backend.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -92,6 +78,25 @@ namespace WindowsFormsApplication1
             backend.StartInfo.RedirectStandardInput = true;
             backend.StartInfo.RedirectStandardOutput = true;
             currentBackendProcess = backend;
+            return backend;
+        }
+
+        public static String hashCipher(String cipher)
+        {
+            Process backendProcess = createBackendProcess("\"" + cipher + "\" \"encr:basic=I#&)*FaKL(~SWOq!mL_=+|obfu:rev|comp:\"");
+            backendProcess.Start();
+            backendProcess.WaitForExit();
+            return backendProcess.StandardOutput.ReadToEnd();
+        }
+
+        public static String decryptExpression(String ciphertext, String key)
+        {
+            //using (FileStream stream = File.Create("return")) { } //create file and close stream 
+            if (key.Contains("steg") && !key.Contains(Program.mediaFilePath)) //check if file is specified in key
+                key += "=" + Program.mediaFilePath;
+            //getDecrypted(ciphertextData, keyData, Program.usingFile);
+            #region Create headless backend exe process
+            Process backend = createBackendProcess("\"" + ciphertext + "\" \"" + key + "\" 1 " + (Program.usingFile ? "1" : "0"));
             backend.Start();
             backend.WaitForExit();
             #endregion

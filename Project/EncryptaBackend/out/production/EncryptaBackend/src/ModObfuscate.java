@@ -5,8 +5,8 @@
  * It is not as strong as encryption, but adds an extra layer of security.
  * Functions: rev|crc=#|evo|tnc=#*#|skh|xor=""
  */
-
-public class ModObfuscate  {
+import java.util.ArrayList;
+class ModObfuscate  {
     public static String performOperation(String expression, String flag, boolean encrypting)
     {
         String encrypted = expression;
@@ -38,7 +38,38 @@ public class ModObfuscate  {
         return encrypted;
     }
 
-    public static String xorCipher(String expression, String xorKey)
+    public static byte[] performOperation(byte[] fileData, String flag, boolean encrypting)
+    {
+        byte[] encrypted = fileData;
+        String[] command = InputHandler.handleKey(flag, "="); //command[0] -> the command to be run; command[1] -> parameters
+        switch(command[0])
+        {
+            case "rev":
+                encrypted = reverseExpression(fileData);
+                break;
+            case "crc":
+                encrypted = caesarCipher(fileData, encrypting ? Integer.parseInt(command[1]) : -1 * Integer.parseInt(command[1]));
+                break;
+            case "evo":
+                encrypted = everyOther(fileData, encrypting);
+                break;
+            case "tnc":
+                encrypted = Converter.convertToPrimative(transpositionCipher(fileData, command[1], encrypting));
+                break;
+            case "skh":
+                encrypted = skipHop(fileData);
+                break;
+            case "xor":
+                encrypted = xorCipher(fileData, command[1]);
+                break;
+            default:
+                System.err.println("Could not find obfuscation function: " + command[0]);
+                break;
+        }
+        return encrypted;
+    }
+
+    private static String xorCipher(String expression, String xorKey)
     {
         String binaryKey = "";
         for(int i = 0; i < xorKey.length(); i++)
@@ -62,7 +93,7 @@ public class ModObfuscate  {
         return Converter.binaryStringToString(evaluatedBinary);
     }
 
-    public static String skipHop(String expression)
+    private static String skipHop(String expression)
     {
         String evaluated = "";
         for(int i = 1; i < expression.length(); i+=2)
@@ -74,7 +105,7 @@ public class ModObfuscate  {
         return evaluated;
     }
 
-    public static String caesarCipher(String expression, int shift)
+    private static String caesarCipher(String expression, int shift)
     {
         String evaluated = "";
         for(int i = 0; i < expression.length(); i++)
@@ -82,7 +113,7 @@ public class ModObfuscate  {
         return evaluated;
     }
 
-    public static String reverseExpression(String expression)
+    private static String reverseExpression(String expression)
     {
         String evaluated = "";
         for(int i = expression.length() - 1; i >= 0; i--)
@@ -90,7 +121,7 @@ public class ModObfuscate  {
         return evaluated;
     }
 
-    public static String everyOther(String expression, boolean encrypting)
+    private static String everyOther(String expression, boolean encrypting)
     {
         String evaluated = "";
         if (encrypting)
@@ -115,7 +146,7 @@ public class ModObfuscate  {
         return evaluated;
     }
 
-    public static String transpositionCipher(String expression, String parameters, boolean encrypting)
+    private static String transpositionCipher(String expression, String parameters, boolean encrypting)
     {
         String evaluated = "";
         int x = Integer.parseInt(parameters.split("\\*")[0]), y = Integer.parseInt(parameters.split("\\*")[1]);
@@ -153,5 +184,125 @@ public class ModObfuscate  {
             evaluated = evaluated.substring(0, evaluated.indexOf((char)3000)); //TODO don't hardcode this
         return evaluated;
     }
+
+    /* BYTE VERSIONS OF THE ABOVE METHODS FOR FILE MANIPULATION */
+
+    private static byte[] xorCipher(byte[] fileData, String xorKey)
+    {
+        byte[] evaluated = new byte[fileData.length];
+        int keyIndex = 0; //the index the key will be reading, this loops through constantly throughout
+        for(int i = 0; i < fileData.length; i++) {
+            evaluated[i] = (byte)(fileData[i] ^ (byte)xorKey.charAt(keyIndex)); //bitwise xor operator
+            keyIndex++;
+            if (keyIndex >= xorKey.length())
+                keyIndex = 0;
+        }
+        return evaluated;
+    }
+
+    private static byte[] skipHop(byte[] fileData)
+    {
+        byte[] evaluated =  new byte[fileData.length];
+        int index = 0;
+        for(int i = 1; i < fileData.length; i+=2)
+        {
+            evaluated[index] = fileData[i];
+            index++;
+            evaluated[index] = fileData[i - 1];
+            index++;
+        }
+        if(fileData.length % 2 == 1) //if bytearray is odd length
+            evaluated[index] = fileData[fileData.length - 1];
+        return evaluated;
+    }
+    //TODO test caesar cipher with some test bytes
+    private static byte[] caesarCipher(byte[] fileData, int shift)
+    {
+        byte[] evaluated = new byte[fileData.length];
+        int index = 0;
+        for(int i = 0; i < fileData.length; i++, index++)
+        {
+            if(shift + fileData[i] > Byte.MAX_VALUE || shift + fileData[i] < Byte.MIN_VALUE)
+                evaluated[index] = (byte)((fileData[i] + shift) % Byte.MAX_VALUE);
+            evaluated[index] = (byte)(fileData[i] + shift);
+        }
+        return evaluated;
+    }
+
+    private static byte[] reverseExpression(byte[] fileData)
+    {
+        byte[] evaluated = new byte[fileData.length];
+        int index = 0;
+        for(int i = fileData.length - 1; i >= 0; i--, index++)
+            evaluated[index] =  fileData[i];
+        return evaluated;
+    }
+
+    private static byte[] everyOther(byte[] fileData, boolean encrypting)
+    {
+        byte[] evaluated = new byte[fileData.length];
+        int index = 0;
+        if (encrypting)
+        {
+            for(int i = 0; i < fileData.length; i += 2, index++)
+                evaluated[index] += fileData[i];
+            for(int i = 1; i < fileData.length; i+= 2, index++)
+                evaluated[index] += fileData[i];
+        }
+        else
+        {
+            for (int i = 0; i < fileData.length / 2; i++, index+= 2)
+            {
+                if (fileData.length % 2 == 0) {
+                    evaluated[index] = fileData[i];
+                    evaluated[index + 1] = fileData[i + fileData.length / 2];
+                }
+                else
+                {
+                    evaluated[index] += fileData[i];
+                    evaluated[index + 1] = fileData[i + fileData.length / 2 + 1];
+                }
+            }
+            if(fileData.length % 2 == 1)
+                evaluated[index] += fileData[fileData.length / 2]; //fix for odd lengthed data
+        }
+        return evaluated;
+    }
+
+    private static Byte[] transpositionCipher(byte[] fileData, String parameters, boolean encrypting)
+    {
+        ArrayList<Byte> evaluated = new ArrayList<Byte>();
+        int x = Integer.parseInt(parameters.split("\\*")[0]), y = Integer.parseInt(parameters.split("\\*")[1]);
+        while(x * y < fileData.length)
+        { x++; y++; }
+        byte[][] transposed = new byte[x][y];
+        int i = 0;
+        readImage:
+        for(int j= 0; j < x; j++) //j -> x, k -> y
+        {
+            for(int k = 0; k < y; k++, i++)
+            {
+                if(i < fileData.length)
+                {
+                    transposed[j][k] = fileData[i];
+                }
+                else if(i == fileData.length && encrypting)
+                    transposed[j][k] = (byte)3000; //TODO don't hardcode this
+                else if(encrypting)
+                    transposed[j][k] = (byte)(Math.random() * 128);
+                else
+                    break readImage;
+            }
+        }
+        //now to read back
+        for(int j = 0; j < y; j++)
+            for(int k = 0; k < x; k++)
+                evaluated.add(transposed[k][j]);
+
+        if(!encrypting && evaluated.indexOf((byte)3000) != -1)
+            evaluated = (ArrayList<Byte>)evaluated.subList(0, evaluated.indexOf((byte)3000)); //TODO don't hardcode this
+        return (Byte[])evaluated.toArray();
+    }
+
 
 }
