@@ -93,6 +93,9 @@ abstract class InputHandler
                 case ("encr"):
                     encryptedExpression = ModEncryption.performOperation(encryptedExpression, function, isEncrypting);
                     break;
+                case ("other"):
+                    encryptedExpression = ModOther.performOperation(encryptedExpression, function, isEncrypting);
+                    break;
                 default:
                     System.err.println("Unknown module: " + module);
                     break;
@@ -153,6 +156,12 @@ abstract class InputHandler
                     for(int j = 0; j < temp.length; i++) //load return array into the arraylist
                         encryptedData.add(temp[i]);
                     break;
+                case ("other"):
+                    temp = ModOther.performOperation(Converter.convertToPrimative((Byte[])encryptedData.toArray()), function, isEncrypting);
+                    encryptedData.clear();
+                    for(int j = 0; j < temp.length; i++) //load return array into the arraylist
+                        encryptedData.add(temp[i]);
+                    break;
                 default:
                     System.err.println("Unknown module: " + module);
                     break;
@@ -174,12 +183,11 @@ abstract class InputHandler
         try
         {
             byte[] data = Files.readAllBytes(FileSystems.getDefault().getPath("", filePath));
-            String fileData = new String(data);
 
-            String newData = getEvaluatedExpression(fileData, key, isEncrypting); //evaluate the file data
+            byte[] newData = getEvaluatedExpression(data, filePath, key, isEncrypting); //evaluate the file data
 
             BufferedOutputStream evaluatedFile = new BufferedOutputStream(new FileOutputStream(returnFilePath)); //write to a .crypt file
-            evaluatedFile.write(newData.getBytes());
+            evaluatedFile.write(newData);
             evaluatedFile.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -224,6 +224,7 @@ class ModObfuscate  {
         {
             if(shift + fileData[i] > Byte.MAX_VALUE || shift + fileData[i] < Byte.MIN_VALUE)
                 evaluated[index] = (byte)((fileData[i] + shift) % Byte.MAX_VALUE);
+            else
             evaluated[index] = (byte)(fileData[i] + shift);
         }
         return evaluated;
