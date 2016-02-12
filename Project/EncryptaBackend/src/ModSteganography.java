@@ -5,10 +5,10 @@
  * Steganography is the process of storing information in a discrete format
  */
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 class ModSteganography {
     public static String performOperation(String expression, String flag, boolean encrypting) throws IOException
@@ -28,13 +28,127 @@ class ModSteganography {
                     evaluated = storeInCosCurve(expression, command[1]);
                 else
                     evaluated = extractCosCurve(expression);
-
+                break;
+            case "audio":
+                if(encrypting)
+                    evaluated = storeInAudio(expression, command[1]);
+                else
+                    evaluated = extractAudioData(expression);
+                break;
             default:
                 System.err.println("Could not find steganography operation: " + command[0]);
                 break;
         }
 
         return evaluated; //if encrypting, then this method will return a message about where the image is stored.
+    }
+
+    private static String storeInAudio(String expression, String filePath){
+        /*
+        String binaryString = "";
+        for(int i = 0; i < expression.length(); i++)
+            binaryString += Converter.intToBinaryString(expression.charAt(i));
+        try {
+            File audioFile = new File(filePath);
+            DataInputStream in =  new DataInputStream(new FileInputStream(audioFile));
+            byte[] audioData = new byte[(int)audioFile.length()];
+            in.readFully(audioData);
+            in.close();
+            for(int i = 0; i < binaryString.length(); i++)
+            {
+                byte lsb = (byte)(audioData[i] % 2);
+                audioData[i] = (byte)(audioData[i] - lsb + lsb ^ ((binaryString.charAt(i) == '1') ? 1 : 0));
+                //test way to use LSB methods
+            }
+            DataOutputStream out = new DataOutputStream(new FileOutputStream(filePath + ".crypt"));
+            out.write(audioData);
+            out.close();
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        */
+        //AudioInputStream input = new AudioInputStream(new DataLine.Info(new Class<?>, AudioSystem.getAudioFileFormat(new File(filePath))));
+
+        String binaryData = "";
+        for(int i = 0; i < expression.length(); i++)
+            binaryData += Converter.intToBinaryString(expression.charAt(i));
+
+        try {
+            AudioInputStream input = AudioSystem.getAudioInputStream(new File(filePath));
+            byte[] audioFileBuffer = new byte[(int)new File(filePath).length()];
+
+            int bytesPerFrame = input.getFormat().getFrameSize(); //gets the amount of bytes representing a frame(smallest unit of sound)
+            if(bytesPerFrame == AudioSystem.NOT_SPECIFIED)
+                bytesPerFrame = 1; //no defined frame length
+            int totalFramesRead = 0;
+            int bytesRead = 0;
+
+            while((bytesRead = input.read(audioFileBuffer)) != -1)
+            {
+                totalFramesRead += bytesRead / bytesPerFrame;
+            }
+
+            for(int i = 0; i < binaryData.length(); i++)
+            {
+                byte lsb = (byte)(audioFileBuffer[i] % 2);
+                if(lsb != binaryData.charAt(i) - 48)
+                { //todo checkdis
+                    audioFileBuffer[i] = (byte)(audioFileBuffer[i] - (byte)(lsb == 1 ? 1 : -1));
+                }
+            }
+            for(int i = binaryData.length(); i < audioFileBuffer.length; i++)
+                audioFileBuffer[i] += (byte)(audioFileBuffer[i] % 2); //todo checkdis
+            //writes manipulated audio file to <FILENAME>steg.<EXTENSION>
+            AudioSystem.write(input, AudioFileFormat.Type.WAVE,
+                    new File(filePath.substring(0, filePath.indexOf(".")) + "steg" + filePath.substring(filePath.indexOf("."))));
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "Data stored in audio file: " + filePath + ".crypt";
+    }
+
+    private static String extractAudioData(String expression) {
+        String extracted = ""; //expression will be the file path
+        AudioInputStream input = null;
+        try {
+            input = AudioSystem.getAudioInputStream(new File(expression));
+            byte[] audioFileBuffer = new byte[(int)new File(expression).length()];
+            int bytesPerFrame = input.getFormat().getFrameSize(); //gets the amount of bytes representing a frame(smallest unit of sound)
+            if(bytesPerFrame == AudioSystem.NOT_SPECIFIED)
+                bytesPerFrame = 1; //no defined frame length
+            int totalFramesRead = 0;
+            int bytesRead = 0;
+            while((bytesRead = input.read(audioFileBuffer)) != -1) {
+                totalFramesRead += bytesRead / bytesPerFrame;
+            }
+            if(totalFramesRead == 0)
+            {
+                System.err.println("ERROR: No data in file read");
+                return expression;
+            }
+
+            String binaryDataRepresentation = "";
+            for(int i = 0; i < audioFileBuffer.length; i++)
+            {
+                byte lsb = (byte)(audioFileBuffer[i] % 2);
+                binaryDataRepresentation += lsb;
+                //checks if at least 16 bits have been written, and then checks if there is a null termination (16 zeroes)
+                if(binaryDataRepresentation.length() > 16 &&
+                        binaryDataRepresentation.substring(binaryDataRepresentation.length() - 16,binaryDataRepresentation.length()).equals("00000000000000000"))
+                    binaryDataRepresentation = binaryDataRepresentation.substring(0, binaryDataRepresentation.length() - 16);
+            }
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return extracted;
     }
 
     /**

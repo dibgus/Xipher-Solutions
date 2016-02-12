@@ -69,8 +69,17 @@ abstract class InputHandler
                 module = functions[i].substring(0, functions[i].indexOf(":"));
                 function = functions[i].substring(functions[i].indexOf(":") + 1);
             }
-            else
+            else if(isEncrypting)
                 function = functions[i];
+            else
+            {
+                int moduleIndex = 0;
+                for(int j = 0; j < i; j++)
+                    if(functions[i].contains(":"))
+                        moduleIndex = j;
+                module = functions[moduleIndex].substring(0, functions[moduleIndex].indexOf(":"));
+                function = functions[i];
+            }
             if(module.equals("") && !isEncrypting)
             { //find a previously referenced module if going backwards
                 for (int j = i - 1; j >= 0; j--)

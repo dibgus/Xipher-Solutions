@@ -52,7 +52,7 @@
             // 
             // btnApply
             // 
-            this.btnApply.Location = new System.Drawing.Point(27, 214);
+            this.btnApply.Location = new System.Drawing.Point(16, 237);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(122, 39);
             this.btnApply.TabIndex = 2;
@@ -63,7 +63,7 @@
             // btnHelp
             // 
             this.btnHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHelp.Location = new System.Drawing.Point(188, 204);
+            this.btnHelp.Location = new System.Drawing.Point(177, 227);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(41, 50);
             this.btnHelp.TabIndex = 3;
@@ -92,7 +92,7 @@
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(267, 214);
+            this.btnOk.Location = new System.Drawing.Point(256, 237);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(122, 39);
             this.btnOk.TabIndex = 8;
@@ -129,7 +129,7 @@
             // 
             // btnGenerateHash
             // 
-            this.btnGenerateHash.Location = new System.Drawing.Point(27, 142);
+            this.btnGenerateHash.Location = new System.Drawing.Point(16, 165);
             this.btnGenerateHash.Name = "btnGenerateHash";
             this.btnGenerateHash.Size = new System.Drawing.Size(122, 66);
             this.btnGenerateHash.TabIndex = 12;
@@ -139,7 +139,7 @@
             // 
             // btnHashCipher
             // 
-            this.btnHashCipher.Location = new System.Drawing.Point(267, 142);
+            this.btnHashCipher.Location = new System.Drawing.Point(256, 165);
             this.btnHashCipher.Name = "btnHashCipher";
             this.btnHashCipher.Size = new System.Drawing.Size(122, 66);
             this.btnHashCipher.TabIndex = 13;
@@ -150,11 +150,11 @@
             // ckbxIsHash
             // 
             this.ckbxIsHash.AutoSize = true;
-            this.ckbxIsHash.Location = new System.Drawing.Point(140, 123);
+            this.ckbxIsHash.Location = new System.Drawing.Point(134, 130);
             this.ckbxIsHash.Name = "ckbxIsHash";
-            this.ckbxIsHash.Size = new System.Drawing.Size(138, 24);
+            this.ckbxIsHash.Size = new System.Drawing.Size(156, 24);
             this.ckbxIsHash.TabIndex = 14;
-            this.ckbxIsHash.Text = "Cipher is Hash";
+            this.ckbxIsHash.Text = "Cipher is Hashed";
             this.ckbxIsHash.UseVisualStyleBackColor = true;
             this.ckbxIsHash.CheckedChanged += new System.EventHandler(this.ckbxIsHash_CheckedChanged);
             // 
@@ -162,7 +162,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(401, 265);
+            this.ClientSize = new System.Drawing.Size(401, 304);
             this.Controls.Add(this.ckbxIsHash);
             this.Controls.Add(this.btnHashCipher);
             this.Controls.Add(this.btnGenerateHash);

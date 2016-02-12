@@ -78,5 +78,10 @@ namespace WindowsFormsApplication1
                 txtPath.Text = Program.filePath;
             }
         }
+
+        private void txtEncrypted_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

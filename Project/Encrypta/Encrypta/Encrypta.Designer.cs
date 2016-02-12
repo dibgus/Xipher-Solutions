@@ -88,6 +88,7 @@
             this.txtEncrypted.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtEncrypted.Size = new System.Drawing.Size(343, 75);
             this.txtEncrypted.TabIndex = 8;
+            this.txtEncrypted.TextChanged += new System.EventHandler(this.txtEncrypted_TextChanged);
             // 
             // btnSetCipher
             // 
