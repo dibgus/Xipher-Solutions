@@ -9,7 +9,6 @@ import javax.sound.sampled.*;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.*;
-
 class ModSteganography {
     public static String performOperation(String expression, String flag, boolean encrypting) throws IOException
     {
@@ -70,7 +69,6 @@ class ModSteganography {
         }
         */
         //AudioInputStream input = new AudioInputStream(new DataLine.Info(new Class<?>, AudioSystem.getAudioFileFormat(new File(filePath))));
-
         String binaryData = "";
         for(int i = 0; i < expression.length(); i++)
             binaryData += Converter.intToBinaryString(expression.charAt(i));
@@ -78,7 +76,6 @@ class ModSteganography {
         try {
             AudioInputStream input = AudioSystem.getAudioInputStream(new File(filePath));
             byte[] audioFileBuffer = new byte[(int)new File(filePath).length()];
-
             int bytesPerFrame = input.getFormat().getFrameSize(); //gets the amount of bytes representing a frame(smallest unit of sound)
             if(bytesPerFrame == AudioSystem.NOT_SPECIFIED)
                 bytesPerFrame = 1; //no defined frame length
@@ -98,22 +95,29 @@ class ModSteganography {
                     audioFileBuffer[i] = (byte)(audioFileBuffer[i] - (byte)(lsb == 1 ? 1 : -1));
                 }
             }
-            for(int i = binaryData.length(); i < audioFileBuffer.length; i++)
+            for(int i = binaryData.length(); i < binaryData.length() + 16; i++)
                 audioFileBuffer[i] += (byte)(audioFileBuffer[i] % 2); //todo checkdis
             //writes manipulated audio file to <FILENAME>steg.<EXTENSION>
+            System.out.println(audioFileBuffer.length);
+            String outFile = filePath.substring(0, filePath.indexOf(".")) + "steg" + filePath.substring(filePath.indexOf("."));
             AudioSystem.write(input, AudioFileFormat.Type.WAVE,
-                    new File(filePath.substring(0, filePath.indexOf(".")) + "steg" + filePath.substring(filePath.indexOf("."))));
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+                    new File(outFile));
+            //above line is intended to write the header of a WAVE file.
+            //now write the audio data stored in the buffer...
+            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(outFile));
+            out.write(audioFileBuffer);
+            out.close();
+            input.close();
+            return "Data stored in audio file: " + outFile;
+        } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
-        return "Data stored in audio file: " + filePath + ".crypt";
+        return "Something happened...";
     }
 
     private static String extractAudioData(String expression) {
         String extracted = ""; //expression will be the file path
-        AudioInputStream input = null;
+        AudioInputStream input;
         try {
             input = AudioSystem.getAudioInputStream(new File(expression));
             byte[] audioFileBuffer = new byte[(int)new File(expression).length()];
@@ -121,7 +125,7 @@ class ModSteganography {
             if(bytesPerFrame == AudioSystem.NOT_SPECIFIED)
                 bytesPerFrame = 1; //no defined frame length
             int totalFramesRead = 0;
-            int bytesRead = 0;
+            int bytesRead;
             while((bytesRead = input.read(audioFileBuffer)) != -1) {
                 totalFramesRead += bytesRead / bytesPerFrame;
             }
@@ -141,9 +145,8 @@ class ModSteganography {
                         binaryDataRepresentation.substring(binaryDataRepresentation.length() - 16,binaryDataRepresentation.length()).equals("00000000000000000"))
                     binaryDataRepresentation = binaryDataRepresentation.substring(0, binaryDataRepresentation.length() - 16);
             }
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            input.close();
+        } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
 
