@@ -89,26 +89,25 @@ class ModSteganography {
 
             for(int i = 0; i < binaryData.length(); i++)
             {
-                byte lsb = (byte)(audioFileBuffer[i] % 2);
-                if(lsb != binaryData.charAt(i) - 48)
-                { //todo checkdis
-                    audioFileBuffer[i] = (byte)(audioFileBuffer[i] - (byte)(lsb == 1 ? 1 : -1));
-                }
+                audioFileBuffer[i] = (byte)LSBHandler.insertLSB(audioFileBuffer[i], (byte)(binaryData.charAt(i) - 48));
             }
-            for(int i = binaryData.length(); i < binaryData.length() + 16; i++)
-                audioFileBuffer[i] += (byte)(audioFileBuffer[i] % 2); //todo checkdis
+            audioFileBuffer = LSBHandler.writePadding((byte)32, audioFileBuffer, binaryData.length());
             //writes manipulated audio file to <FILENAME>steg.<EXTENSION>
-            System.out.println(audioFileBuffer.length);
             String outFile = filePath.substring(0, filePath.indexOf(".")) + "steg" + filePath.substring(filePath.indexOf("."));
-            AudioSystem.write(input, AudioFileFormat.Type.WAVE,
-                    new File(outFile));
-            //above line is intended to write the header of a WAVE file.
+            BufferedInputStream headerReader = new BufferedInputStream(new FileInputStream(filePath));
+            //AudioSystem.write(input, AudioFileFormat.Type.WAVE,
+              //      new File(outFile));
+            //above line was intended to write the header of a WAVE file, but the header seemed to be wrong
             //now write the audio data stored in the buffer...
             BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(outFile));
+            byte[] header = new byte[44]; //44 is the length of a .WAV header
+            headerReader.read(header, 0, 44);
+            headerReader.close();
+            out.write(header);
             out.write(audioFileBuffer);
             out.close();
             input.close();
-            return "Data stored in audio file: " + outFile;
+            return "Data has been stored in audio file: " + outFile;
         } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
@@ -136,16 +135,22 @@ class ModSteganography {
             }
 
             String binaryDataRepresentation = "";
-            for(int i = 0; i < audioFileBuffer.length; i++)
+            int terminateBits = 0;
+            for(int i = 0; i < audioFileBuffer.length && terminateBits < 32; i++)
             {
                 byte lsb = (byte)(audioFileBuffer[i] % 2);
-                binaryDataRepresentation += lsb;
+                binaryDataRepresentation += Math.abs(lsb);
+                if(lsb == 0)
+                    terminateBits++;
+                else
+                    terminateBits = 0;
                 //checks if at least 16 bits have been written, and then checks if there is a null termination (16 zeroes)
-                if(binaryDataRepresentation.length() > 16 &&
-                        binaryDataRepresentation.substring(binaryDataRepresentation.length() - 16,binaryDataRepresentation.length()).equals("00000000000000000"))
-                    binaryDataRepresentation = binaryDataRepresentation.substring(0, binaryDataRepresentation.length() - 16);
             }
+            if(terminateBits >= 32)
+                binaryDataRepresentation = binaryDataRepresentation.substring(0, binaryDataRepresentation.length() - terminateBits);
+            //truncate the null termination
             input.close();
+            extracted = Converter.binaryStringToString(binaryDataRepresentation);
         } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
@@ -184,18 +189,18 @@ class ModSteganography {
                     component = 0;
                 }
                 Color modPixel = new Color(storageImage.getRGB(x, y));
-                short lsb = (short) (expressionBinary.charAt(i) - 48); //converts a character of 1 or 0 to the equivalent integer value
+                byte lsb = (byte) (expressionBinary.charAt(i) - 48); //converts a character of 1 or 0 to the equivalent integer value
                 switch (component) { //each component tests if the last bit is the same as the bit that is being stored, otherwise it changes that bit
                     case 0: //red
                         if (lsb != modPixel.getRed() % 2)
-                            storageImage.setRGB(x, y, new Color(modPixel.getRed() + (lsb == 1 ? 1 : -1), modPixel.getGreen(), modPixel.getBlue()).getRGB());
+                            storageImage.setRGB(x, y, new Color(LSBHandler.insertLSB(modPixel.getRed(), lsb), modPixel.getGreen(), modPixel.getBlue()).getRGB());
                     case 1: //green
                         if (lsb != modPixel.getGreen() % 2)
-                            storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen() + (lsb == 1 ? 1 : -1), modPixel.getBlue()).getRGB());
+                            storageImage.setRGB(x, y, new Color(modPixel.getRed(), LSBHandler.insertLSB(modPixel.getGreen(), lsb), modPixel.getBlue()).getRGB());
                         break;
                     case 2: //blue
                         if (lsb != modPixel.getBlue() % 2)
-                            storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen(), modPixel.getBlue() + (lsb == 1 ? 1 : -1)).getRGB());
+                            storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen(), LSBHandler.insertLSB(modPixel.getBlue(), lsb)).getRGB());
                         break;
                 }
                 debugImage.setRGB(x, y, new Color(255, 0, 0).getRGB());
@@ -324,19 +329,19 @@ class ModSteganography {
                 component = 0;
             }
             Color modPixel = new Color(storageImage.getRGB(x, y));
-            short lsb = (short)(expressionBinary.charAt(i) - 48); //converts a character of 1 or 0 to the equivalent integer value
+            byte lsb = (byte)(expressionBinary.charAt(i) - 48); //converts a character of 1 or 0 to the equivalent integer value
             switch(component) { //each component tests if the last bit is the same as the bit that is being stored, otherwise it changes that bit
                 case 0: //red
                     if(lsb != modPixel.getRed() % 2)
-                        storageImage.setRGB(x, y, new Color(modPixel.getRed() + (lsb == 1 ? 1 : -1), modPixel.getGreen(), modPixel.getBlue()).getRGB());
+                        storageImage.setRGB(x, y, new Color(LSBHandler.insertLSB(modPixel.getRed(), lsb), modPixel.getGreen(), modPixel.getBlue()).getRGB());
                     break;
                 case 1: //green
                     if(lsb != modPixel.getGreen() % 2)
-                        storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen()+ (lsb == 1 ? 1 : -1), modPixel.getBlue()).getRGB());
+                        storageImage.setRGB(x, y, new Color(modPixel.getRed(), LSBHandler.insertLSB(modPixel.getGreen(), lsb), modPixel.getBlue()).getRGB());
                     break;
                 case 2: //blue
                     if(lsb != modPixel.getBlue() % 2)
-                        storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen(), modPixel.getBlue()+ (lsb == 1 ? 1 : -1)).getRGB());
+                        storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen(), LSBHandler.insertLSB(modPixel.getBlue(), lsb)).getRGB());
                     break;
             }
         }
@@ -355,13 +360,13 @@ class ModSteganography {
             Color modPixel = new Color(storageImage.getRGB(x, y));
             switch(component) { //set lsb of each component to zero
                 case 0: //red
-                    storageImage.setRGB(x, y, new Color(modPixel.getRed() - modPixel.getRed() % 2, modPixel.getGreen(), modPixel.getBlue()).getRGB());
+                    storageImage.setRGB(x, y, new Color(LSBHandler.insertLSB(modPixel.getRed(), (byte)0), modPixel.getGreen(), modPixel.getBlue()).getRGB());
                     break;
                 case 1: //green
-                    storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen() - modPixel.getGreen() % 2, modPixel.getBlue()).getRGB());
+                    storageImage.setRGB(x, y, new Color(modPixel.getRed(), LSBHandler.insertLSB(modPixel.getGreen(), (byte)0), modPixel.getBlue()).getRGB());
                     break;
                 case 2: //blue
-                    storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen(), modPixel.getBlue() - modPixel.getBlue() % 2).getRGB());
+                    storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen(), LSBHandler.insertLSB(modPixel.getBlue(), (byte)0)).getRGB());
                     break;
             }
 
