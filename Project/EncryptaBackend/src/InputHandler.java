@@ -121,6 +121,8 @@ abstract class InputHandler
     {
         String[] functions = handleKey(sanitizeKey(key), "\\|");
         ArrayList<Byte> encryptedData = new ArrayList<Byte>();
+        for(int i = 0; i < fileData.length; i++)
+            encryptedData.add(fileData[i]);
         String module = "";
         for (int i = isEncrypting ? 0 : functions.length - 1; i < functions.length && isEncrypting || i >= 0 && !isEncrypting;)
         {
@@ -144,32 +146,32 @@ abstract class InputHandler
             byte[] temp = null;
             switch (module) {
                 case ("obfu"):
-                    temp = ModObfuscate.performOperation(Converter.convertToPrimative((Byte[])encryptedData.toArray()), function, isEncrypting);
+                    temp = ModObfuscate.performOperation(Converter.convertToPrimative(encryptedData), function, isEncrypting);
                     encryptedData.clear();
-                    for(int j = 0; j < temp.length; i++) //load return array into the arraylist
-                           encryptedData.add(temp[i]);
+                    for(int j = 0; j < temp.length; j++) //load return array into the arraylist
+                           encryptedData.add(temp[j]);
                     break;
                 case ("steg"):
                     try {
-                        temp = ModSteganography.performOperation(Converter.convertToPrimative((Byte[])encryptedData.toArray()), function, isEncrypting);
+                        temp = ModSteganography.performOperation(Converter.convertToPrimative(encryptedData), function, isEncrypting);
                         encryptedData.clear();
-                        for(int j = 0; j < temp.length; i++) //load return array into the arraylist
-                            encryptedData.add(temp[i]);
+                        for(int j = 0; j < temp.length; j++) //load return array into the arraylist
+                            encryptedData.add(temp[j]);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     break;
                 case ("encr"):
-                    temp = ModEncryption.performOperation(Converter.convertToPrimative((Byte[])encryptedData.toArray()), function, isEncrypting);
+                    temp = ModEncryption.performOperation(Converter.convertToPrimative(encryptedData), function, isEncrypting);
                     encryptedData.clear();
-                    for(int j = 0; j < temp.length; i++) //load return array into the arraylist
-                        encryptedData.add(temp[i]);
+                    for(int j = 0; j < temp.length; j++) //load return array into the arraylist
+                        encryptedData.add(temp[j]);
                     break;
                 case ("other"):
-                    temp = ModOther.performOperation(Converter.convertToPrimative((Byte[])encryptedData.toArray()), function, isEncrypting);
+                    temp = ModOther.performOperation(Converter.convertToPrimative(encryptedData), function, isEncrypting);
                     encryptedData.clear();
-                    for(int j = 0; j < temp.length; i++) //load return array into the arraylist
-                        encryptedData.add(temp[i]);
+                    for(int j = 0; j < temp.length; j++) //load return array into the arraylist
+                        encryptedData.add(temp[j]);
                     break;
                 default:
                     System.err.println("Unknown module: " + module);
@@ -180,7 +182,7 @@ abstract class InputHandler
             else
                 i--;
         }
-        return Converter.convertToPrimative((Byte[])encryptedData.toArray());
+        return Converter.convertToPrimative(encryptedData);
     }
 
 
@@ -192,7 +194,6 @@ abstract class InputHandler
         try
         {
             byte[] data = Files.readAllBytes(FileSystems.getDefault().getPath("", filePath));
-
             byte[] newData = getEvaluatedExpression(data, filePath, key, isEncrypting); //evaluate the file data
 
             BufferedOutputStream evaluatedFile = new BufferedOutputStream(new FileOutputStream(returnFilePath)); //write to a .crypt file

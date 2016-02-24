@@ -96,7 +96,7 @@ namespace WindowsFormsApplication1
                 key += "=" + Program.mediaFilePath;
             //getDecrypted(ciphertextData, keyData, Program.usingFile);
             #region Create headless backend exe process
-            Process backend = createBackendProcess("\"" + ciphertext + "\" \"" + key + "\" 1 " + (Program.usingFile ? "1" : "0"));
+            Process backend = createBackendProcess("\"" + ciphertext + "\" \"" + key + "\" 0 " + (Program.usingFile ? "1" : "0"));
             backend.Start();
             backend.WaitForExit();
             #endregion

@@ -54,22 +54,28 @@ class Converter {
     public static String binaryStringToString(String binaryString)
     {
         String evaluated = "";
-        for(int i = 0; (i) * 16 < binaryString.length(); i++)
+        for(int i = 0; (i + 1) * 16 + 1 < binaryString.length(); i++)
         {
             evaluated += (char)binaryStringToInt(binaryString.substring(i * 16, (i + 1) * 16)); //takes 2 bytes and converts it to a char
         }
         return evaluated;
     }
 
+    public static byte[] convertToPrimative(ArrayList<Byte> toConvert)
+    {
+        byte[] primative = new byte[toConvert.size()];
+        for(int i = 0; i < toConvert.size(); i++)
+            primative[i] = toConvert.get(i);
+        return primative;
+    }
     public static byte[] convertToPrimative(Byte[] toConvert)
     {
         byte[] primative = new byte[toConvert.length];
         for(int i = 0; i < toConvert.length; i++)
-        {
-            primative[i] = toConvert[i].byteValue();
-        }
+            primative[i] = toConvert[i];
         return primative;
     }
+
 
 
     public static byte[] binaryStringToByteArray(String binaryString)

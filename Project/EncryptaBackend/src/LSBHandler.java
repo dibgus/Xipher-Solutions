@@ -9,9 +9,9 @@ public class LSBHandler {
         return (byte)(b % 2);
     }
 
-    public static byte[] writePadding(byte size, byte[] data, int startIndex)
+    public static byte[] writePadding(byte size, byte[] data, int startIndex, int increment)
     {
-        for(int i = startIndex; i <= size; i++)
+        for(int i = startIndex; i <= size; i += increment)
             data[i] = (byte)insertLSB((int)data[i], (byte)0);
         return data;
     }
@@ -20,6 +20,4 @@ public class LSBHandler {
     {
         return (getLSB(data) == lsb ? data : data ^ 1);
     }
-
-
 }

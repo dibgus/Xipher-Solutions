@@ -86,27 +86,35 @@ class ModSteganography {
             {
                 totalFramesRead += bytesRead / bytesPerFrame;
             }
-
-            for(int i = 0; i < binaryData.length(); i++)
+            System.out.println(bytesPerFrame);
+            byte[] stubBuffer = audioFileBuffer.clone();
+            for(int i = bytesPerFrame - 1; i < binaryData.length(); i+= bytesPerFrame)
             {
                 audioFileBuffer[i] = (byte)LSBHandler.insertLSB(audioFileBuffer[i], (byte)(binaryData.charAt(i) - 48));
+                stubBuffer[i] = 20;
             }
-            audioFileBuffer = LSBHandler.writePadding((byte)32, audioFileBuffer, binaryData.length());
+            audioFileBuffer = LSBHandler.writePadding((byte)32, audioFileBuffer, binaryData.length() * bytesPerFrame, bytesPerFrame);
             //writes manipulated audio file to <FILENAME>steg.<EXTENSION>
             String outFile = filePath.substring(0, filePath.indexOf(".")) + "steg" + filePath.substring(filePath.indexOf("."));
+            String stubFile = filePath.substring(0, filePath.indexOf(".")) + "stub" + filePath.substring(filePath.indexOf("."));
             BufferedInputStream headerReader = new BufferedInputStream(new FileInputStream(filePath));
             //AudioSystem.write(input, AudioFileFormat.Type.WAVE,
               //      new File(outFile));
             //above line was intended to write the header of a WAVE file, but the header seemed to be wrong
             //now write the audio data stored in the buffer...
             BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(outFile));
+            BufferedOutputStream stub = new BufferedOutputStream(new FileOutputStream(stubFile));
             byte[] header = new byte[44]; //44 is the length of a .WAV header
             headerReader.read(header, 0, 44);
             headerReader.close();
             out.write(header);
+            stub.write(header);
             out.write(audioFileBuffer);
+            stub.write(stubBuffer);
             out.close();
             input.close();
+            stub.close();
+            headerReader.close();
             return "Data has been stored in audio file: " + outFile;
         } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
@@ -136,7 +144,7 @@ class ModSteganography {
 
             String binaryDataRepresentation = "";
             int terminateBits = 0;
-            for(int i = 0; i < audioFileBuffer.length && terminateBits < 32; i++)
+            for(int i = bytesPerFrame - 1; i < audioFileBuffer.length && terminateBits < 32; bytesPerFrame++)
             {
                 byte lsb = (byte)(audioFileBuffer[i] % 2);
                 binaryDataRepresentation += Math.abs(lsb);

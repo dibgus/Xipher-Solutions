@@ -24,14 +24,7 @@ class BackendTester {
                 System.out.println("Enter a key: ");
                 String key = input.nextLine();
                 String encrypted = InputHandler.createEvaluatedFile(path, key, true);
-                File outFile = new File(path + ".crypt");
-                try {
-                    FileWriter writer = new FileWriter(outFile);
-                    writer.write(encrypted);
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                //File outFile = new File(path + ".crypt");
             }
             else if(opt.charAt(0) == '2')
             {
