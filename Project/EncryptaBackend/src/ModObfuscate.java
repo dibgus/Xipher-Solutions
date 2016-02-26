@@ -5,6 +5,7 @@
  * It is not as strong as encryption, but adds an extra layer of security.
  * Functions: rev|crc=#|evo|tnc=#*#|skh|xor=""
  */
+//TODO: FIX Caesar cipher with bytes, transposition cipher?
 import java.util.ArrayList;
 class ModObfuscate  {
     public static String performOperation(String expression, String flag, boolean encrypting)
@@ -54,7 +55,7 @@ class ModObfuscate  {
                 encrypted = everyOther(fileData, encrypting);
                 break;
             case "tnc":
-                encrypted = Converter.convertToPrimative(transpositionCipher(fileData, command[1], encrypting));
+                encrypted = transpositionCipher(fileData, command[1], encrypting);
                 break;
             case "skh":
                 encrypted = skipHop(fileData);
@@ -215,9 +216,10 @@ class ModObfuscate  {
             evaluated[index] = fileData[fileData.length - 1];
         return evaluated;
     }
-    //TODO test caesar cipher with some test bytes
+
     private static byte[] caesarCipher(byte[] fileData, int shift)
     {
+        shift %= Byte.MAX_VALUE;
         byte[] evaluated = new byte[fileData.length];
         int index = 0;
         for(int i = 0; i < fileData.length; i++, index++)
@@ -226,6 +228,7 @@ class ModObfuscate  {
                 evaluated[index] = (byte)((fileData[i] + shift) % Byte.MAX_VALUE);
             else
             evaluated[index] = (byte)(fileData[i] + shift);
+            //evaluated[index] = (byte)(fileData[i] << shift); lossy
         }
         return evaluated;
     }
@@ -270,15 +273,17 @@ class ModObfuscate  {
         return evaluated;
     }
 
-    private static Byte[] transpositionCipher(byte[] fileData, String parameters, boolean encrypting)
+    private static final int TRANSBUFFERSIZE = 8;
+    private static byte[] transpositionCipher(byte[] fileData, String parameters, boolean encrypting)
     {
         ArrayList<Byte> evaluated = new ArrayList<Byte>();
         int x = Integer.parseInt(parameters.split("\\*")[0]), y = Integer.parseInt(parameters.split("\\*")[1]);
-        while(x * y < fileData.length)
+        while(x * y < fileData.length + TRANSBUFFERSIZE)
         { x++; y++; }
         byte[][] transposed = new byte[x][y];
         int i = 0;
-        readImage:
+        int bufferWritten = 0;
+        readFile:
         for(int j= 0; j < x; j++) //j -> x, k -> y
         {
             for(int k = 0; k < y; k++, i++)
@@ -287,22 +292,33 @@ class ModObfuscate  {
                 {
                     transposed[j][k] = fileData[i];
                 }
-                else if(i == fileData.length && encrypting)
-                    transposed[j][k] = (byte)3000; //TODO don't hardcode this
+                else if(i >= fileData.length && encrypting && bufferWritten < TRANSBUFFERSIZE)
+                {
+                    transposed[j][k] = 0;
+                    bufferWritten++;
+                }
+
                 else if(encrypting)
                     transposed[j][k] = (byte)(Math.random() * 128);
                 else
-                    break readImage;
+                    break readFile;
             }
         }
         //now to read back
         for(int j = 0; j < y; j++)
             for(int k = 0; k < x; k++)
                 evaluated.add(transposed[k][j]);
+        if(!encrypting) {
+            //get index of the beginning of the null terminating buffer
+            int nullcheck = 0;
+            for(i = 0; i < evaluated.size() && nullcheck < TRANSBUFFERSIZE; i++)
+            {
+                nullcheck = evaluated.get(i) == 0 ? nullcheck + 1 : 0; // increments the null terminator check
 
-        if(!encrypting && evaluated.indexOf((byte)3000) != -1)
-            evaluated = (ArrayList<Byte>)evaluated.subList(0, evaluated.indexOf((byte)3000)); //TODO don't hardcode this
-        return (Byte[])evaluated.toArray();
+            }
+            evaluated = new ArrayList<>(evaluated.subList(0, i - TRANSBUFFERSIZE)); //get the list with the transposed removed
+        }
+        return Converter.convertToPrimative(evaluated);
     }
 
 

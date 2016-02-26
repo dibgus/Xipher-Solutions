@@ -86,13 +86,15 @@ class ModSteganography {
             {
                 totalFramesRead += bytesRead / bytesPerFrame;
             }
-            System.out.println(bytesPerFrame);
             byte[] stubBuffer = audioFileBuffer.clone();
-            for(int i = bytesPerFrame - 1; i < binaryData.length(); i+= bytesPerFrame)
+            int i, j;
+            for(i = bytesPerFrame - 1, j = 0; i < audioFileBuffer.length && j < binaryData.length(); i+= bytesPerFrame, j++)
             {
-                audioFileBuffer[i] = (byte)LSBHandler.insertLSB(audioFileBuffer[i], (byte)(binaryData.charAt(i) - 48));
-                stubBuffer[i] = 20;
+                audioFileBuffer[i] = (byte)LSBHandler.insertLSB(audioFileBuffer[i], (byte)(binaryData.charAt(j) - 48));
+                stubBuffer[i] = 20; //todo make the stub audio file more distinct (all frames 20 rather than the lsb location byte being 20)
             }
+            if(audioFileBuffer.length < i)
+                System.err.println("ERROR: NOT ENOUGH SPACE TO STORE DATA");
             audioFileBuffer = LSBHandler.writePadding((byte)32, audioFileBuffer, binaryData.length() * bytesPerFrame, bytesPerFrame);
             //writes manipulated audio file to <FILENAME>steg.<EXTENSION>
             String outFile = filePath.substring(0, filePath.indexOf(".")) + "steg" + filePath.substring(filePath.indexOf("."));
@@ -144,7 +146,7 @@ class ModSteganography {
 
             String binaryDataRepresentation = "";
             int terminateBits = 0;
-            for(int i = bytesPerFrame - 1; i < audioFileBuffer.length && terminateBits < 32; bytesPerFrame++)
+            for(int i = bytesPerFrame - 1; i < audioFileBuffer.length && terminateBits < 32; i+= bytesPerFrame)
             {
                 byte lsb = (byte)(audioFileBuffer[i] % 2);
                 binaryDataRepresentation += Math.abs(lsb);
