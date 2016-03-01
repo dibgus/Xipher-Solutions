@@ -225,10 +225,14 @@ class ModObfuscate  {
         for(int i = 0; i < fileData.length; i++, index++)
         {
             if(shift + fileData[i] > Byte.MAX_VALUE || shift + fileData[i] < Byte.MIN_VALUE)
-                evaluated[index] = (byte)((fileData[i] + shift) % Byte.MAX_VALUE);
+            {
+                    int mod = ((fileData[i] + shift) % Byte.MAX_VALUE); //gets the amount over max/min byte
+                    evaluated[index] = (byte)((mod > 0 ? -127 : 127) + mod);
+            }
             else
-            evaluated[index] = (byte)(fileData[i] + shift);
+                evaluated[index] = (byte)(fileData[i] + shift);
             //evaluated[index] = (byte)(fileData[i] << shift); lossy
+            //-74 - 100 = -174 % 127 = -47 + 127 = 80 neq to 101
         }
         return evaluated;
     }
