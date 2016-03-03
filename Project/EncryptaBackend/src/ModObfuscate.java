@@ -277,31 +277,33 @@ class ModObfuscate  {
         return evaluated;
     }
 
-    private static final int TRANSBUFFERSIZE = 8;
+    private static final int TRANSBUFFERSIZE = 32;
+    private static final byte[] TERMINATOR = {64, 0, 0, 0, 0, 0, 0, 0, 0, -127, 127, 127, 127};
     private static byte[] transpositionCipher(byte[] fileData, String parameters, boolean encrypting)
     {
         ArrayList<Byte> evaluated = new ArrayList<Byte>();
         int x = Integer.parseInt(parameters.split("\\*")[0]), y = Integer.parseInt(parameters.split("\\*")[1]);
-        while(x * y < fileData.length + TRANSBUFFERSIZE)
+        while(x * y < fileData.length + (encrypting ? TRANSBUFFERSIZE : 0))
         { x++; y++; }
+        //System.out.println(x + ", " + y);
         byte[][] transposed = new byte[x][y];
         int i = 0;
         int bufferWritten = 0;
         readFile:
         for(int j= 0; j < x; j++) //j -> x, k -> y
         {
-            for(int k = 0; k < y; k++, i++)
+            for(int k = 0; k < y; k++)
             {
                 if(i < fileData.length)
                 {
                     transposed[j][k] = fileData[i];
+                    i++;
                 }
                 else if(i >= fileData.length && encrypting && bufferWritten < TRANSBUFFERSIZE)
                 {
                     transposed[j][k] = 0;
                     bufferWritten++;
                 }
-
                 else if(encrypting)
                     transposed[j][k] = (byte)(Math.random() * 128);
                 else
@@ -315,12 +317,11 @@ class ModObfuscate  {
         if(!encrypting) {
             //get index of the beginning of the null terminating buffer
             int nullcheck = 0;
-            for(i = 0; i < evaluated.size() && nullcheck < TRANSBUFFERSIZE; i++)
+            for(i = 0; i < evaluated.size() && nullcheck < TERMINATOR.length; i++)
             {
-                nullcheck = evaluated.get(i) == 0 ? nullcheck + 1 : 0; // increments the null terminator check
-
+                nullcheck = evaluated.get(i) == TERMINATOR[nullcheck] ? nullcheck + 1 : 0; // increments the null terminator check
             }
-            evaluated = new ArrayList<>(evaluated.subList(0, i - TRANSBUFFERSIZE)); //get the list with the transposed removed
+            evaluated = new ArrayList<>(evaluated.subList(0, i - TERMINATOR.length)); //get the list with the transposed removed
         }
         return Converter.convertToPrimative(evaluated);
     }
