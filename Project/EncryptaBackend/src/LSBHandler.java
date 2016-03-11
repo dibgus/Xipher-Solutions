@@ -6,7 +6,7 @@ public class LSBHandler {
 
     public static byte getLSB(int b)
     {
-        return (byte)(b % 2);
+        return (byte)Math.abs((b % 2));
     }
 
     public static byte[] writePadding(byte size, byte[] data, int startIndex, int increment)

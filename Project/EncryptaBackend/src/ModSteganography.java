@@ -197,10 +197,8 @@ class ModSteganography {
                 x = 0;
                 y++;
             }
-            System.out.print(storageImage.getRGB(x, y) + " ~ ");
             byte lsb = (byte) (expressionBinary.charAt(i) - 48); //converts a character of 1 or 0 to the equivalent integer value
             storageImage.setRGB(x, y, LSBHandler.insertLSB(storageImage.getRGB(x, y), lsb));
-            System.out.println(storageImage.getRGB(x, y));
             debugImage.setRGB(x, y, Color.WHITE.getRGB());
             //storageImage.setRGB(x, y, new Color(0, 8, 255).getRGB()); //DEBUG LINE
         }
@@ -281,7 +279,6 @@ class ModSteganography {
             for (int x = 0; x < source.getWidth(); x++) {
                 if (numNullTerm == BUFFER_LENGTH)
                     break ImageLoop;
-                System.out.println(source.getRGB(x, y));
                 short lsb = LSBHandler.getLSB(source.getRGB(x, y));
                 if (lsb == 0)
                     numNullTerm++;
