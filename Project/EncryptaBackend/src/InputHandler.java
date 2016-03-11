@@ -77,7 +77,10 @@ abstract class InputHandler
                 for(int j = 0; j < i; j++)
                     if(functions[i].contains(":"))
                         moduleIndex = j;
-                module = functions[moduleIndex].substring(0, functions[moduleIndex].indexOf(":"));
+                if(!functions[moduleIndex].contains(":"))
+                    System.err.println("Error: missing module delimeter \":\" in key " + isEncrypting);
+                else
+                    module = functions[moduleIndex].substring(0, functions[moduleIndex].indexOf(":"));
                 function = functions[i];
             }
             if(module.equals("") && !isEncrypting)

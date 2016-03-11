@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.*;
 class ModSteganography {
+    public static final int BUFFER_LENGTH = 32;
     public static String performOperation(String expression, String flag, boolean encrypting) throws IOException
     {
         String evaluated = "";
@@ -146,7 +147,7 @@ class ModSteganography {
 
             String binaryDataRepresentation = "";
             int terminateBits = 0;
-            for(int i = bytesPerFrame - 1; i < audioFileBuffer.length && terminateBits < 32; i+= bytesPerFrame)
+            for(int i = bytesPerFrame - 1; i < audioFileBuffer.length && terminateBits < BUFFER_LENGTH; i+= bytesPerFrame)
             {
                 byte lsb = (byte)(audioFileBuffer[i] % 2);
                 binaryDataRepresentation += Math.abs(lsb);
@@ -156,7 +157,7 @@ class ModSteganography {
                     terminateBits = 0;
                 //checks if at least 16 bits have been written, and then checks if there is a null termination (16 zeroes)
             }
-            if(terminateBits >= 32)
+            if(terminateBits >= BUFFER_LENGTH)
                 binaryDataRepresentation = binaryDataRepresentation.substring(0, binaryDataRepresentation.length() - terminateBits);
             //truncate the null termination
             input.close();
@@ -185,62 +186,31 @@ class ModSteganography {
         String expressionBinary = "";
         for(int i = 0; i < expression.length(); i++)
             expressionBinary += Converter.intToBinaryString(expression.charAt(i));
-        int component = 0; //0 to R, 1 to G, 2 to B
-        if(storageImage.getWidth() * storageImage.getHeight() < expressionBinary.length())
-            return "ERROR: Storage image was not large enough to store the expression";
+        if(storageImage.getWidth() * storageImage.getHeight() < expressionBinary.length()) {
+            System.err.println("ERROR: Storage image was not large enough to store the expression");
+            return expression;
+        }
         int x = 0, y = 0; //image coords that are being read
-            for (int i = 0; i < expressionBinary.length(); i++, component++) {
-                if (component == 3) {
-                    x++;
-                    if (x >= storageImage.getWidth()) {
-                        x = 0;
-                        y++;
-                    }
-                    component = 0;
-                }
-                Color modPixel = new Color(storageImage.getRGB(x, y));
-                byte lsb = (byte) (expressionBinary.charAt(i) - 48); //converts a character of 1 or 0 to the equivalent integer value
-                switch (component) { //each component tests if the last bit is the same as the bit that is being stored, otherwise it changes that bit
-                    case 0: //red
-                        if (lsb != modPixel.getRed() % 2)
-                            storageImage.setRGB(x, y, new Color(LSBHandler.insertLSB(modPixel.getRed(), lsb), modPixel.getGreen(), modPixel.getBlue()).getRGB());
-                    case 1: //green
-                        if (lsb != modPixel.getGreen() % 2)
-                            storageImage.setRGB(x, y, new Color(modPixel.getRed(), LSBHandler.insertLSB(modPixel.getGreen(), lsb), modPixel.getBlue()).getRGB());
-                        break;
-                    case 2: //blue
-                        if (lsb != modPixel.getBlue() % 2)
-                            storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen(), LSBHandler.insertLSB(modPixel.getBlue(), lsb)).getRGB());
-                        break;
-                }
-                debugImage.setRGB(x, y, new Color(255, 0, 0).getRGB());
-                //storageImage.setRGB(x, y, new Color(0, 8, 255).getRGB()); //DEBUG LINE
-            }
-        //now add a null term
-        for(int i =0; i < 15; i++)
-        {
-            if(component == 3)
+        for (int i = 0; i < expressionBinary.length(); i++, x++) {
+            if(x >= storageImage.getWidth())
             {
-                if(x >= storageImage.getWidth())
-                {
-                    x = 0;
-                    y++;
-                }
-                component = 0;
+                x = 0;
+                y++;
             }
-            Color modPixel = new Color(storageImage.getRGB(x, y));
-            switch(component) { //set lsb of each component to zero
-                case 0: //red
-                    storageImage.setRGB(x, y, new Color(modPixel.getRed() - modPixel.getRed() % 2, modPixel.getGreen(), modPixel.getBlue()).getRGB());
-                    break;
-                case 1: //green
-                        storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen() - modPixel.getGreen() % 2, modPixel.getBlue()).getRGB());
-                        break;
-                case 2: //blue
-                    storageImage.setRGB(x, y, new Color(modPixel.getRed(), modPixel.getGreen(), modPixel.getBlue() - modPixel.getBlue() % 2).getRGB());
-                    break;
-            }
-
+            System.out.print(storageImage.getRGB(x, y) + " ~ ");
+            byte lsb = (byte) (expressionBinary.charAt(i) - 48); //converts a character of 1 or 0 to the equivalent integer value
+            storageImage.setRGB(x, y, LSBHandler.insertLSB(storageImage.getRGB(x, y), lsb));
+            System.out.println(storageImage.getRGB(x, y));
+            debugImage.setRGB(x, y, Color.WHITE.getRGB());
+            //storageImage.setRGB(x, y, new Color(0, 8, 255).getRGB()); //DEBUG LINE
+        }
+        //now add a null term
+        for(int i =0; i < BUFFER_LENGTH; i++, x++)
+        {
+            if(x > storageImage.getWidth())
+            { y++; x = 0; }
+            storageImage.setRGB(x, y, LSBHandler.insertLSB(storageImage.getRGB(x, y), (byte)0));
+            debugImage.setRGB(x, y, Color.BLUE.getRGB());
         }
         File sourceImage = new File(filePath.substring(0, filePath.lastIndexOf(".")) + "encrypted." + filePath.substring(filePath.lastIndexOf(".") + 1));
         //creates a new file called <IMAGENAME>encrypted.<ORIGINALEXTENSION>
@@ -250,45 +220,78 @@ class ModSteganography {
         ImageIO.write(debugImage, extension, debugFile);
         return "Data has been stored in " + sourceImage.getPath();
     }
+            /**Tried this code -- didn't work because it modified special chuncks that I had to skip
+        String extension = filePath.substring(filePath.lastIndexOf(".") + 1);
+        BufferedImage storageImage = ImageIO.read(new File(filePath));
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        ImageIO.write(storageImage, extension, output);
+        byte[] imageData = output.toByteArray();
+        byte[] debugData = imageData.clone();
+        output.close();
+        int headerSize = 0;
+        switch(extension)
+        {
+            case "png":
+                headerSize = 8;
+                break;
+            case "bmp":
+                headerSize = 16;
+                break;
+            default:
+                headerSize = 8;
+                break;
+        }
+        String expressionBinary = "";
+        for(int i = 0; i < expression.length(); i++)
+            expressionBinary += Converter.intToBinaryString(expression.charAt(i));
+        if(imageData.length < expressionBinary.length())
+        {
+            System.err.println("ERROR: Storage image was not large enough to store the expression");
+            return expression;
+        }
+        int index = headerSize;
+        for (index = headerSize; index < expressionBinary.length(); index++) {
+            imageData[index] = (byte) LSBHandler.insertLSB(imageData[index], (byte) (expressionBinary.charAt(index) - 48));
+            debugData[index] = 0;
+        }
+        //now add a null term
+        for(int i = 0; i < BUFFER_LENGTH; i++)
+        {
+            imageData[index] = (byte)LSBHandler.insertLSB(imageData[index], (byte)0);
+            debugData[index] = (byte)255;
+        }
+        File sourceImage = new File(filePath.substring(0, filePath.lastIndexOf(".")) + "encrypted." + extension);
+        //creates a new file called <IMAGENAME>encrypted.<ORIGINALEXTENSION>
+        File debugFile = new File(filePath.substring(0, filePath.lastIndexOf(".")) + "stub." + extension);
+        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(sourceImage));
+        BufferedOutputStream debugWrite = new BufferedOutputStream(new FileOutputStream(debugFile));
+        out.write(imageData);
+        debugWrite.write(debugData);
+        debugWrite.close();
+        out.close();
+        return "Data has been stored in " + sourceImage.getPath();
+        */
 
-    private static String extractLSB(String filePath) throws IOException
-    {
+    private static String extractLSB(String filePath) throws IOException {
         String binaryExtracted = "";
         BufferedImage source = ImageIO.read(new File(filePath));
         short numNullTerm = 0; //Increments every time a 0 is found and resets at a 1 to terminate the loop early
-        short component = 0; //0 R 1 G 2 B
         ImageLoop:
-        for(int y = 0; y <= source.getHeight(); y++)
-        {
-            for(int x = 0; x <= source.getWidth(); x++)
-            {
-                if(component >= 3)
-                    component = 0;
-                if(numNullTerm == 16)
+        for (int y = 0; y < source.getHeight(); y++) {
+            for (int x = 0; x < source.getWidth(); x++) {
+                if (numNullTerm == BUFFER_LENGTH)
                     break ImageLoop;
-                short lsb = 0;
-                Color readPixel = new Color(source.getRGB(x, y));
-                switch(component)
-                {
-                    case 0:
-                        lsb = (short)(readPixel.getRed() % 2);
-                        break;
-                    case 1:
-                        lsb = (short)(readPixel.getGreen() % 2);
-                        break;
-                    case 2:
-                        lsb = (short)(readPixel.getBlue() % 2);
-                        break;
-                }
-                if(lsb == 0)
+                System.out.println(source.getRGB(x, y));
+                short lsb = LSBHandler.getLSB(source.getRGB(x, y));
+                if (lsb == 0)
                     numNullTerm++;
+                else
+                    numNullTerm = 0;
                 binaryExtracted += lsb;
-                component++;
             }
         }
-        return Converter.binaryStringToString(binaryExtracted);
+            return Converter.binaryStringToString(binaryExtracted);
     }
-
     //TODO rewrite stuff
     public static byte[] performOperation(byte[] fileData, String flag, boolean encrypting) throws IOException
     {
@@ -356,9 +359,9 @@ class ModSteganography {
             }
         }
         //now add a null term
-        for(int i =0; i < 15; i++)
+        for(int i =0; i < BUFFER_LENGTH; i++)
         {
-            if(component == 3)
+            if(component >= 3)
             {
                 if(x >= storageImage.getWidth())
                 {
