@@ -31,9 +31,9 @@ class ModSteganography {
                 break;
             case "audio":
                 if(encrypting)
-                    evaluated = storeInAudio(expression, command[1]);
+                    evaluated = storeInAudio(expression, command[1], false);
                 else
-                    evaluated = extractAudioData(expression);
+                    evaluated = (String)extractAudioData(expression, false);
                 break;
             default:
                 System.err.println("Could not find steganography operation: " + command[0]);
@@ -43,7 +43,7 @@ class ModSteganography {
         return evaluated; //if encrypting, then this method will return a message about where the image is stored.
     }
 
-    private static String storeInAudio(String expression, String filePath){
+    private static String storeInAudio(Object expression, String filePath, boolean isFile){
         /*
         String binaryString = "";
         for(int i = 0; i < expression.length(); i++)
@@ -71,8 +71,8 @@ class ModSteganography {
         */
         //AudioInputStream input = new AudioInputStream(new DataLine.Info(new Class<?>, AudioSystem.getAudioFileFormat(new File(filePath))));
         String binaryData = "";
-        for(int i = 0; i < expression.length(); i++)
-            binaryData += Converter.intToBinaryString(expression.charAt(i));
+        for(int i = 0; i < (isFile ? ((byte[])expression).length : ((String)expression).length()); i++)
+            binaryData += Converter.intToBinaryString(isFile ? ((byte[])expression)[i] : ((String)expression).charAt(i));
 
         try {
             AudioInputStream input = AudioSystem.getAudioInputStream(new File(filePath));
@@ -122,15 +122,15 @@ class ModSteganography {
         } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
-        return "Something happened...";
+        return "An Error Occurred";
     }
 
-    private static String extractAudioData(String expression) {
-        String extracted = ""; //expression will be the file path
+    private static Object extractAudioData(String filePath, boolean isFile) {
+        Object extracted = null; //expression will be the file path
         AudioInputStream input;
         try {
-            input = AudioSystem.getAudioInputStream(new File(expression));
-            byte[] audioFileBuffer = new byte[(int)new File(expression).length()];
+            input = AudioSystem.getAudioInputStream(new File(filePath));
+            byte[] audioFileBuffer = new byte[(int)new File(filePath).length()];
             int bytesPerFrame = input.getFormat().getFrameSize(); //gets the amount of bytes representing a frame(smallest unit of sound)
             if(bytesPerFrame == AudioSystem.NOT_SPECIFIED)
                 bytesPerFrame = 1; //no defined frame length
@@ -142,7 +142,7 @@ class ModSteganography {
             if(totalFramesRead == 0)
             {
                 System.err.println("ERROR: No data in file read");
-                return expression;
+                return filePath;
             }
 
             String binaryDataRepresentation = "";
@@ -161,7 +161,7 @@ class ModSteganography {
                 binaryDataRepresentation = binaryDataRepresentation.substring(0, binaryDataRepresentation.length() - terminateBits);
             //truncate the null termination
             input.close();
-            extracted = Converter.binaryStringToString(binaryDataRepresentation);
+            extracted = isFile ? Converter.binaryStringToByteArray(binaryDataRepresentation) : Converter.binaryStringToString(binaryDataRepresentation);
         } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
@@ -301,6 +301,12 @@ class ModSteganography {
                     storedMessage = storeInLSB(fileData, command[1], true);
                 else
                     return (byte[])extractLSB(command[1], true); //assumes that expression is a file path
+                break;
+            case "audio":
+                if(encrypting)
+                    storedMessage = storeInAudio(fileData, command[1], true);
+                else
+                    return (byte[])extractAudioData(command[1], true);
                 break;
             case "cos":
                 if(encrypting)
