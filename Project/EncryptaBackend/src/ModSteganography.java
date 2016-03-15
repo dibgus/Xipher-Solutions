@@ -19,9 +19,9 @@ class ModSteganography {
         {
             case "pix":
                 if(encrypting)
-                    evaluated = storeInLSB(expression, command[1]);
+                    evaluated = storeInLSB(expression, command[1], false);
                 else
-                    evaluated = extractLSB(expression); //assumes that expression is a file path
+                    evaluated = (String)extractLSB(expression, false); //assumes that expression is a file path
                 break;
             case "cos":
                 if(encrypting)
@@ -179,16 +179,16 @@ class ModSteganography {
      * @throws IOException: The image specified in filePath does not exist
      * @throws IOException: The application could not successfully find the provided image's extension (or it is unsupported by ImageIO)
      */
-    private static String storeInLSB(String expression, String filePath) throws IOException
+    private static String storeInLSB(Object expression, String filePath, boolean isFile) throws IOException
     {
         BufferedImage storageImage = ImageIO.read(new File(filePath));
         BufferedImage debugImage = ImageIO.read(new File(filePath));
         String expressionBinary = "";
-        for(int i = 0; i < expression.length(); i++)
-            expressionBinary += Converter.intToBinaryString(expression.charAt(i));
+        for(int i = 0; i < (!isFile ? ((String)expression).length() : ((byte[])expression).length); i++)
+            expressionBinary += Converter.intToBinaryString(isFile ? ((byte[])expression)[i] : ((String)expression).charAt(i));
         if(storageImage.getWidth() * storageImage.getHeight() < expressionBinary.length()) {
             System.err.println("ERROR: Storage image was not large enough to store the expression");
-            return expression;
+            return "ERROR: Cannot store data in image";
         }
         int x = 0, y = 0; //image coords that are being read
         for (int i = 0; i < expressionBinary.length(); i++, x++) {
@@ -270,7 +270,7 @@ class ModSteganography {
         return "Data has been stored in " + sourceImage.getPath();
         */
 
-    private static String extractLSB(String filePath) throws IOException {
+    private static Object extractLSB(String filePath, boolean isFile) throws IOException {
         String binaryExtracted = "";
         BufferedImage source = ImageIO.read(new File(filePath));
         short numNullTerm = 0; //Increments every time a 0 is found and resets at a 1 to terminate the loop early
@@ -287,7 +287,7 @@ class ModSteganography {
                 binaryExtracted += lsb;
             }
         }
-            return Converter.binaryStringToString(binaryExtracted);
+            return isFile ? Converter.binaryStringToByteArray(binaryExtracted) : Converter.binaryStringToString(binaryExtracted);
     }
     //TODO rewrite stuff
     public static byte[] performOperation(byte[] fileData, String flag, boolean encrypting) throws IOException
@@ -298,9 +298,9 @@ class ModSteganography {
         {
             case "pix":
                 if(encrypting)
-                    storedMessage = storeInLSB(fileData, command[1]);
+                    storedMessage = storeInLSB(fileData, command[1], true);
                 else
-                    return extractLSB(command[1], true); //assumes that expression is a file path
+                    return (byte[])extractLSB(command[1], true); //assumes that expression is a file path
                 break;
             case "cos":
                 if(encrypting)
@@ -317,6 +317,7 @@ class ModSteganography {
         return null; //if encrypting, then this method will return a message about where the image is stored.
     }
 
+    /*
     private static String storeInLSB(byte[] fileData, String filePath) throws IOException
     {
         BufferedImage storageImage = ImageIO.read(new File(filePath));
@@ -386,46 +387,7 @@ class ModSteganography {
         String extension = filePath.substring(filePath.lastIndexOf(".") + 1, filePath.length());
         ImageIO.write(storageImage, extension, sourceImage);
         return "Data has been stored in " + sourceImage.getPath();
-    }
-
-    //for file data
-    private static byte[] extractLSB(String filePath, boolean isFile) throws IOException
-    {
-        String binaryExtracted = "";
-        BufferedImage source = ImageIO.read(new File(filePath));
-        short numNullTerm = 0; //Increments every time a 0 is found and resets at a 1 to terminate the loop early
-        short component = 0; //0 R 1 G 2 B
-        ImageLoop:
-        for(int y = 0; y <= source.getHeight(); y++)
-        {
-            for(int x = 0; x <= source.getWidth(); x++)
-            {
-                if(component >= 3)
-                    component = 0;
-                if(numNullTerm == 16)
-                    break ImageLoop;
-                short lsb = 0;
-                Color readPixel = new Color(source.getRGB(x, y));
-                switch(component)
-                {
-                    case 0:
-                        lsb = (short)(readPixel.getRed() % 2);
-                        break;
-                    case 1:
-                        lsb = (short)(readPixel.getGreen() % 2);
-                        break;
-                    case 2:
-                        lsb = (short)(readPixel.getBlue() % 2);
-                        break;
-                }
-                if(lsb == 0)
-                    numNullTerm++;
-                binaryExtracted += lsb;
-                component++;
-            }
-        }
-        return Converter.binaryStringToByteArray(binaryExtracted);
-    }
+    }*/
 
     //TODO implement methods involving cosine curves (may be more complex than I think it will be
     private static String storeInCosCurve(String expression, String filePath)

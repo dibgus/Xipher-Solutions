@@ -5,12 +5,9 @@
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Scanner;
 //VV TEMPORARY IMPORTS FOR TESTING VV
-import java.awt.*;
 class BackendTester {
     public static void main(String[] args)
     {
@@ -51,11 +48,13 @@ class BackendTester {
             }
             else if(opt.charAt(0) == '4')
             {
-                String testImage = "C:\\users\\ikrukov\\desktop\\woop.png";
+                //String testImage = "C:\\users\\ikrukov\\desktop\\woop.png";
+                String testImage = "C:\\users\\gvhtechstudent\\desktop\\test.png";
                 String key = "steg:pix=";
                 String testData = "These are words that I would like to store with Steganography";
                 System.out.println(InputHandler.getEvaluatedExpression(testData, key + testImage, true));
-                String encrypted = "C:\\users\\ikrukov\\desktop\\woopencrypted.png";
+                //String encrypted = "C:\\users\\ikrukov\\desktop\\woopencrypted.png";
+                String encrypted = "C:\\users\\gvhtechstudent\\desktop\\testencrypted.png";
                 System.out.println(InputHandler.getEvaluatedExpression(encrypted, key + encrypted, false));
                 //enter test code
             }
