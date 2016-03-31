@@ -4,11 +4,19 @@
  * The module for Steganography
  * Steganography is the process of storing information in a discrete format
  */
+import sun.awt.image.JPEGImageDecoder;
+
 import javax.imageio.ImageIO;
+import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.RenderedOp;
 import javax.sound.sampled.*;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.awt.image.renderable.ParameterBlock;
 import java.io.*;
+import java.util.Arrays;
+
 class ModSteganography {
     public static final int BUFFER_LENGTH = 32;
     public static String performOperation(String expression, String flag, boolean encrypting) throws IOException
@@ -396,15 +404,42 @@ class ModSteganography {
     }*/
 
     //TODO implement methods involving cosine curves (may be more complex than I think it will be
-    private static String storeInCosCurve(String expression, String filePath)
+    private static String storeInCosCurve(Object expression, String filePath)
     {
+        String extension = filePath.substring(filePath.lastIndexOf(".") + 1);
+        if(!extension.toLowerCase().equals("jpg")) {
+            System.err.println("ERROR: Cosine curve steganography is only possible on .JPG images!");
+            return "ERROR!";
+        }
+        RenderedOp data = JAI.create("fileload", filePath);
+        ParameterBlock pbDCT = (new ParameterBlock()).addSource(data);
+        PlanarImage dct;
+        dct = JAI.create("dct", pbDCT, null);
+        double[] dctData = dct.getData().getPixels(0, 0, data.getWidth(), data.getHeight(), (double[]) null);
+        System.out.println(Arrays.toString(dctData));
+        //Extract the DCT coefficients...
+        //then insert lsb
+        //then put the DCT coeffs back into the image
 
-        return "";
+        File stegImage = new File(filePath.substring(0, filePath.lastIndexOf(".")) + "encrypted.jpg");
+        return "Data stored in image: " + stegImage.getPath();
     }
-    private static String extractCosCurve(String expression)
-    {
 
-        return "";
+    private static String extractCosCurve(String filePath)
+    {
+        JPEGImageDecoder nooo = new JPEGImageDecoder(null, null); //todo fromhere
+        try {
+            BufferedImage mainImage = ImageIO.read(new File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //Extract dct coefficients
+        //then get lsb for each into binary string
+        //then convert to string/object
+
+        File stegImage = new File(filePath.substring(0, filePath.lastIndexOf(".")) + "encrypted.jpg");
+        //ImageIO.write(something, stegImage, "jpg");
+        return "Image has been stored in " + stegImage.getPath();
     }
 
 

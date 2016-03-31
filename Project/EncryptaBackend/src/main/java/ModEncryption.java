@@ -1,7 +1,7 @@
 /**
  * Created by ikrukov on 1/2/2016.
  * The module for Encryption
- * Using the Jasypt library for encryption operations.
+ * Using the Dependencies library for encryption operations.
  */
 import org.jasypt.digest.StandardByteDigester;
 import org.jasypt.digest.StandardStringDigester;

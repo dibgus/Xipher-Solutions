@@ -76,8 +76,6 @@ class Converter {
         return primative;
     }
 
-
-
     public static byte[] binaryStringToByteArray(String binaryString)
     {
         ArrayList<Byte> data = new ArrayList<Byte>();
