@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 abstract class InputHandler
 {
+
+    public static boolean UTF16MODE = false;
     /**
      * This main method is to satisfy IKVM's .net executable generation.
      * I initially tried to export my code to a .net DLL, but I then realized that I would have had
@@ -175,6 +177,9 @@ abstract class InputHandler
                     encryptedData.clear();
                     for(int j = 0; j < temp.length; j++) //load return array into the arraylist
                         encryptedData.add(temp[j]);
+                    break;
+                case ("u16"):
+                    UTF16MODE = true;
                     break;
                 default:
                     System.err.println("Unknown module: " + module);

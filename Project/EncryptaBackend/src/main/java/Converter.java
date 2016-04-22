@@ -13,7 +13,7 @@ class Converter {
     public static String intToBinaryString(int value)
     {
         String inBinary = "";
-        int bit = 15; //16 bits for UTF-16 related string stuff
+        int bit = InputHandler.UTF16MODE ? 15 : 7;
         while (bit >= 0)
         {
             if (Math.pow(2, bit) < value)
@@ -54,9 +54,10 @@ class Converter {
     public static String binaryStringToString(String binaryString)
     {
         String evaluated = "";
-        for(int i = 0; (i + 1) * 16 + 1 < binaryString.length(); i++)
+        int bits = InputHandler.UTF16MODE ? 16 : 8;
+        for(int i = 0; (i + 1) * bits + 1 < binaryString.length(); i++)
         {
-            evaluated += (char)binaryStringToInt(binaryString.substring(i * 16, (i + 1) * 16)); //takes 2 bytes and converts it to a char
+            evaluated += (char)binaryStringToInt(binaryString.substring(i * bits, (i + 1) * bits)); //takes 2 bytes and converts it to a char
         }
         return evaluated;
     }

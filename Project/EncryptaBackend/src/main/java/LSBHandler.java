@@ -20,4 +20,9 @@ public class LSBHandler {
     {
         return (getLSB(data) == lsb ? data : data ^ 1);
     }
+
+    public static String insertLSB(String binaryString, String lsb)
+    {
+        return binaryString.substring(0, binaryString.length() - 1) + lsb;
+    }
 }

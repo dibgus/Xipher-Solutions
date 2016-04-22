@@ -4,7 +4,6 @@
  * The module for Steganography
  * Steganography is the process of storing information in a discrete format
  */
-import sun.awt.image.JPEGImageDecoder;
 
 import javax.imageio.ImageIO;
 import javax.media.jai.JAI;
@@ -12,13 +11,14 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
 import javax.sound.sampled.*;
 import java.awt.Color;
-import java.awt.image.BufferedImage;
+import java.awt.image.*;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.*;
-import java.util.Arrays;
+import java.math.BigInteger;
+import java.util.ArrayList;
 
 class ModSteganography {
-    public static final int BUFFER_LENGTH = 32;
+    private static final int BUFFER_LENGTH = 32;
     public static String performOperation(String expression, String flag, boolean encrypting) throws IOException
     {
         String evaluated = "";
@@ -33,9 +33,9 @@ class ModSteganography {
                 break;
             case "cos":
                 if(encrypting)
-                    evaluated = storeInCosCurve(expression, command[1]);
+                    evaluated = storeInCosCurve(expression, command[1], false);
                 else
-                    evaluated = extractCosCurve(expression);
+                    evaluated = (String)extractCosCurve(expression, false);
                 break;
             case "audio":
                 if(encrypting)
@@ -318,9 +318,9 @@ class ModSteganography {
                 break;
             case "cos":
                 if(encrypting)
-                    storedMessage = storeInCosCurve(command[1]  , command[1]);
+                    storedMessage = storeInCosCurve(command[1], command[1], true);
                 else
-                    storedMessage = extractCosCurve(command[1]);
+                    return (byte[])extractCosCurve(command[1], true);
 
             default:
                 System.err.println("Could not find steganography operation: " + command[0]);
@@ -404,7 +404,7 @@ class ModSteganography {
     }*/
 
     //TODO implement methods involving cosine curves (may be more complex than I think it will be
-    private static String storeInCosCurve(Object expression, String filePath)
+    private static String storeInCosCurve(Object expression, String filePath, boolean isFile)
     {
         String extension = filePath.substring(filePath.lastIndexOf(".") + 1);
         if(!extension.toLowerCase().equals("jpg")) {
@@ -413,33 +413,82 @@ class ModSteganography {
         }
         RenderedOp data = JAI.create("fileload", filePath);
         ParameterBlock pbDCT = (new ParameterBlock()).addSource(data);
-        PlanarImage dct;
-        dct = JAI.create("dct", pbDCT, null);
-        double[] dctData = dct.getData().getPixels(0, 0, data.getWidth(), data.getHeight(), (double[]) null);
-        System.out.println(Arrays.toString(dctData));
-        //Extract the DCT coefficients...
-        //then insert lsb
+        PlanarImage dctPlanarImage;
+        dctPlanarImage = JAI.create("dct", pbDCT, null);
+        String expressionBinary = "";
+        double[] dctData = dctPlanarImage.getData().getPixels(0, 0, data.getWidth(), data.getHeight(), (double[]) null); //extract DCT
+        //System.out.println(Arrays.toString(dctData));
+        for(int i = 0; i < (!isFile ? ((String)expression).length() : ((byte[])expression).length); i++)
+            expressionBinary += Converter.intToBinaryString(isFile ? ((byte[])expression)[i] : ((String)expression).charAt(i));
+        ArrayList<String> binaryDCTData = new ArrayList<String>();
+        for(double dctcoeff : dctData)
+                binaryDCTData.add(Long.toBinaryString(Double.doubleToRawLongBits(dctcoeff)));
+        if(expressionBinary.length() > binaryDCTData.size())
+        {
+            System.err.println("ERROR: The data was too large to store into the image");
+            return "ERROR!";
+        }
+        for(int i = 0; i < expressionBinary.length(); i++)
+        { //insert LSB
+            binaryDCTData.set(i, LSBHandler.insertLSB(binaryDCTData.get(i), expressionBinary.charAt(i) + ""));
+        }
+        //then put in null terminator
+        for(int i = 0; i < BUFFER_LENGTH; i++)
+            binaryDCTData.set(i, LSBHandler.insertLSB(binaryDCTData.get(i), 0 + ""));
         //then put the DCT coeffs back into the image
-
-        File stegImage = new File(filePath.substring(0, filePath.lastIndexOf(".")) + "encrypted.jpg");
-        return "Data stored in image: " + stegImage.getPath();
-    }
-
-    private static String extractCosCurve(String filePath)
-    {
-        JPEGImageDecoder nooo = new JPEGImageDecoder(null, null); //todo fromhere
+        double[] newDCTData = new double[binaryDCTData.size()];
+        for(int i = 0; i < binaryDCTData.size(); i++)
+            newDCTData[i] = Double.longBitsToDouble(new BigInteger(binaryDCTData.get(i), 2).longValue()); //converts binary rep of a double to a string
+        /*test code
+        DataBuffer buffer = new DataBufferDouble(newDCTData, newDCTData.length);
+        int[] bitMasks = {0xff0000, 0xff00, 0xff, 0xff000000}; //r, g, b, a
+        SampleModel sm = new SinglePixelPackedSampleModel(DataBuffer.TYPE_INT, dctPlanarImage.getWidth(), dctPlanarImage.getHeight(), bitMasks);
+        WritableRaster raster = Raster.createWritableRaster(sm, buffer, null);
+        ColorModel cm = ColorModel.getRGBdefault();
+        BufferedImage dctAsBuffered = new BufferedImage(cm, raster, false, null);
+        */
+        dctPlanarImage.setProperty("data", newDCTData);
+        //ParameterBlock IDCT = (new ParameterBlock()).addSource(dctAsBuffered);
+        //PlanarImage stegImage = JAI.create("idct", IDCT, null);
+        File stegImagePath = new File(filePath.substring(0, filePath.lastIndexOf(".")) + "encrypted.jpg");
+        System.out.println("win");
         try {
-            BufferedImage mainImage = ImageIO.read(new File(filePath));
+            new ImageDrawer(dctPlanarImage.getAsBufferedImage());
+            ImageIO.write(dctPlanarImage.getAsBufferedImage(),"jpg", stegImagePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //Extract dct coefficients
-        //then get lsb for each into binary string
-        //then convert to string/object
+        return "Data stored in image: " + stegImagePath.getPath();
+    }
 
-        File stegImage = new File(filePath.substring(0, filePath.lastIndexOf(".")) + "encrypted.jpg");
-        //ImageIO.write(something, stegImage, "jpg");
-        return "Image has been stored in " + stegImage.getPath();
+    private static Object extractCosCurve(String filePath, boolean isFile)
+    {
+        if(!filePath.toLowerCase().contains("jpg")) {
+            System.err.println("ERROR: Cosine curve steganography is only possible on .JPG images!");
+            return "ERROR!";
+        }
+        RenderedOp data = JAI.create("fileload", filePath);
+        ParameterBlock pbDCT = (new ParameterBlock()).addSource(data);
+        PlanarImage dctPlanarImage;
+        dctPlanarImage = JAI.create("dct", pbDCT, null);
+        String expressionBinary = "";
+        double[] dctData = dctPlanarImage.getData().getPixels(0, 0, data.getWidth(), data.getHeight(), (double[]) null);
+        int nullTerm = 0;
+        String binaryData = "";
+        for(int i = 0; i < dctData.length && nullTerm < BUFFER_LENGTH; i++)
+        {
+            String doubleBinary = Long.toBinaryString(Double.doubleToRawLongBits(dctData[i]));
+            char lsb = doubleBinary.charAt(doubleBinary.length() - 1);
+            if(lsb == '0')
+                nullTerm++;
+            else
+                nullTerm = 0;
+            binaryData += lsb;
+        }
+        if(nullTerm >= BUFFER_LENGTH)
+            binaryData = binaryData.substring(0, binaryData.length() - nullTerm);
+        return isFile ? Converter.binaryStringToByteArray(binaryData) :
+                Converter.binaryStringToString(binaryData);
     }
 
 
